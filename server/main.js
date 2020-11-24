@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import '../imports/api/users/users';
 import '../imports/api/users/server/publications';
-import Mezigs from '../imports/api/mezig/mezig';
 import '../imports/api/mezig/server/publications';
 import '../imports/api/importFakeData';
 import { Accounts } from 'meteor/accounts-base';
@@ -29,7 +28,7 @@ Meteor.startup(() => {
         },
       );
     }
-    Accounts.onCreateUser((options, user) => {
+    Accounts.onCreateUser(() => {
       // FIXME : Users should not be created by mezig,
       //         Redirect user to laboite if not found
       throw new Meteor.Error('api.users.createUser', 'User creation is disabled in Mezig');

@@ -1,0 +1,107 @@
+[{   
+    "blacklist" : false,
+    "firstName" : "Luc",
+    "lastName" : "BOURDOT",
+    "publicName" : "luc.bourdot",
+    "username": "", 
+    "profilPic" : "",
+    "skills" : [
+        "svelte",
+        "react"
+    ],
+    "links" : [
+        {
+            "label" : "Eole",
+            "URL" : "https://pcll.ac-dijon.fr/pcll/",
+            "isSocialNetwork": false,
+            "isPublic": true
+        }, 
+        {
+            "label" : "twitter",
+            "URL" : "https://twitter.com/luc.bourdot",
+            "isSocialNetwork": false,
+            "isPublic": true
+        }
+    ]
+},
+
+{
+    "blacklist" : false,
+    "firstName" : "Léo",
+    "lastName" : "MOSCILLO",
+    "publicName" : "Ollicsom",
+    "username": "", 
+    "profilPic" : "",
+    "skills" : [
+        "svelte", 
+        "html"
+    ], 
+    "links" : [
+        {
+            "label" : "Portfolio",
+            "URL" : "https://moscilloleo.fr",
+            "isSocialNetwork": false,
+            "isPublic": true
+        }, 
+        {
+            "label" : "Discover", 
+            "URL" : "https://moscilloleo.fr/Discover", 
+            "isSocialNetwork": false, 
+            "isPublic": false
+        },
+        {
+            "label" : "Twitter", 
+            "URL" : "https://twitter.com/ollicsom", 
+            "isSocialNetwork": true, 
+            "isPublic": true
+        }, 
+        {
+            "label" : "Instagram", 
+            "URL" : "https://instagram.com/ollicsom", 
+            "isSocialNetwork": true, 
+            "isPublic": false
+        }
+    ]
+},
+
+{
+    "blacklist" : false,
+    "firstName" : "Bruno",
+    "lastName" : "", 
+    "publicName" : "Bruno",
+    "username": "", 
+    "profilPic" : "", 
+    "skills" : [
+        "svelte", 
+        "html"
+    ], 
+    "links" : [
+        {
+            "label" : "Eole", 
+            "URL" : "https://pcll.ac-dijon.fr/pcll/", 
+            "isSocialNetwork": false, 
+            "isPublic": true
+        }
+    ]
+},
+
+{
+    "blacklist" : true,
+    "firstName" : "Lionel", 
+    "lastName" : "", 
+    "publicName" : "yo",
+    "username": "", 
+    "profilPic" : "", 
+    "skills" : [
+        "svelte", 
+        "html"
+    ], 
+    "links" : [
+        {
+            "label" : "Eole", 
+            "URL" : "https://pcll.ac-dijon.fr/pcll/", 
+            "isSocialNetwork": false, 
+            "isPublic": true
+        }
+    ]
+}]

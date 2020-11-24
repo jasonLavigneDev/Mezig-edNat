@@ -1,0 +1,32 @@
+image: geoffreybooth/meteor-base:1.11.1
+
+stages:
+  - deps
+  - lint
+  - test
+
+cache:
+  paths:
+    - node_modules/
+
+variables:
+  METEOR_ALLOW_SUPERUSER: 'true'
+
+Deps:
+  stage: deps
+  script:
+    - meteor npm ci
+  artifacts:
+    paths:
+      - node_modules/
+
+Lint:
+  stage: lint
+  script:
+    - meteor npm install --only=dev
+    - meteor npm run lint
+
+Test:
+  stage: test
+  script:
+    - meteor npm test

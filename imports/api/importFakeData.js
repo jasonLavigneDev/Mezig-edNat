@@ -1,4 +1,3 @@
-import { Meteor } from 'meteor/meteor';
 import Mezigs from './mezig/mezig';
 import fakeData from '../../fakeData.json';
 

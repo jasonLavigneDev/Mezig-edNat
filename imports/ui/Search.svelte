@@ -1,16 +1,10 @@
 <script>
   import { Meteor } from 'meteor/meteor';
-  import { useTracker } from 'meteor/rdb:svelte-meteor-data';
   import Mezigs from '../api/mezig/mezig';
-  import { Accounts } from 'meteor/accounts-base';
-  import { onDestroy } from 'svelte';
   import SearchResult from './SearchResult.svelte';
 
   let Searching = '';
   let users = [];
-  let userRedirect = false;
-
-  $: user_id = useTracker(() => Meteor.userId());
 
   const ActuSearch = () => {
     if (Searching != '') {
@@ -21,18 +15,6 @@
       users = [];
     }
   };
-
-  const keycloakLogin = () => {
-    Meteor.loginWithKeycloak();
-  };
-
-  // detect account creation failure (i.e: if logging in from keycloak)
-  const stopCallback = Accounts.onLoginFailure((details) => {
-    if (details.error.error === 'api.users.createUser') userRedirect = true;
-  });
-  onDestroy(() => {
-    stopCallback();
-  });
 </script>
 
 <style>
@@ -94,12 +76,14 @@
     width: var(--btn-width);
     border-radius: 0 var(--rad) var(--rad) 0;
   }
-  .loginMsg {
+  .msg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20rem;
     font-weight: bold;
     color: var(--color-brand);
-  }
-  .loginMenu {
-    float: right;
   }
   input:not(:placeholder-shown) {
     border-radius: var(--rad) 0 0 var(--rad);
@@ -114,7 +98,7 @@
     width: 1px;
     overflow: hidden;
   }
-  .SearchResultDiv{
+  .SearchResultDiv {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
@@ -127,36 +111,18 @@
   <title>Acceuil | Mezig</title>
 </svelte:head>
 
-{#if userRedirect === true}
-  <p class="loginMsg">
-    Votre utilisateur n'a pas de compte LaBoite, veuillez cliquer sur le bouton ci-dessous pour le créer, puis cliquez
-    sur
-    <a href="#" on:click={keycloakLogin}>ce lien</a>
-  </p>
-  <button id="redirectButton" on:click={() => window.open('http://localhost:3000/signin', '_blank')}>connexion à LaBoite</button>
-{:else}
-  {#await Meteor.subscribe('mezigs.whitelist')}
-    <p class="loginMsg">Chargement des utilisateurs…</p>
-  {:then}
-    <div class="loginMenu">
-      {#if $user_id === null}
-        <button id="buttonConnect" on:click={keycloakLogin}>Se connecter</button>
-      {:else}
-        <h1 class="loginMsg">Bienvenue {Meteor.user().username}</h1>
-        <button id="buttonLogout" on:click={() => Meteor.logout()}>Déconnexion</button>
-      {/if}
-    </div>
-    <form on:submit|preventDefault on:change={ActuSearch} role="search">
-      <label for="search">Search for stuff</label>
-      <input id="search" autocomplete="off" type="search" placeholder="Rechercher..." bind:value={Searching} required />
-      <button id="buttonSubmit" type="submit">Go</button>
-    </form>
-    
+{#await Meteor.subscribe('mezigs.whitelist')}
+  <div class="msg">Chargement des utilisateurs…</div>
+{:then}
+  <form on:submit|preventDefault on:change={ActuSearch} role="search">
+    <label for="search">Search for stuff</label>
+    <input id="search" autocomplete="off" type="search" placeholder="Rechercher..." bind:value={Searching} required />
+    <button id="buttonSubmit" type="submit">Go</button>
+  </form>
+
   <div class="SearchResultDiv">
     {#each users as user}
-    <SearchResult {user} />
+      <SearchResult {user} />
     {/each}
   </div>
-      
-  {/await}
-{/if}
+{/await}

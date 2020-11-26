@@ -1,6 +1,8 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
+import { Factory } from 'meteor/dburles:factory';
+import { Random } from 'meteor/random';
 
 const Mezigs = new Mongo.Collection('mezigs');
 
@@ -22,6 +24,7 @@ Mezigs.schema = new SimpleSchema(
     blacklist: {
       type: Boolean,
       optional: false,
+      defaultValue: false,
     },
     firstName: {
       type: String,
@@ -37,6 +40,7 @@ Mezigs.schema = new SimpleSchema(
     },
     publicName: {
       type: String,
+      unique: true,
     },
     profilPic: {
       type: String,
@@ -49,6 +53,7 @@ Mezigs.schema = new SimpleSchema(
     skills: {
       type: Array,
       optional: true,
+      defaultValue: [],
     },
     'skills.$': {
       type: String,
@@ -56,6 +61,7 @@ Mezigs.schema = new SimpleSchema(
     links: {
       type: Array,
       optional: true,
+      defaultValue: [],
     },
     'links.$': {
       type: Object,
@@ -71,6 +77,7 @@ Mezigs.schema = new SimpleSchema(
     },
     'links.$.isPublic': {
       type: Boolean,
+      defaultValue: true,
     },
   },
   { tracker: Tracker },
@@ -87,5 +94,14 @@ Mezigs.publicFields = {
   skills: 1,
   links: 1,
 };
+
+Factory.define('mezigs', Mezigs, {
+  firstName: () => Random.id(),
+  lastName: () => Random.id(),
+  publicName: () => Random.id(),
+  username: () => Random.id(),
+});
+
+Mezigs.attachSchema(Mezigs.schema);
 
 export default Mezigs;

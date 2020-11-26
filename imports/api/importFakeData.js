@@ -1,4 +1,4 @@
-import Mezigs from './mezig/mezig';
+import Mezigs from './mezigs/mezigs';
 import fakeData from '../../fakeData.json';
 
 function createCategorie(mezigs) {

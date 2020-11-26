@@ -23,3 +23,9 @@ rdb:svelte-meteor-data
 static-html
 hotello:accounts-keycloak
 insecure
+dburles:factory
+johanbrook:publication-collector
+accounts-base
+aldeed:collection2
+aldeed:schema-index
+mdg:validated-method

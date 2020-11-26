@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import Mezigs from '../mezig';
+import Mezigs from '../mezigs';
 
 // publish all mezigs to client
 Meteor.publish('mezigs.whitelist', function publishAllUsers() {

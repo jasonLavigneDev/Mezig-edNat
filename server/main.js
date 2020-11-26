@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import '../imports/api/users/users';
 import '../imports/api/users/server/publications';
-import '../imports/api/mezig/server/publications';
+import '../imports/api/mezigs/server/publications';
+import '../imports/api/mezigs/methods';
 import '../imports/api/importFakeData';
 import { Accounts } from 'meteor/accounts-base';
 

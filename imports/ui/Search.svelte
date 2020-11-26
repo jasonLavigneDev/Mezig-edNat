@@ -1,6 +1,6 @@
 <script>
   import { Meteor } from 'meteor/meteor';
-  import Mezigs from '../api/mezig/mezig';
+  import Mezigs from '../api/mezigs/mezigs';
   import SearchResult from './SearchResult.svelte';
 
   let Searching = '';

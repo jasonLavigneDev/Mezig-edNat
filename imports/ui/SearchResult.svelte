@@ -1,5 +1,5 @@
 <script>
-import { fly } from 'svelte/transition';
+import { fly, fade } from 'svelte/transition';
 
   export let user;
 
@@ -39,14 +39,18 @@ import { fly } from 'svelte/transition';
     display: flex;
     line-height: normal;
   }
+  .skillsResult>p{
+    margin: 0;
+    margin-right: 5px;
+  }
 </style>
 
 
 
-<div  on:click={ChangePage} transition:fly="{{ y: 100, duration: 500, delay: 200 }}" class="Result">
+<div on:click={ChangePage} out:fade="{{duration: 500}}" in:fly="{{ y: 100, duration: 500, delay: 200 }}" class="Result">
   <img
     src="https://static-cdn.jtvnw.net/jtv_user_pictures/4850c623-9385-48d1-857c-fcc28e030040-profile_image-300x300.png"
-    alt="Photo de profil de l'utilisateur" />
+    alt="Avatar de l'utilisateur" />
   <div class="texteResult">
     <h3>{user.publicName}</h3>
     <div class="skillsResult">

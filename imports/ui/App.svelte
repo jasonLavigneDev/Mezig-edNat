@@ -1,19 +1,23 @@
 <script>
+  import { Router, Link, Route } from 'svelte-routing';
+  import Home from '../routes/Home.svelte';
+  import Profil from '../routes/Profil.svelte';
+  import Login from './Login.svelte';
 
-  import { Router, Link, Route } from "svelte-routing";
-  import Home from "../routes/Home.svelte";
-  import Profil from "../routes/Profil.svelte";
-
-  export let url = "";
+  export let url = '';
+  let userRedirect = false;
 </script>
 
-<Router url="{url}">
-<div class="container">
-  <div>
-    <Route path="profil" component="{Profil}" />
-    <Route path="/"><Home /></Route>
-  </div>
-
-</div>
-
-</Router>
+<Login bind:userRedirect />
+{#if userRedirect === false}
+  <Router {url}>
+    <div class="container">
+      <div>
+        <Route path="profil" component={Profil} />
+        <Route path="/">
+          <Home />
+        </Route>
+      </div>
+    </div>
+  </Router>
+{/if}

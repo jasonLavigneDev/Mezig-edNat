@@ -11,7 +11,7 @@
 <style>
   .ProfilPic {
     display: block;
-    margin-top: 5%;
+    padding-top: 5%;
   }
   .ProfilPic > img {
     display: block;

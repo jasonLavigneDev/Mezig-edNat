@@ -83,15 +83,18 @@ Mezigs.schema = new SimpleSchema(
   { tracker: Tracker },
 );
 
-Mezigs.publicFields = {
+Mezigs.searchFields = {
   blacklist: 1,
   firstName: 1,
   lastName: 1,
   publicName: 1,
-  username: 1,
   profilPic: 1,
-  biography: 1,
   skills: 1,
+};
+
+Mezigs.publicFields = {
+  ...Mezigs.searchFields,
+  biography: 1,
   links: 1,
 };
 

@@ -1,5 +1,5 @@
 <script>
-  import { Router, Link, Route } from 'svelte-routing';
+  import { Router, Route } from 'svelte-routing';
   import Home from '../routes/Home.svelte';
   import Profil from '../routes/Profil.svelte';
   import Login from './Login.svelte';
@@ -13,7 +13,7 @@
   <Router {url}>
     <div class="container">
       <div>
-        <Route path="profil" component={Profil} />
+        <Route path="profil/:publicName" component={Profil} />
         <Route path="/">
           <Home />
         </Route>

@@ -1,23 +1,29 @@
 <script>
   import { Router, Route } from 'svelte-routing';
-  import Home from '../routes/Home.svelte';
-  import Profil from '../routes/Profil.svelte';
-  import Login from './Login.svelte';
+  import { isLoading } from 'svelte-i18n';
+  import Search from './pages/Search.svelte';
+  import Profil from './pages/Profil.svelte';
+  import Login from './components/Login.svelte';
+  import Spinner from './components/Spinner.svelte';
 
   export let url = '';
   let userRedirect = false;
 </script>
 
-<Login bind:userRedirect />
-{#if userRedirect === false}
-  <Router {url}>
-    <div class="container">
-      <div>
-        <Route path="profil/:publicName" component={Profil} />
-        <Route path="/">
-          <Home />
-        </Route>
+{#if $isLoading}
+  <Spinner />
+{:else}
+  <Login bind:userRedirect />
+  {#if userRedirect === false}
+    <Router {url}>
+      <div class="container">
+        <div>
+          <Route path="profil/:publicName" component={Profil} />
+          <Route path="/">
+            <Search />
+          </Route>
+        </div>
       </div>
-    </div>
-  </Router>
+    </Router>
+  {/if}
 {/if}

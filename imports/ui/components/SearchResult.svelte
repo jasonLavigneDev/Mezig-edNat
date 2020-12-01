@@ -1,8 +1,8 @@
 <script>
   import { fly, fade } from 'svelte/transition';
+  import { SearchingStore } from '../../stores/stores';
 
   export let user;
-  import { SearchingStore } from '../stores/stores';
 
   const ChangePage = () => {
     // store search params in store ?

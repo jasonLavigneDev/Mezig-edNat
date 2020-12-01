@@ -1,0 +1,22 @@
+{
+  "api": {
+    "notLoggedIn": "You must be logged in.",
+    "mezigs": {
+      "notFound": "Mezig not found."
+    }
+  },
+  "ui": {
+    "appName": "Mezig",
+    "search": "Search",
+    "connection": "Log in",
+    "disconnection": "Logout",
+    "loginLaboite": "login to LaBoite",
+    "loginMsg": "Your user ha no LaBoite account, please click on the button below to create it, then follow ",
+    "loginLink": "this link",
+    "unkownUser": "Unknown user",
+    "avatarTitle": "User avatar",
+    "noSearchResult": "No result searching for ",
+    "searchLabel": "Users search",
+    "searchPlaceHolder": "Search..."
+  }
+}

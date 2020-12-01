@@ -11,7 +11,7 @@ export const createMezig = new ValidatedMethod({
   run({ data }) {
     // check if logged in
     if (!this.userId) {
-      throw new Meteor.Error('api.mezigs.methods.createMezig.notLoggedIn', 'Erreur : utilisateur non connecté');
+      throw new Meteor.Error('api.mezigs.methods.createMezig.notLoggedIn', 'You must be logged in.');
     }
     Mezigs.insert(data);
   },
@@ -26,12 +26,12 @@ export const updateMezig = new ValidatedMethod({
   run({ mezigId, data }) {
     // check if logged in
     if (!this.userId) {
-      throw new Meteor.Error('api.mezigs.methods.updateMezig.notLoggedIn', 'Erreur : utilisateur non connecté');
+      throw new Meteor.Error('api.mezigs.methods.updateMezig.notLoggedIn', 'You must be logged in.');
     }
     // check mezig existence
     const myzig = Mezigs.findOne({ _id: mezigId });
     if (myzig === undefined) {
-      throw new Meteor.Error('api.mezigs.methods.updateMezig.notFound', 'Erreur : mezig inconnu');
+      throw new Meteor.Error('api.mezigs.methods.updateMezig.notFound', 'Mezig not found.');
     }
     return Mezigs.update({ _id: mezigId }, { $set: { ...data } });
   },
@@ -45,12 +45,12 @@ export const removeMezig = new ValidatedMethod({
   run({ mezigId }) {
     // check if logged in
     if (!this.userId) {
-      throw new Meteor.Error('api.mezigs.methods.removeMezig.notLoggedIn', 'Erreur : utilisateur non connecté');
+      throw new Meteor.Error('api.mezigs.methods.removeMezig.notLoggedIn', 'You must be logged in.');
     }
     // check mezig existence
     const myzig = Mezigs.findOne({ _id: mezigId });
     if (myzig === undefined) {
-      throw new Meteor.Error('api.mezigs.methods.removeMezig.notFound', 'Erreur : mezig inconnu');
+      throw new Meteor.Error('api.mezigs.methods.removeMezig.notFound', 'Mezig not found.');
     }
     return Mezigs.remove({ _id: mezigId });
   },

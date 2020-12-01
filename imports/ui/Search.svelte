@@ -2,16 +2,41 @@
   import { Meteor } from 'meteor/meteor';
   import Mezigs from '../api/mezigs/mezigs';
   import SearchResult from './SearchResult.svelte';
+  import { SearchingStore } from '../stores/stores';
+  import { useTracker } from 'meteor/rdb:svelte-meteor-data';
 
-  let Searching = '';
+  $: SearchInt = $SearchingStore;
+  $: Searching = SearchInt;
+  $: Searching, ActuSearch();
+
   let users = [];
+  let query = '';
+  const regexSkills = /#/;
+  let noResult = '';
+
+  $: user_id = useTracker(() => Meteor.userId());
 
   const ActuSearch = () => {
-    if (Searching != '') {
-      users = Mezigs.find({ publicName: { $regex: '' + Searching } }).fetch();
-      console.log(users);
+    if (Searching.split('').length >= 3) {
+      query = { $and: [] };
+      for (let i = 0; i < Searching.split(' ').length; i++) {
+        if (regexSkills.test(Searching.split(' ')[i])) {
+          query.$and.push({ skills: { $regex: Searching.split(' ')[i].split('#')[1], $options: 'i' } });
+        } else {
+          query.$and.push({ publicName: { $regex: '' + Searching.split(' ')[i], $options: 'i' } });
+        }
+      }
+
+      users = Mezigs.find(query).fetch();
       document.querySelector('form').style.top = '15%';
+
+      if (users.length == 0) {
+        noResult = 'Aucun résultat pour la recherche ' + Searching + '...';
+      } else {
+        noResult = '';
+      }
     } else {
+      noResult = '';
       users = [];
     }
   };
@@ -42,6 +67,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 20rem;
+    max-width: 90vw;
     background: var(--color-brand);
     border-radius: var(--rad);
   }
@@ -103,7 +129,40 @@
     left: 50%;
     transform: translate(-50%, 0);
     top: 25%;
-    width: 40%;
+    width: 90%;
+  }
+  .noResult {
+    color: white;
+    text-align: center;
+    font-size: 2vmin;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%);
+  }
+
+  @media (min-width: 576px) {
+    .SearchResultDiv {
+      width: 90%;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .SearchResultDiv {
+      width: 70%;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .SearchResultDiv {
+      width: 60%;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    * {
+      width: 40%;
+    }
   }
 </style>
 
@@ -125,4 +184,6 @@
       <SearchResult {user} />
     {/each}
   </div>
+
+  <p class="noResult">{noResult}</p>
 {/await}

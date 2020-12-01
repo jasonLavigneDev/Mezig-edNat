@@ -3,6 +3,7 @@
   import { useTracker } from 'meteor/rdb:svelte-meteor-data';
   import { Accounts } from 'meteor/accounts-base';
   import { onDestroy } from 'svelte';
+  import { _ } from 'svelte-i18n';
 
   export let userRedirect = false;
 
@@ -19,7 +20,6 @@
   });
 
   onDestroy(() => {
-    console.log('STOP CALLBACK !!');
     stopCallback();
   });
 </script>
@@ -64,21 +64,18 @@
 
 {#if userRedirect === true}
   <div class="loginMsg">
-    <p>
-      Votre utilisateur n'a pas de compte LaBoite, veuillez cliquer sur le bouton ci-dessous pour le créer, puis cliquez
-      sur
-      <a href="#" on:click={keycloakLogin}>ce lien</a>
-    </p>
-    <button id="redirectButton" on:click={() => window.open('http://localhost:3000/signin', '_blank')}>connexion à
-      LaBoite</button>
+    <p>{$_('ui.loginMsg')}<a href="#" on:click={keycloakLogin}>{$_('ui.loginLink')}</a></p>
+    <button
+      id="redirectButton"
+      on:click={() => window.open('http://localhost:3000/signin', '_blank')}>{$_('ui.loginLaboite')}</button>
   </div>
 {:else}
   <div class="loginMenu">
     {#if $userId === null}
-      <button id="buttonConnect" on:click={keycloakLogin}>Se connecter</button>
+      <button id="buttonConnect" on:click={keycloakLogin}>{$_('ui.connection')}</button>
     {:else}
       <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
-      <button id="buttonLogout" on:click={() => Meteor.logout()}>Déconnexion</button>
+      <button id="buttonLogout" on:click={() => Meteor.logout()}>{$_('ui.disconnection')}</button>
     {/if}
   </div>
 {/if}

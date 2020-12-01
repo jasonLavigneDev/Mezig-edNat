@@ -1,9 +1,11 @@
 <script>
   import { Meteor } from 'meteor/meteor';
   import { useTracker } from 'meteor/rdb:svelte-meteor-data';
-  import Link from './Link.svelte';
-  import LinkRS from './LinkRS.svelte';
-  import Mezigs from '../api/mezigs/mezigs';
+  import { _ } from 'svelte-i18n';
+  import Mezigs from '../../api/mezigs/mezigs';
+  import Link from '../components/Link.svelte';
+  import LinkRS from '../components/LinkRS.svelte';
+  import Spinner from '../components/Spinner.svelte';
 
   export let publicName = '';
   $: user_id = useTracker(() => Meteor.userId());
@@ -53,16 +55,16 @@
 </style>
 
 <svelte:head>
-  <title>{MezigActu.publicName} | EduCard</title>
+  <title>{publicName} | {$_('ui.appName')}</title>
 </svelte:head>
 
 {#await Meteor.subscribe('mezigs.profile', { publicName })}
-  <div class="msg">Chargement de l'utilisateur…</div>
+  <Spinner />
 {:then}
   <div class="ProfilPic">
     <img
       src="https://static-cdn.jtvnw.net/jtv_user_pictures/4850c623-9385-48d1-857c-fcc28e030040-profile_image-300x300.png"
-      alt="Avatar de l'utilisateur" />
+      alt={$_('ui.avatarTitle')} />
   </div>
   <h1>{publicName}</h1>
   {#if $MezigActu}
@@ -86,6 +88,6 @@
       {/each}
     </div>
   {:else}
-    <div class="EmptyMsg">Utilisateur inconnu</div>
+    <div class="EmptyMsg">{$_('ui.unknownUser')}</div>
   {/if}
 {/await}

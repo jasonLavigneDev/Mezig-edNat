@@ -16,7 +16,6 @@ Meteor.publish('mezigs.whitelist', function publishAllUsers() {
 // publish one mezig profle to client
 Meteor.publish('mezigs.profile', function publishOneUser({ publicName }) {
   if (this.userId !== null) {
-    console.log('publish profile for ', publicName);
     return Mezigs.find(
       { blacklist: false, publicName },
       {

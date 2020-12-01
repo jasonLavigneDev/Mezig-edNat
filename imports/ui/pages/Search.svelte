@@ -1,9 +1,11 @@
 <script>
   import { Meteor } from 'meteor/meteor';
-  import Mezigs from '../api/mezigs/mezigs';
-  import SearchResult from './SearchResult.svelte';
-  import { SearchingStore } from '../stores/stores';
   import { useTracker } from 'meteor/rdb:svelte-meteor-data';
+  import { _ } from 'svelte-i18n';
+  import Mezigs from '../../api/mezigs/mezigs';
+  import SearchResult from '../components/SearchResult.svelte';
+  import Spinner from '../components/Spinner.svelte';
+  import { SearchingStore } from '../../stores/stores';
 
   $: SearchInt = $SearchingStore;
   $: Searching = SearchInt;
@@ -31,7 +33,7 @@
       document.querySelector('form').style.top = '15%';
 
       if (users.length == 0) {
-        noResult = 'Aucun résultat pour la recherche ' + Searching + '...';
+        noResult = $_('ui.noSearchResult') + Searching + '...';
       } else {
         noResult = '';
       }
@@ -59,7 +61,6 @@
     --btn-width: 4rem;
     --bez: cubic-bezier(0, 0, 0.43, 1.49);
   }
-
   form {
     transition-duration: 0.7s;
     position: absolute;
@@ -167,15 +168,21 @@
 </style>
 
 <svelte:head>
-  <title>Acceuil | Mezig</title>
+  <title>Acceuil | {$_('ui.appName')}</title>
 </svelte:head>
 
 {#await Meteor.subscribe('mezigs.whitelist')}
-  <div class="msg">Chargement des utilisateurs…</div>
+  <Spinner />
 {:then}
   <form on:submit|preventDefault on:change={ActuSearch} role="search">
-    <label for="search">Search for stuff</label>
-    <input id="search" autocomplete="off" type="search" placeholder="Rechercher..." bind:value={Searching} required />
+    <label for="search">{$_('ui.searchLabel')}</label>
+    <input
+      id="search"
+      autocomplete="off"
+      type="search"
+      placeholder={$_('ui.searchPlaceHolder')}
+      bind:value={Searching}
+      required />
     <button id="buttonSubmit" type="submit">Go</button>
   </form>
 

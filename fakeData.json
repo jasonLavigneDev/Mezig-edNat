@@ -5,6 +5,7 @@
     "publicName" : "luc.bourdot",
     "username": "", 
     "profilPic" : "",
+    "biography": "Exemple de biographie pour les tests",
     "skills" : [
         "svelte",
         "react"
@@ -32,9 +33,21 @@
     "publicName" : "Ollicsom",
     "username": "", 
     "profilPic" : "",
+    "biography": "Etudiant en licence professionel Métiers du numérique et en alternance au rectorat de Dijon",
     "skills" : [
         "svelte", 
-        "html"
+        "html",
+        "php",
+        "photoshop",
+        "mmi",
+        "droit",
+        "communication",
+        "test",
+        "rien",
+        "ganggang",
+        "pdo",
+        "fakedata",
+        "skate"
     ], 
     "links" : [
         {

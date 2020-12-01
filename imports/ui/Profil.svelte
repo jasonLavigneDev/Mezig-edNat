@@ -24,7 +24,8 @@
     text-align: center;
     display: block;
     margin: 0;
-    margin-bottom: 5vmin;
+    margin-bottom: 2vmin;
+    font-size: 3vmin;
     margin-top: 1vmin;
     color: white;
   }
@@ -32,6 +33,12 @@
     display: flex;
     height: 10vh;
     justify-content: center;
+  }
+  .Biography {
+    color: white;
+    text-align: center;
+    font-size: 2vmin;
+    margin-bottom: 5vmin;
   }
 </style>
 
@@ -42,9 +49,10 @@
 <div class="ProfilPic">
   <img
     src="https://static-cdn.jtvnw.net/jtv_user_pictures/4850c623-9385-48d1-857c-fcc28e030040-profile_image-300x300.png"
-    alt="Photo de profil de l'utilisateur" />
+    alt="Avatar de l'utilisateur" />
 </div>
 <h1>{MezigActu.publicName}</h1>
+<p class="Biography">{MezigActu.biography}</p>
 <ul>
   {#each MezigActu.links as link}
     {#if link.isSocialNetwork === false}

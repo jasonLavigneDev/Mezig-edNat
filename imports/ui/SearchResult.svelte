@@ -2,13 +2,11 @@
   import { fly, fade } from 'svelte/transition';
 
   export let user;
-  import { ProfilName } from '../stores/stores.js';
   import { SearchingStore } from '../stores/stores';
 
   const ChangePage = () => {
-    ProfilName.set(user.publicName);
-    localStorage.setItem('ProfilActu', JSON.stringify(user));
-    window.location = '/profil';
+    // store search params in store ?
+    window.location = `/profil/${user.publicName}`;
   };
 
   const ClickSkills = (skill) => {

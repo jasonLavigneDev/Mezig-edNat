@@ -13,7 +13,23 @@ Meteor.publish('mezigs.whitelist', function publishAllUsers() {
   );
 });
 
-// publish one mezig profle to client
+// publish currrent user profile to client
+Meteor.publish('mezigs.self', function publishSelf() {
+  if (this.userId !== null) {
+    const { username } = Meteor.users.findOne(this.userId);
+    return Mezigs.find(
+      { username },
+      {
+        fields: Mezigs.publicFields,
+        limit: 1,
+        sort: { lastName: 1 },
+      },
+    );
+  }
+  return this.ready();
+});
+
+// publish one mezig profile to client
 Meteor.publish('mezigs.profile', function publishOneUser({ publicName }) {
   if (this.userId !== null) {
     return Mezigs.find(

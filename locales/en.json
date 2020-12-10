@@ -17,6 +17,10 @@
     "avatarTitle": "User avatar",
     "noSearchResult": "No result searching for ",
     "searchLabel": "Users search",
-    "searchPlaceHolder": "Search..."
+    "searchPlaceHolder": "Search...",
+    "backToHome": "Back to search",
+    "editProfil": {
+      "title": "My profile"
+    }
   }
 }

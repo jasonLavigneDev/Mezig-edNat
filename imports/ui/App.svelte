@@ -5,6 +5,7 @@
   import Profil from './pages/Profil.svelte';
   import Login from './components/Login.svelte';
   import Spinner from './components/Spinner.svelte';
+  import EditProfil from './pages/EditProfil.svelte';
 
   export let url = '';
   let userRedirect = false;
@@ -19,9 +20,8 @@
       <div class="container">
         <div>
           <Route path="profil/:publicName" component={Profil} />
-          <Route path="/">
-            <Search />
-          </Route>
+          <Route path="/edit" component={EditProfil} />
+          <Route component={Search} />
         </div>
       </div>
     </Router>

@@ -1,16 +1,19 @@
 <script>
   import { fly, fade } from 'svelte/transition';
-  import { SearchingStore } from '../../stores/stores';
+  import { navigate } from 'svelte-routing';
+  import { createEventDispatcher } from 'svelte';
 
+  const dispatch = createEventDispatcher();
   export let user;
 
-  const ChangePage = () => {
-    // store search params in store ?
-    window.location = `/profil/${user.publicName}`;
+  const handleGoProfile = () => {
+    navigate(`/profil/${user.publicName}`, { state: `/profil/${user.publicName}` });
   };
 
-  const ClickSkills = (skill) => {
-    SearchingStore.set('#' + skill);
+  const clickSkills = (skill) => {
+    dispatch('clickSkills', {
+      text: skill,
+    });
   };
 </script>
 
@@ -60,15 +63,19 @@
   }
 </style>
 
-<div on:click={ChangePage} out:fade={{ duration: 500 }} in:fly={{ y: 100, duration: 500, delay: 200 }} class="Result">
+<div
+  on:click={handleGoProfile}
+  out:fade={{ duration: 500 }}
+  in:fly={{ y: 100, duration: 500, delay: 200 }}
+  class="Result">
   <img
-    src="https://static-cdn.jtvnw.net/jtv_user_pictures/4850c623-9385-48d1-857c-fcc28e030040-profile_image-300x300.png"
+    src={user.profilPic || 'https://static-cdn.jtvnw.net/jtv_user_pictures/4850c623-9385-48d1-857c-fcc28e030040-profile_image-300x300.png'}
     alt="Avatar de l'utilisateur" />
   <div class="textResult">
     <h3>{user.publicName}</h3>
     <div class="skillsResult">
       {#each user.skills as skill}
-        <p on:click={ClickSkills(skill)}>#{skill}</p>
+        <p on:click|stopPropagation={clickSkills(skill)}>#{skill}</p>
       {/each}
     </div>
   </div>

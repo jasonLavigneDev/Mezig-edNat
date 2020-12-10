@@ -1,39 +1,44 @@
 <script>
   import { Meteor } from 'meteor/meteor';
-  import { useTracker } from 'meteor/rdb:svelte-meteor-data';
+  import { onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
   import Mezigs from '../../api/mezigs/mezigs';
   import SearchResult from '../components/SearchResult.svelte';
   import Spinner from '../components/Spinner.svelte';
-  import { SearchingStore } from '../../stores/stores';
-
-  $: SearchInt = $SearchingStore;
-  $: Searching = SearchInt;
-  $: Searching, ActuSearch();
+  import { searchingStore } from '../../stores/stores';
 
   let users = [];
   let query = '';
+  let searching = '';
   const regexSkills = /#/;
   let noResult = '';
 
-  $: user_id = useTracker(() => Meteor.userId());
+  onMount(() => {
+    searching = $searchingStore || '';
+    // ActuSearch();
+  });
+
+  function handleClickSkill(event) {
+    searching += ` #${event.detail.text}`;
+    ActuSearch();
+  }
 
   const ActuSearch = () => {
-    if (Searching.split('').length >= 3) {
+    searchingStore.set(searching);
+    if (searching.length >= 3) {
       query = { $and: [] };
-      for (let i = 0; i < Searching.split(' ').length; i++) {
-        if (regexSkills.test(Searching.split(' ')[i])) {
-          query.$and.push({ skills: { $regex: Searching.split(' ')[i].split('#')[1], $options: 'i' } });
+      for (let i = 0; i < searching.split(' ').length; i++) {
+        if (regexSkills.test(searching.split(' ')[i])) {
+          query.$and.push({ skills: { $regex: searching.split(' ')[i].split('#')[1], $options: 'i' } });
         } else {
-          query.$and.push({ publicName: { $regex: '' + Searching.split(' ')[i], $options: 'i' } });
+          query.$and.push({ publicName: { $regex: '' + searching.split(' ')[i], $options: 'i' } });
         }
       }
 
       users = Mezigs.find(query).fetch();
-      document.querySelector('form').style.top = '15%';
 
       if (users.length == 0) {
-        noResult = $_('ui.noSearchResult') + Searching + '...';
+        noResult = $_('ui.noSearchResult') + searching + '...';
       } else {
         noResult = '';
       }
@@ -72,8 +77,7 @@
     background: var(--color-brand);
     border-radius: var(--rad);
   }
-  input,
-  button {
+  input {
     height: var(--height);
     font-family: var(--font-fam);
     border: 0;
@@ -91,30 +95,6 @@
     transition-property: width, border-radius;
     z-index: 1;
     position: relative;
-  }
-  button {
-    font-weight: bold;
-    background: var(--color-brand);
-  }
-  #buttonSubmit {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: var(--btn-width);
-    border-radius: 0 var(--rad) var(--rad) 0;
-  }
-  .msg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 20rem;
-    font-weight: bold;
-    color: var(--color-brand);
-  }
-  input:not(:placeholder-shown) {
-    border-radius: var(--rad) 0 0 var(--rad);
-    width: calc(100% - var(--btn-width));
   }
   label {
     position: absolute;
@@ -174,21 +154,23 @@
 {#await Meteor.subscribe('mezigs.whitelist')}
   <Spinner />
 {:then}
-  <form on:submit|preventDefault on:change={ActuSearch} role="search">
+  <p style="display: none;">{ActuSearch()}</p>
+  <form on:submit|preventDefault role="search" style={users.length > 0 ? 'top: 15%;' : ''}>
     <label for="search">{$_('ui.searchLabel')}</label>
     <input
       id="search"
       autocomplete="off"
+      autofocus
       type="search"
       placeholder={$_('ui.searchPlaceHolder')}
-      bind:value={Searching}
+      bind:value={searching}
+      on:input={() => ActuSearch()}
       required />
-    <button id="buttonSubmit" type="submit">Go</button>
   </form>
 
   <div class="SearchResultDiv">
     {#each users as user}
-      <SearchResult {user} />
+      <SearchResult {user} on:clickSkills={handleClickSkill} />
     {/each}
   </div>
 

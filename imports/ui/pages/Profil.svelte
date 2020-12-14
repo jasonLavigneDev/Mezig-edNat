@@ -63,14 +63,14 @@
 {#await Meteor.subscribe('mezigs.profile', { publicName })}
   <Spinner />
 {:then}
-  <a href="/" use:routerLink>{$_('ui.backToHome')}</a>
-  <div class="ProfilPic">
-    <img
-      src={$currentMezig.profilPic || 'https://static-cdn.jtvnw.net/jtv_user_pictures/4850c623-9385-48d1-857c-fcc28e030040-profile_image-300x300.png'}
-      alt={$_('ui.avatarTitle')} />
-  </div>
-  <h1>{publicName}</h1>
   {#if $currentMezig}
+    <a href="/" use:routerLink>{$_('ui.backToHome')}</a>
+    <div class="ProfilPic">
+      <img
+        src={$currentMezig.profilPic || 'https://static-cdn.jtvnw.net/jtv_user_pictures/4850c623-9385-48d1-857c-fcc28e030040-profile_image-300x300.png'}
+        alt={$_('ui.avatarTitle')} />
+    </div>
+    <h1>{publicName}</h1>
     <p class="Biography">{$currentMezig.biography || ''}</p>
     {#if $currentMezig.links}
       <ul>

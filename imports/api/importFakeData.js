@@ -16,6 +16,7 @@ function createMezig(mezig) {
 
 const allSkills = [
   'python',
+  'react',
   'svelte',
   'html',
   'javascript',
@@ -101,8 +102,24 @@ if (Mezigs.find().count() <= 10) {
       profilPic: user.avatar || '',
       biography: "Tout petit déjà, il n'était pas grand.",
       blacklist: Random.fraction() * 100 >= 90, // génère 10% de blacklist = true
-      skills: [Random.choice(allSkills), Random.choice(allSkills), Random.choice(allSkills), Random.choice(allSkills)],
-      links: [Random.choice(allLinks), Random.choice(allLinks), Random.choice(allLinks), Random.choice(allLinks)],
+      skills: [
+        ...new Set([
+          Random.choice(allSkills),
+          Random.choice(allSkills),
+          Random.choice(allSkills),
+          Random.choice(allSkills),
+          Random.choice(allSkills),
+        ]),
+      ],
+      links: [
+        ...new Set([
+          Random.choice(allLinks),
+          Random.choice(allLinks),
+          Random.choice(allLinks),
+          Random.choice(allLinks),
+          Random.choice(allLinks),
+        ]),
+      ],
     };
     createMezig(mez);
   });

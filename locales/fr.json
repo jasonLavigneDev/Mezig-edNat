@@ -13,7 +13,7 @@
     "loginLaboite": "connexion à LaBoite",
     "loginMsg": "Votre utilisateur n'a pas de compte LaBoite, veuillez cliquer sur le bouton ci-dessous pour le créer, puis cliquez sur ",
     "loginLink": "ce lien",
-    "unkownUser": "Utilisateur inconnu",
+    "unknownUser": "Utilisateur inconnu",
     "avatarTitle": "Avatar de l'utilisateur",
     "noSearchResult": "Aucun résultat pour la recherche ",
     "searchLabel": "recherche d'utilisateurs",

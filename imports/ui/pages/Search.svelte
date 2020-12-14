@@ -1,5 +1,6 @@
 <script>
   import { Meteor } from 'meteor/meteor';
+  import { useTracker } from 'meteor/rdb:svelte-meteor-data';
   import { onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
   import Mezigs from '../../api/mezigs/mezigs';
@@ -10,35 +11,38 @@
   let users = [];
   let query = '';
   let searching = '';
+  let previousSearch = '';
   const regexSkills = /#/;
   let noResult = '';
 
-  onMount(() => {
-    searching = $searchingStore || '';
-    // ActuSearch();
+  onMount(async () => {
+    searching = previousSearch;
+    Meteor.subscribe('mezigs.whitelist');
   });
 
+  $: mezigCount = useTracker(() => Mezigs.find({}).count());
+  $: previousSearch = $searchingStore;
+  $: users = ActuSearch(searching);
+
   function handleClickSkill(event) {
-    searching += ` #${event.detail.text}`;
-    ActuSearch();
+    searching += ` #${event.detail.text}`; // Add skill to existing search string
   }
 
-  const ActuSearch = () => {
-    searchingStore.set(searching);
-    if (searching.length >= 3) {
+  const ActuSearch = (searchingString) => {
+    searchingStore.set(searchingString);
+    if (searchingString.length >= 3) {
       query = { $and: [] };
-      for (let i = 0; i < searching.split(' ').length; i++) {
-        if (regexSkills.test(searching.split(' ')[i])) {
-          query.$and.push({ skills: { $regex: searching.split(' ')[i].split('#')[1], $options: 'i' } });
+      for (let i = 0; i < searchingString.split(' ').length; i++) {
+        if (regexSkills.test(searchingString.split(' ')[i])) {
+          query.$and.push({ skills: { $regex: searchingString.split(' ')[i].split('#')[1], $options: 'i' } });
         } else {
-          query.$and.push({ publicName: { $regex: '' + searching.split(' ')[i], $options: 'i' } });
+          query.$and.push({ publicName: { $regex: '' + searchingString.split(' ')[i], $options: 'i' } });
         }
       }
-
       users = Mezigs.find(query).fetch();
 
       if (users.length == 0) {
-        noResult = $_('ui.noSearchResult') + searching + '...';
+        noResult = $_('ui.noSearchResult') + searchingString + '...';
       } else {
         noResult = '';
       }
@@ -46,6 +50,7 @@
       noResult = '';
       users = [];
     }
+    return users;
   };
 </script>
 
@@ -151,10 +156,9 @@
   <title>Acceuil | {$_('ui.appName')}</title>
 </svelte:head>
 
-{#await Meteor.subscribe('mezigs.whitelist')}
+{#if mezigCount <= 1}
   <Spinner />
-{:then}
-  <p style="display: none;">{ActuSearch()}</p>
+{:else}
   <form on:submit|preventDefault role="search" style={users.length > 0 ? 'top: 15%;' : ''}>
     <label for="search">{$_('ui.searchLabel')}</label>
     <input
@@ -164,7 +168,6 @@
       type="search"
       placeholder={$_('ui.searchPlaceHolder')}
       bind:value={searching}
-      on:input={() => ActuSearch()}
       required />
   </form>
 
@@ -175,4 +178,4 @@
   </div>
 
   <p class="noResult">{noResult}</p>
-{/await}
+{/if}

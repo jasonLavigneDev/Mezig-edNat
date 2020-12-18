@@ -1,7 +1,16 @@
+import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 
 import Mezigs from './mezigs';
+
+Meteor.methods({
+  'mezigs.checkProfile': function checkProfile() {
+    const user = Meteor.users.findOne({ _id: this.userId });
+    if (user) return (Mezigs.findOne({ username: user.username }) || { profileChecked: true }).profileChecked;
+    return true;
+  },
+});
 
 export const createMezig = new ValidatedMethod({
   name: 'mezigs.createMezig',

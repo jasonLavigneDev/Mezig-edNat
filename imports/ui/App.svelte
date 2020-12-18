@@ -9,20 +9,29 @@
 
   export let url = '';
   let userRedirect = false;
+  let profileOk = true;
 </script>
 
 {#if $isLoading}
   <Spinner />
 {:else}
-  <Login bind:userRedirect />
+  <Login bind:userRedirect bind:profileOk />
   {#if userRedirect === false}
     <Router {url}>
       <div class="container">
-        <div>
-          <Route path="profil/:publicName" component={Profil} />
-          <Route path="/edit" component={EditProfil} />
-          <Route component={Search} />
-        </div>
+        {#if profileOk === false}
+          <div>
+            <Route>
+              <EditProfil bind:profileOk />
+            </Route>
+          </div>
+        {:else}
+          <div>
+            <Route path="profil/:publicName" component={Profil} />
+            <Route path="/edit" component={EditProfil} />
+            <Route component={Search} />
+          </div>
+        {/if}
       </div>
     </Router>
   {/if}

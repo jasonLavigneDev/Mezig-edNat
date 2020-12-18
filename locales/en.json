@@ -28,7 +28,8 @@
       "addSkills": "Add a skill",
       "newSkill": "New skill",
       "links": "Links",
-      "submit": "Submit"
+      "submit": "Submit",
+      "validationNeeded": "Please validate your profile to continue"
     },
     "editTableLinks": { "addLink": "Add a link" },
     "editLink": {

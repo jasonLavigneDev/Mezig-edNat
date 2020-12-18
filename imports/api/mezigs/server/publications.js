@@ -20,7 +20,7 @@ Meteor.publish('mezigs.self', function publishSelf() {
     return Mezigs.find(
       { username },
       {
-        fields: Mezigs.publicFields,
+        fields: Mezigs.selfFields,
         limit: 1,
         sort: { lastName: 1 },
       },

@@ -33,7 +33,15 @@ export const updateMezig = new ValidatedMethod({
     if (myzig === undefined) {
       throw new Meteor.Error('api.mezigs.methods.updateMezig.notFound', 'Mezig not found.');
     }
-    return Mezigs.update({ _id: mezigId }, { $set: { ...data } });
+    try {
+      return Mezigs.update({ _id: mezigId }, { $set: { ...data } });
+    } catch (error) {
+      if (error.code === 11000) {
+        throw new Meteor.Error('api.mezigs.methods.updateMezig.duplicatePublicName', 'PublicName already exits.');
+      } else {
+        throw error;
+      }
+    }
   },
 });
 

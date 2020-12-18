@@ -141,7 +141,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono" />
 </svelte:head>
 
-<a href="/" use:routerLink>{$_('ui.backToHome')}</a>
 {#if $user_id === null}
   <h1>{$_('api.notLoggedIn')}</h1>
 {:else}

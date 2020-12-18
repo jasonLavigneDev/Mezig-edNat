@@ -19,6 +19,11 @@
     "searchLabel": "Users search",
     "searchPlaceHolder": "Search...",
     "backToHome": "Back to search",
+    "edit": "Edit",
+    "editSub": "Edit your profile",
+    "profil": "My mezig",
+    "profilSub": "Go to your profile",
+    "disconnectionSub": "Disconnect",
     "editProfil": {
       "title": "My profile",
       "showProfile": "Show my profile",

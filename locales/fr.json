@@ -19,6 +19,11 @@
     "searchLabel": "recherche d'utilisateurs",
     "searchPlaceHolder": "Rechercher...",
     "backToHome": "Retour à la recherche",
+    "edit": "Modifier",
+    "editSub": "Modifier votre profil",
+    "profil": "Mon mézig",
+    "profilSub": "Voir votre profil",
+    "disconnectionSub": "Déconnectez-vous",
     "editProfil": {
       "title": "Mon profil",
       "showProfile": "Publier mon profil",

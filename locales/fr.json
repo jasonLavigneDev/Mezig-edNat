@@ -28,7 +28,8 @@
       "addSkills": "Ajouter",
       "newSkill": "Nouvelle compétence",
       "links": "Liens",
-      "submit": "Valider"
+      "submit": "Valider",
+      "validationNeeded": "Veuillez valider votre profil pour continuer"
     },
     "editTableLinks": { "addLink": "Ajouter un lien" },
     "editLink": {

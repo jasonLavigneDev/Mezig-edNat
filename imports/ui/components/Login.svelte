@@ -6,9 +6,18 @@
   import { _ } from 'svelte-i18n';
 
   export let userRedirect = false;
+  export let profileOk = true;
 
   $: userId = useTracker(() => Meteor.userId());
   $: user = useTracker(() => Meteor.user());
+  $: user && checkProfile();
+
+  const checkProfile = () => {
+    Meteor.call('mezigs.checkProfile', {}, (err, res) => {
+      console.log('check !!!', err, res);
+      if (!err) profileOk = res;
+    });
+  };
 
   const keycloakLogin = () => {
     Meteor.loginWithKeycloak();

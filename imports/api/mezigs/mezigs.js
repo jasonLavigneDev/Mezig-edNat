@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
@@ -79,6 +81,10 @@ Mezigs.schema = new SimpleSchema(
       type: Boolean,
       defaultValue: true,
     },
+    profileChecked: {
+      type: Boolean,
+      defaultValue: false,
+    },
   },
   { tracker: Tracker },
 );
@@ -98,6 +104,11 @@ Mezigs.publicFields = {
   links: 1,
 };
 
+Mezigs.selfFields = {
+  ...Mezigs.publicFields,
+  username: 1,
+};
+
 Factory.define('mezigs', Mezigs, {
   firstName: () => Random.id(),
   lastName: () => Random.id(),
@@ -106,5 +117,51 @@ Factory.define('mezigs', Mezigs, {
 });
 
 Mezigs.attachSchema(Mezigs.schema);
+
+if (Meteor.isServer) {
+  // create or update Mezig data for current user
+  Accounts.onLogin((details) => {
+    if (details.type === 'keycloak') {
+      // update data with keycloak info
+      let mez = {};
+      if (details.user.services.keycloak.given_name) {
+        mez.firstName = details.user.services.keycloak.given_name;
+      }
+      if (details.user.services.keycloak.family_name) {
+        mez.lastName = details.user.services.keycloak.family_name;
+      }
+      if (details.user.services.keycloak.preferred_username) {
+        mez.username = details.user.services.keycloak.preferred_username;
+      }
+      // check if mezig already exists
+      const currentMezig = Mezigs.findOne({ username: mez.username });
+      if (currentMezig) {
+        // update only basic informations
+        if (
+          currentMezig.username !== mez.username ||
+          currentMezig.firstName !== mez.firstName ||
+          currentMezig.lastName !== mez.lastName
+        ) {
+          Mezigs.update({ _id: currentMezig._id }, { $set: mez });
+        }
+      } else {
+        // autocreate user, fetch additional data in users collection
+        mez = {
+          ...mez,
+          // user laboite username as default publicName
+          // if necessary, change to firstName.lastName and manage ducplicates
+          publicName: details.user.username,
+          profilPic: details.user.avatar || '',
+          biography: '',
+          blacklist: true,
+          skills: [],
+          links: [],
+          profileChecked: false,
+        };
+        Mezigs.insert(mez);
+      }
+    }
+  });
+}
 
 export default Mezigs;

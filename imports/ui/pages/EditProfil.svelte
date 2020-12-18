@@ -20,6 +20,7 @@
   import EditTableLinks from '../components/EditTableLinks.svelte';
   // FIXME : npm add only required packages instead of whole 'svelte-material-ui'
 
+  export let profileOk = true;
   let loading = true;
   let whitelist = true;
   let publicName = '';
@@ -48,17 +49,22 @@
   };
 
   $: user_id = useTracker(() => Meteor.userId());
-  $: currentMezig = useTracker(() => Mezigs.findOne());
+  $: currentMezig = useTracker(() => {
+    const user = Meteor.users.findOne({ _id: $user_id }) || { username: '' };
+    return Mezigs.findOne({ username: user.username });
+  });
   $: initData($currentMezig);
   $: formValid = validateForm(publicName);
 
   const handleSubmit = () => {
-    userData = { blacklist: !whitelist, publicName, biography, profilPic, links, skills };
+    userData = { blacklist: !whitelist, publicName, biography, profilPic, links, skills, profileChecked: true };
     Meteor.call('mezigs.updateMezig', { mezigId: $currentMezig._id, data: userData }, (err) => {
       if (err) {
         alert(err.reason);
       } else {
-        navigate(`/profil/${$currentMezig.publicName}`, { state: `/profil/${$currentMezig.publicName}` });
+        // set loading to true to permit reload from api
+        profileOk = true;
+        navigate(`/profil/${publicName}`, { state: `/profil/${publicName}` });
       }
     });
   };
@@ -120,6 +126,12 @@
   * :global(.FullWidth) {
     width: 100%;
   }
+  .validationNeeded {
+    color: red;
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
 </style>
 
 <svelte:head>
@@ -138,6 +150,7 @@
   {:then}
     {#if $currentMezig}
       <form on:submit|preventDefault>
+        {#if profileOk === false}<span class="validationNeeded">{$_('ui.editProfil.validationNeeded')} </span>{/if}
         <div class="MezigField">
           <FormField>
             <Switch bind:checked={whitelist} />

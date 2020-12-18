@@ -1,7 +1,6 @@
 <script>
   import { Meteor } from 'meteor/meteor';
   import { useTracker } from 'meteor/rdb:svelte-meteor-data';
-  import { link as routerLink } from 'svelte-routing';
   import { _ } from 'svelte-i18n';
   import Mezigs from '../../api/mezigs/mezigs';
   import Link from '../components/Link.svelte';
@@ -12,9 +11,13 @@
 
   $: user_id = useTracker(() => Meteor.userId());
   $: currentMezig = useTracker(() => Mezigs.findOne({ publicName }));
+
 </script>
 
 <style>
+  .Profil{
+    padding-top: 10%;
+  }
   .ProfilPic {
     display: block;
     padding-top: 5%;
@@ -64,34 +67,35 @@
   <Spinner />
 {:then}
   {#if $currentMezig}
-    <a href="/" use:routerLink>{$_('ui.backToHome')}</a>
-    <div class="ProfilPic">
-      <img
-        src={$currentMezig.profilPic || 'https://static-cdn.jtvnw.net/jtv_user_pictures/4850c623-9385-48d1-857c-fcc28e030040-profile_image-300x300.png'}
-        alt={$_('ui.avatarTitle')} />
-    </div>
-    <h1>{publicName}</h1>
-    <p class="Biography">{$currentMezig.biography || ''}</p>
-    {#if $currentMezig.links}
-      <ul>
-        {#each $currentMezig.links as link}
-          {#if link.isSocialNetwork === false}
-            {#if $user_id !== null || link.isPublic === true}
-              <Link {link} />
-            {/if}
-          {/if}
-        {/each}
-      </ul>
-      <div class="DivRS">
-        {#each $currentMezig.links as link}
-          {#if link.isSocialNetwork === true}
-            {#if $user_id !== null || link.isPublic === true}
-              <LinkRS {link} />
-            {/if}
-          {/if}
-        {/each}
+    <div class="Profil">
+      <div class="ProfilPic">
+        <img
+          src={$currentMezig.profilPic || 'https://static-cdn.jtvnw.net/jtv_user_pictures/4850c623-9385-48d1-857c-fcc28e030040-profile_image-300x300.png'}
+          alt={$_('ui.avatarTitle')} />
       </div>
-    {/if}
+      <h1>{publicName}</h1>
+      <p class="Biography">{$currentMezig.biography || ''}</p>
+      {#if $currentMezig.links}
+        <ul>
+          {#each $currentMezig.links as link}
+            {#if link.isSocialNetwork === false}
+              {#if $user_id !== null || link.isPublic === true}
+                <Link {link} />
+              {/if}
+            {/if}
+          {/each}
+        </ul>
+        <div class="DivRS">
+          {#each $currentMezig.links as link}
+            {#if link.isSocialNetwork === true}
+              {#if $user_id !== null || link.isPublic === true}
+                <LinkRS {link} />
+              {/if}
+            {/if}
+          {/each}
+        </div>
+        {/if}
+    </div>
   {:else}
     <div class="EmptyMsg">{$_('ui.unknownUser')}</div>
   {/if}

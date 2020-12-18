@@ -3,7 +3,7 @@
   import { isLoading } from 'svelte-i18n';
   import Search from './pages/Search.svelte';
   import Profil from './pages/Profil.svelte';
-  import Login from './components/Login.svelte';
+  import Nav from './components/Nav.svelte';
   import Spinner from './components/Spinner.svelte';
   import EditProfil from './pages/EditProfil.svelte';
 
@@ -15,7 +15,7 @@
 {#if $isLoading}
   <Spinner />
 {:else}
-  <Login bind:userRedirect bind:profileOk />
+  <Nav bind:userRedirect bind:profileOk/>
   {#if userRedirect === false}
     <Router {url}>
       <div class="container">

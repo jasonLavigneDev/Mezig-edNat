@@ -1,12 +1,25 @@
 <script>
   import { Meteor } from 'meteor/meteor';
   import { useTracker } from 'meteor/rdb:svelte-meteor-data';
-  import { link as routerLink } from 'svelte-routing';
+  import { link as routerLink, navigate } from 'svelte-routing';
   import { _ } from 'svelte-i18n';
   import Mezigs from '../../api/mezigs/mezigs';
   import Spinner from '../components/Spinner.svelte';
+  import Chip, { Set, Icon, Text } from '@smui/chips/bare';
+  import '@smui/chips/bare.css';
+  import Textfield from '@smui/textfield/bare';
+  import '@smui/textfield/bare.css';
+  import Button, { Label } from '@smui/button/bare';
+  import '@smui/button/bare.css';
+  import FormField from '@smui/form-field/bare';
+  import '@smui/form-field/bare.css';
+  import Switch from '@smui/switch/bare';
+  import '@smui/switch/bare.css';
+  import Paper from '@smui/paper/bare';
+  import '@smui/paper/bare.css';
+  import EditTableLinks from '../components/EditTableLinks.svelte';
+  // FIXME : npm add only required packages instead of whole 'svelte-material-ui'
 
-  const defaultLink = { label: '', URL: '', isSocialNetwork: false, isPublic: true };
   let loading = true;
   let whitelist = true;
   let publicName = '';
@@ -14,7 +27,6 @@
   let profilPic = '';
   let links = [];
   let skills = [];
-  let newLink = defaultLink;
   let newSkill = '';
 
   const validateForm = (publicName) => {
@@ -22,42 +34,39 @@
   };
 
   const initData = (mezig) => {
-    console.log('Init Data ', mezig);
     if (mezig && mezig.links) {
       if (loading) {
         whitelist = !mezig.blacklist;
         publicName = mezig.publicName;
-        biography = mezig.biography;
-        profilPic = mezig.profilPic;
-        links = mezig.links;
-        skills = mezig.skills;
+        biography = mezig.biography || '';
+        profilPic = mezig.profilPic || '';
+        links = mezig.links || [];
+        skills = mezig.skills || [];
         loading = false;
-      } else {
-        // fixme : ask user if he wants to reload form ?
-        alert('warning, mezig has changed while editing !!');
       }
     }
   };
 
   $: user_id = useTracker(() => Meteor.userId());
-  $: currentMezig = useTracker(() => Mezigs.findOne(user_id));
+  $: currentMezig = useTracker(() => Mezigs.findOne());
   $: initData($currentMezig);
   $: formValid = validateForm(publicName);
 
   const handleSubmit = () => {
     userData = { blacklist: !whitelist, publicName, biography, profilPic, links, skills };
-    console.log('Submit, data : ', userData);
-    // set loading to true to permit reload from api
-    loading = true;
+    Meteor.call('mezigs.updateMezig', { mezigId: $currentMezig._id, data: userData }, (err) => {
+      if (err) {
+        alert(err.reason);
+      } else {
+        navigate(`/profil/${$currentMezig.publicName}`, { state: `/profil/${$currentMezig.publicName}` });
+      }
+    });
   };
-  const addLink = () => {
-    console.log('Add link');
-    links.push(newLink);
-    newLink = defaultLink;
-  };
+
   const addSkill = () => {
-    console.log('Add skill');
     skills.push(newSkill);
+    // svelte does not seem to react to push
+    skills = skills;
     newSkill = '';
   };
 </script>
@@ -86,34 +95,13 @@
   form {
     transition-duration: 0.7s;
     position: absolute;
-    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: 20rem;
+    transform: translate(-50%, 0%);
+    width: 30rem;
     max-width: 90vw;
-    background: var(--color-brand);
-    border-radius: var(--rad);
-    padding: 15px;
-  }
-  input[type='text'],
-  textarea {
-    font-family: var(--font-fam);
-    width: 100%;
-    border: 0;
-    font-size: 1rem;
-    color: var(--color-dark);
     background: var(--color-light);
     border-radius: var(--rad);
-  }
-  input[type='text'] {
-    height: var(--height);
-  }
-  .form-field {
-    margin: 10px auto;
-  }
-
-  label {
-    margin-bottom: 5px;
+    padding: 15px;
   }
   .EmptyMsg {
     position: absolute;
@@ -123,10 +111,22 @@
     font-weight: bold;
     color: white;
   }
+  .MezigField {
+    margin: 10px auto;
+  }
+  .PaperTitle {
+    margin: 5px;
+  }
+  * :global(.FullWidth) {
+    width: 100%;
+  }
 </style>
 
 <svelte:head>
   <title>{$_('ui.editProfil.title')} | {$_('ui.appName')}</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono" />
 </svelte:head>
 
 <a href="/" use:routerLink>{$_('ui.backToHome')}</a>
@@ -137,19 +137,50 @@
     <Spinner />
   {:then}
     {#if $currentMezig}
-      <form on:submit|preventDefault={handleSubmit}>
-        <div class="form-field">
-          <label> <input type="checkbox" id="whitelist" bind:checked={whitelist} /> Publier mon profil </label>
+      <form on:submit|preventDefault>
+        <div class="MezigField">
+          <FormField>
+            <Switch bind:checked={whitelist} />
+            <span slot="label">{$_('ui.editProfil.showProfile')}</span>
+          </FormField>
         </div>
-        <div class="form-field">
-          <label for="publicName">Nom Publique</label>
-          <input type="text" id="publicName" bind:value={publicName} />
+        <div class="MezigField">
+          <Textfield
+            class="FullWidth"
+            variant="outlined"
+            bind:value={publicName}
+            label={$_('ui.editProfil.publicName')} />
         </div>
-        <div class="form-field">
-          <label for="biography">Biographie</label>
-          <textarea id="biography" rows="4" bind:value={biography} />
+        <div class="MezigField">
+          <Textfield textarea fullwidth bind:value={biography} label={$_('ui.editProfil.biography')} />
         </div>
-        <button disabled={!formValid}>Valider</button>
+        <div>
+          <span class="PaperTitle">{$_('ui.editProfil.skills')}</span>
+          <Paper>
+            <Set chips={skills} let:chip input>
+              <Chip>
+                <Text>{chip}</Text>
+                <Icon class="material-icons" trailing tabindex="0">cancel</Icon>
+              </Chip>
+            </Set>
+            <FormField>
+              <Textfield bind:value={newSkill} label={$_('ui.editProfil.newSkill')} />
+              <Button
+                variant="raised"
+                on:click={addSkill}
+                disabled={newSkill === '' || skills.indexOf(newSkill) !== -1}>
+                <Label>{$_('ui.editProfil.addSkills')}</Label>
+              </Button>
+            </FormField>
+          </Paper>
+        </div>
+        <div>
+          <span class="PaperTitle">{$_('ui.editProfil.links')}</span>
+          <Paper>
+            <EditTableLinks bind:links />
+          </Paper>
+        </div>
+        <Button on:click={handleSubmit} disabled={!formValid}>{$_('ui.editProfil.submit')}</Button>
       </form>
     {:else}
       <div class="EmptyMsg">{$_('ui.unknownUser')}</div>

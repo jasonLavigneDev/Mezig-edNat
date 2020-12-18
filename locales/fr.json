@@ -20,7 +20,22 @@
     "searchPlaceHolder": "Rechercher...",
     "backToHome": "Retour à la recherche",
     "editProfil": {
-      "title": "Mon profil"
+      "title": "Mon profil",
+      "showProfile": "Publier mon profil",
+      "publicName": "Nom public",
+      "biography": "Biographie",
+      "skills": "Compétences",
+      "addSkills": "Ajouter",
+      "newSkill": "Nouvelle compétence",
+      "links": "Liens",
+      "submit": "Valider"
+    },
+    "editTableLinks": { "addLink": "Ajouter un lien" },
+    "editLink": {
+      "label": "Label",
+      "url": "URL",
+      "showLink": "Montrer ce lien",
+      "socialNetwork": "Réseaux sociaux"
     }
   }
 }

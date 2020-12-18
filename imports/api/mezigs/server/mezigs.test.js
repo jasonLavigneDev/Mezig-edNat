@@ -105,6 +105,17 @@ describe('mezig', function () {
           /api.mezigs.methods.updateMezig.notFound/,
         );
       });
+      it('does not update if mezig to update has an already used publicName', function () {
+        assert.throws(
+          () => {
+            Factory.create('mezigs', { publicName: 'toto' });
+            mezigId = Factory.create('mezigs', mezigData)._id;
+            updateMezig._execute({ userId }, { mezigId, data: { ...mezigData, publicName: 'toto' } });
+          },
+          Meteor.Error,
+          /api.mezigs.methods.updateMezig.duplicatePublicName/,
+        );
+      });
     });
     describe('removeMezig', function () {
       it('does remove a mezig', function () {

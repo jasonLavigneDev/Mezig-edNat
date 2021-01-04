@@ -133,6 +133,8 @@ if (Meteor.isServer) {
       if (details.user.services.keycloak.preferred_username) {
         mez.username = details.user.services.keycloak.preferred_username;
       }
+      // always update profilPic to laboite avatar
+      mez.profilPic = details.user.avatar || '';
       // check if mezig already exists
       const currentMezig = Mezigs.findOne({ username: mez.username });
       if (currentMezig) {
@@ -140,7 +142,8 @@ if (Meteor.isServer) {
         if (
           currentMezig.username !== mez.username ||
           currentMezig.firstName !== mez.firstName ||
-          currentMezig.lastName !== mez.lastName
+          currentMezig.lastName !== mez.lastName ||
+          currentMezig.profilPic !== mez.profilPic
         ) {
           Mezigs.update({ _id: currentMezig._id }, { $set: mez });
         }
@@ -151,7 +154,6 @@ if (Meteor.isServer) {
           // user laboite username as default publicName
           // if necessary, change to firstName.lastName and manage ducplicates
           publicName: details.user.username,
-          profilPic: details.user.avatar || '',
           biography: '',
           blacklist: true,
           skills: [],

@@ -12,6 +12,7 @@
   import '@smui/list/bare.css';
   import '@smui/button/bare.css';
   import Mezigs from '../../api/mezigs/mezigs';
+  import { link as routerLink } from 'svelte-routing';
 
   let menu;
   let anchor;
@@ -122,7 +123,7 @@
 </style>
 
 <nav>
-  <a id="linkSearch" href="/">{$_('ui.search')}</a>
+  <a id="linkSearch" href="/" use:routerLink>{$_('ui.search')}</a>
   {#if userRedirect === true}
     <div class="loginMsg">
       <p>{$_('ui.loginMsg')}<a href="#" on:click={keycloakLogin}>{$_('ui.loginLink')}</a></p>

@@ -11,6 +11,7 @@
   import '@smui/menu-surface/bare.css';
   import '@smui/list/bare.css';
   import '@smui/button/bare.css';
+  import Mezigs from '../../api/mezigs/mezigs';
 
   let menu;
   let anchor;
@@ -20,6 +21,7 @@
 
   $: userId = useTracker(() => Meteor.userId());
   $: user = useTracker(() => Meteor.user());
+  $: userMezig = useTracker(() => Mezigs.findOne({ username: $user ? $user.username : '' }));
   $: user && checkProfile();
 
   const checkProfile = () => {
@@ -133,37 +135,48 @@
       {#if $userId === null}
         <button id="buttonConnect" on:click={keycloakLogin}>{$_('ui.connection')}</button>
       {:else}
-        <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
-        <img
-          id="ProfilPic"
-          src={'https://static-cdn.jtvnw.net/jtv_user_pictures/4850c623-9385-48d1-857c-fcc28e030040-profile_image-300x300.png'}
-          alt="Avatar"
-          on:click={() => menu.setOpen(true)}
-          use:Anchor
-          bind:this={anchor} />
-        <Menu style="width:22%" bind:this={menu} anchor={true} bind:anchorElement={anchor} anchorCorner="BOTTOM_RIGHT">
-          <List twoLine>
-            <Item on:SMUI:action={() => (window.location = '/profil/' + ($user || { publicName: '' }).publicName)}>
-              <Text>
-                <PrimaryText>{$_('ui.profil')}</PrimaryText>
-                <SecondaryText>{$_('ui.profilSub')}</SecondaryText>
-              </Text>
-            </Item>
-            <Item on:SMUI:action={() => (window.location = '/edit')}>
-              <Text>
-                <PrimaryText>{$_('ui.edit')}</PrimaryText>
-                <SecondaryText>{$_('ui.editSub')}</SecondaryText>
-              </Text>
-            </Item>
-            <Separator />
-            <Item on:SMUI:action={() => Meteor.logout()}>
-              <Text>
-                <PrimaryText>{$_('ui.disconnection')}</PrimaryText>
-                <SecondaryText>{$_('ui.disconnectionSub')}</SecondaryText>
-              </Text>
-            </Item>
-          </List>
-        </Menu>
+        {#await Meteor.subscribe('mezigs.self')}
+          <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
+        {:then}
+          <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
+          {#if $userMezig}
+            <img
+              id="ProfilPic"
+              src={$userMezig.profilPic || 'https://static-cdn.jtvnw.net/jtv_user_pictures/4850c623-9385-48d1-857c-fcc28e030040-profile_image-300x300.png'}
+              alt="Avatar"
+              on:click={() => menu.setOpen(true)}
+              use:Anchor
+              bind:this={anchor} />
+            <Menu
+              style="width:22%"
+              bind:this={menu}
+              anchor={true}
+              bind:anchorElement={anchor}
+              anchorCorner="BOTTOM_RIGHT">
+              <List twoLine>
+                <Item on:SMUI:action={() => (window.location = '/profil/' + $userMezig.publicName)}>
+                  <Text>
+                    <PrimaryText>{$_('ui.profil')}</PrimaryText>
+                    <SecondaryText>{$_('ui.profilSub')}</SecondaryText>
+                  </Text>
+                </Item>
+                <Item on:SMUI:action={() => (window.location = '/edit')}>
+                  <Text>
+                    <PrimaryText>{$_('ui.edit')}</PrimaryText>
+                    <SecondaryText>{$_('ui.editSub')}</SecondaryText>
+                  </Text>
+                </Item>
+                <Separator />
+                <Item on:SMUI:action={() => Meteor.logout()}>
+                  <Text>
+                    <PrimaryText>{$_('ui.disconnection')}</PrimaryText>
+                    <SecondaryText>{$_('ui.disconnectionSub')}</SecondaryText>
+                  </Text>
+                </Item>
+              </List>
+            </Menu>
+          {/if}
+        {/await}
       {/if}
     </div>
   {/if}

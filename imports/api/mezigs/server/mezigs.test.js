@@ -19,11 +19,26 @@ describe('mezig', function () {
   });
 
   describe('publications', function () {
+    let userId;
     before(function () {
+      Meteor.users.remove({});
+
+      // Generate 'user'
+      userId = Random.id();
+      const userData = {
+        _id: userId,
+        firstName: 'Léo',
+        lastName: 'Moscillo',
+        username: 'ollicsom',
+      };
+      Meteor.users.insert(userData);
+
       Mezigs.remove({});
-      _.times(4, () => {
+      _.times(2, () => {
         Factory.create('mezigs');
       });
+      Factory.create('mezigs', { username: 'ollicsom' });
+      Factory.create('mezigs', { publicName: 'toto' });
       Factory.create('mezigs', { blacklist: true });
     });
     describe('mezigs.whitelist', function () {
@@ -31,6 +46,26 @@ describe('mezig', function () {
         const collector = new PublicationCollector({});
         collector.collect('mezigs.whitelist', (collections) => {
           assert.equal(collections.mezigs.length, 4);
+          done();
+        });
+      });
+    });
+    describe('mezigs.self', function () {
+      it('sends currrent user mezig', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('mezigs.self', (collections) => {
+          assert.equal(collections.mezigs.length, 1);
+          assert.equal(collections.mezigs[0].username, 'ollicsom');
+          done();
+        });
+      });
+    });
+    describe('mezigs.profile', function () {
+      it('sends one mezig profile', function (done) {
+        const collector = new PublicationCollector({ userId });
+        collector.collect('mezigs.profile', { publicName: 'toto' }, (collections) => {
+          assert.equal(collections.mezigs.length, 1);
+          assert.equal(collections.mezigs[0].publicName, 'toto');
           done();
         });
       });
@@ -53,7 +88,7 @@ describe('mezig', function () {
         lastName: 'Moscillo',
         username: 'ollicsom',
       };
-      Meteor.users.insert({ userData });
+      Meteor.users.insert(userData);
 
       mezigData = {
         firstName: 'Léo',

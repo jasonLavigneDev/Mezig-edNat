@@ -8,14 +8,14 @@
   import Spinner from '../components/Spinner.svelte';
 
   export let publicName = '';
+  const blankUser = '/blank_user.svg';
 
   $: user_id = useTracker(() => Meteor.userId());
   $: currentMezig = useTracker(() => Mezigs.findOne({ publicName }));
-
 </script>
 
 <style>
-  .Profil{
+  .Profil {
     padding-top: 10%;
   }
   .ProfilPic {
@@ -68,11 +68,7 @@
 {:then}
   {#if $currentMezig}
     <div class="Profil">
-      <div class="ProfilPic">
-        <img
-          src={$currentMezig.profilPic || 'https://static-cdn.jtvnw.net/jtv_user_pictures/4850c623-9385-48d1-857c-fcc28e030040-profile_image-300x300.png'}
-          alt={$_('ui.avatarTitle')} />
-      </div>
+      <div class="ProfilPic"><img src={$currentMezig.profilPic || blankUser} alt={$_('ui.avatarTitle')} /></div>
       <h1>{publicName}</h1>
       <p class="Biography">{$currentMezig.biography || ''}</p>
       {#if $currentMezig.links}
@@ -94,7 +90,7 @@
             {/if}
           {/each}
         </div>
-        {/if}
+      {/if}
     </div>
   {:else}
     <div class="EmptyMsg">{$_('ui.unknownUser')}</div>

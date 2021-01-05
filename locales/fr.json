@@ -24,6 +24,7 @@
     "profil": "Mon mézig",
     "profilSub": "Voir votre profil",
     "disconnectionSub": "Déconnectez-vous",
+    "profileBlacklisted": "Votre profil n'est pas visible par les autres utilisateurs",
     "editProfil": {
       "title": "Mon profil",
       "showProfile": "Publier mon profil",

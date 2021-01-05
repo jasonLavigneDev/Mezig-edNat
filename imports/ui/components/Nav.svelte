@@ -109,6 +109,9 @@
     border-radius: 50%;
     margin-right: 4%;
   }
+  * :global(.MenuText) {
+    margin-right: 20px;
+  }
   nav > div {
     display: flex;
     justify-content: flex-end;
@@ -149,28 +152,23 @@
               on:click={() => menu.setOpen(true)}
               use:Anchor
               bind:this={anchor} />
-            <Menu
-              style="width:22%"
-              bind:this={menu}
-              anchor={true}
-              bind:anchorElement={anchor}
-              anchorCorner="BOTTOM_RIGHT">
+            <Menu bind:this={menu} anchor={false} bind:anchorElement={anchor} anchorCorner="BOTTOM_RIGHT">
               <List twoLine>
                 <Item on:SMUI:action={() => (window.location = '/profil/' + $userMezig.publicName)}>
-                  <Text>
+                  <Text class="MenuText">
                     <PrimaryText>{$_('ui.profil')}</PrimaryText>
                     <SecondaryText>{$_('ui.profilSub')}</SecondaryText>
                   </Text>
                 </Item>
                 <Item on:SMUI:action={() => (window.location = '/edit')}>
-                  <Text>
+                  <Text class="MenuText">
                     <PrimaryText>{$_('ui.edit')}</PrimaryText>
                     <SecondaryText>{$_('ui.editSub')}</SecondaryText>
                   </Text>
                 </Item>
                 <Separator />
                 <Item on:SMUI:action={() => Meteor.logout()}>
-                  <Text>
+                  <Text class="MenuText">
                     <PrimaryText>{$_('ui.disconnection')}</PrimaryText>
                     <SecondaryText>{$_('ui.disconnectionSub')}</SecondaryText>
                   </Text>

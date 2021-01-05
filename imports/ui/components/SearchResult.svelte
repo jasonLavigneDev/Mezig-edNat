@@ -4,6 +4,7 @@
   import { createEventDispatcher } from 'svelte';
 
   const dispatch = createEventDispatcher();
+  const blankUser = '/blank_user.svg';
   export let user;
 
   const handleGoProfile = () => {
@@ -68,9 +69,7 @@
   out:fade={{ duration: 500 }}
   in:fly={{ y: 100, duration: 500, delay: 200 }}
   class="Result">
-  <img
-    src={user.profilPic || 'https://static-cdn.jtvnw.net/jtv_user_pictures/4850c623-9385-48d1-857c-fcc28e030040-profile_image-300x300.png'}
-    alt="Avatar de l'utilisateur" />
+  <img src={user.profilPic || blankUser} alt="Avatar de l'utilisateur" />
   <div class="textResult">
     <h3>{user.publicName}</h3>
     <div class="skillsResult">

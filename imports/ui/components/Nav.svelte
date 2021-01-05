@@ -14,6 +14,7 @@
   import Mezigs from '../../api/mezigs/mezigs';
   import { link as routerLink } from 'svelte-routing';
 
+  const blankUser = '/blank_user.svg';
   let menu;
   let anchor;
 
@@ -143,7 +144,7 @@
           {#if $userMezig}
             <img
               id="ProfilPic"
-              src={$userMezig.profilPic || 'https://static-cdn.jtvnw.net/jtv_user_pictures/4850c623-9385-48d1-857c-fcc28e030040-profile_image-300x300.png'}
+              src={$userMezig.profilPic || blankUser}
               alt="Avatar"
               on:click={() => menu.setOpen(true)}
               use:Anchor

@@ -1,5 +1,6 @@
 <script>
   export let link;
+  export let nonPublic = false;
 </script>
 
 <style>
@@ -20,6 +21,10 @@
     color: white;
     text-decoration: none;
   }
+  .nonPublic {
+    border: 2px solid #ff3e00;
+    color: #ff3e00;
+  }
 </style>
 
-<a target="_blank" href={link.URL}><li>{link.label}</li></a>
+<a target="_blank" href={link.URL}><li class:nonPublic>{link.label}</li></a>

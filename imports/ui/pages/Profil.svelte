@@ -83,7 +83,7 @@
           {#each $currentMezig.links as link}
             {#if link.isSocialNetwork === false}
               {#if $user_id !== null || link.isPublic === true}
-                <Link {link} />
+                <Link {link} nonPublic={!link.isPublic} />
               {/if}
             {/if}
           {/each}
@@ -92,7 +92,7 @@
           {#each $currentMezig.links as link}
             {#if link.isSocialNetwork === true}
               {#if $user_id !== null || link.isPublic === true}
-                <LinkRS {link} />
+                <LinkRS {link} nonPublic={!link.isPublic} />
               {/if}
             {/if}
           {/each}

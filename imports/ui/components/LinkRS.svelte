@@ -1,5 +1,6 @@
 <script>
   export let link;
+  export let nonPublic = false;
 
   let TabPath = {
     facebook:
@@ -33,6 +34,9 @@
   path {
     fill: white;
   }
+  .nonPublic {
+    fill: #ff3e00;
+  }
 </style>
 
 {#each Object.keys(TabPath) as NomRS}
@@ -40,6 +44,6 @@
     <a target="_blank" href={link.URL}><svg
         enable-background="new 0 0 24 24"
         viewBox="0 0 24 24"
-        alt="Logo {NomRS}"><path d={TabPath[NomRS]} /></svg></a>
+        alt="Logo {NomRS}"><path class:nonPublic d={TabPath[NomRS]} /></svg></a>
   {/if}
 {/each}

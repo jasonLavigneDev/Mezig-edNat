@@ -1,6 +1,6 @@
 <script>
   export let link;
-  export let nonPublic = false;
+  let nonPublic = !link.isPublic;
 
   let TabPath = {
     facebook:

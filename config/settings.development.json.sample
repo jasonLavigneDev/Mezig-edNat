@@ -11,4 +11,7 @@
     "adminUser": "",
     "adminPassword": ""
   },
+  "private": {
+    "fillWithFakeData": false,
+  }
 }

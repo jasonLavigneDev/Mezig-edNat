@@ -28,7 +28,6 @@
 
   const checkProfile = () => {
     Meteor.call('mezigs.checkProfile', {}, (err, res) => {
-      console.log('check !!!', err, res);
       if (!err) profileOk = res;
     });
   };

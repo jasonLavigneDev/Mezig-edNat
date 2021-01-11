@@ -12,7 +12,7 @@
   import '@smui/list/bare.css';
   import '@smui/button/bare.css';
   import Mezigs from '../../api/mezigs/mezigs';
-  import { link as routerLink } from 'svelte-routing';
+  import { link as routerLink, navigate } from 'svelte-routing';
 
   const blankUser = '/blank_user.svg';
   let menu;
@@ -153,13 +153,13 @@
               bind:this={anchor} />
             <Menu bind:this={menu} anchor={false} bind:anchorElement={anchor} anchorCorner="BOTTOM_RIGHT">
               <List twoLine>
-                <Item on:SMUI:action={() => (window.location = '/profil/' + $userMezig.publicName)}>
+                <Item on:SMUI:action={() => navigate('/profil/' + $userMezig.publicName, { replace: false })}>
                   <Text class="MenuText">
                     <PrimaryText>{$_('ui.profil')}</PrimaryText>
                     <SecondaryText>{$_('ui.profilSub')}</SecondaryText>
                   </Text>
                 </Item>
-                <Item on:SMUI:action={() => (window.location = '/edit')}>
+                <Item on:SMUI:action={() => navigate('/edit', { replace: false })}>
                   <Text class="MenuText">
                     <PrimaryText>{$_('ui.edit')}</PrimaryText>
                     <SecondaryText>{$_('ui.editSub')}</SecondaryText>

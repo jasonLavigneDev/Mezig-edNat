@@ -102,6 +102,7 @@
     transition-duration: 0.7s;
     position: absolute;
     left: 50%;
+    top: 13%;
     transform: translate(-50%, 0%);
     width: 30rem;
     max-width: 90vw;

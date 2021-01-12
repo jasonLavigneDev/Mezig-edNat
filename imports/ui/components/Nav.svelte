@@ -78,11 +78,14 @@
   #loginUser {
     font-weight: bold;
     margin: 0;
-    margin-right: 1%;
+    margin-right: 10%;
     color: var(--color-brand);
   }
-  .loginMenu {
-    float: right;
+  .loggedMenu{
+    display: flex;
+    justify-content: flex-end;
+    height: 100%;
+    width: 10%
   }
   * {
     align-items: center;
@@ -106,10 +109,7 @@
     width: auto;
     max-height: 75%;
     border-radius: 50%;
-    margin-right: 4%;
-  }
-  * :global(.MenuText) {
-    margin-right: 20px;
+    margin-right: 20%;
   }
   nav > div {
     display: flex;
@@ -139,19 +139,22 @@
       {#if $userId === null}
         <button id="buttonConnect" on:click={keycloakLogin}>{$_('ui.connection')}</button>
       {:else}
+      <div class="loggedMenu">
         {#await Meteor.subscribe('mezigs.self')}
           <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
         {:then}
           <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
           {#if $userMezig}
             <img
+            bind:this={anchor}
+
+
               id="ProfilPic"
               src={$userMezig.profilPic || blankUser}
               alt="Avatar"
               on:click={() => menu.setOpen(true)}
-              use:Anchor
-              bind:this={anchor} />
-            <Menu bind:this={menu} anchor={false} bind:anchorElement={anchor} anchorCorner="BOTTOM_RIGHT">
+              use:Anchor />
+            <Menu bind:this={menu} anchor={true} bind:anchorElement={anchor} anchorCorner="BOTTOM_LEFT">
               <List twoLine>
                 <Item on:SMUI:action={() => navigate('/profil/' + $userMezig.publicName, { replace: false })}>
                   <Text class="MenuText">
@@ -173,10 +176,11 @@
                   </Text>
                 </Item>
               </List>
-            </Menu>
+            </Menu>  
           {/if}
         {/await}
-      {/if}
+      </div>
+        {/if}
     </div>
   {/if}
   <span />

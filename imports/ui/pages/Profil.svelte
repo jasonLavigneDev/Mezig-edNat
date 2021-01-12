@@ -16,7 +16,7 @@
 
 <style>
   .Profil {
-    padding-top: 10%;
+    padding-top: 10vh;
   }
   .ProfilPic {
     display: block;

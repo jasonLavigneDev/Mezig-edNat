@@ -15,24 +15,24 @@
 {#if $isLoading}
   <Spinner />
 {:else}
-  <Nav bind:userRedirect bind:profileOk/>
-  {#if userRedirect === false}
-    <Router {url}>
-      <div class="container">
-        {#if profileOk === false}
-          <div>
-            <Route>
-              <EditProfil bind:profileOk />
-            </Route>
-          </div>
-        {:else}
-          <div>
-            <Route path="profil/:publicName" component={Profil} />
-            <Route path="/edit" component={EditProfil} />
-            <Route component={Search} />
-          </div>
-        {/if}
-      </div>
-    </Router>
-  {/if}
+{#if userRedirect === false}
+<Router {url}>
+  <div class="container">
+    {#if profileOk === false}
+    <div>
+      <Route>
+        <EditProfil bind:profileOk />
+      </Route>
+    </div>
+    {:else}
+    <div>
+      <Route path="profil/:publicName" component={Profil} />
+      <Route path="/edit" component={EditProfil} />
+      <Route component={Search} />
+    </div>
+    {/if}
+  </div>
+</Router>
+{/if}
+<Nav bind:userRedirect bind:profileOk/>
 {/if}

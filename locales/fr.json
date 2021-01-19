@@ -25,6 +25,8 @@
     "profilSub": "Voir votre profil",
     "disconnectionSub": "Déconnectez-vous",
     "profileBlacklisted": "Votre profil n'est pas visible par les autres utilisateurs",
+    "profileSkills": "Compétences",
+    "profileSkillsNone": "Aucunes compétences renseignées",
     "editProfil": {
       "title": "Mon profil",
       "showProfile": "Publier mon profil",

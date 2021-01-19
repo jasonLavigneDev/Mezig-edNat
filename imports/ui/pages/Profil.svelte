@@ -14,6 +14,59 @@
   $: currentMezig = useTracker(() => Mezigs.findOne({ publicName }));
 </script>
 
+<svelte:head>
+  <title>{publicName} | {$_('ui.appName')}</title>
+</svelte:head>
+
+{#await Meteor.subscribe('mezigs.profile', { publicName })}
+  <Spinner />
+{:then}
+  {#if $currentMezig}
+    <div class="Profil">
+      {#if $currentMezig.blacklist === true}
+        <h3 class="BlacklistInfo">{$_('ui.profileBlacklisted')}</h3>
+      {/if}
+      <div class="ProfilPic"><img src={$currentMezig.profilPic || blankUser} alt={$_('ui.avatarTitle')} /></div>
+      <h1>{publicName}</h1>
+      <p class="Biography">{$currentMezig.biography || ''}</p>
+      <div class="Skills">
+        <details>
+          <summary>{$_('ui.profileSkills')}</summary>
+          {#if $currentMezig.skills.length > 0}
+            {#each $currentMezig.skills as skill}
+              <p class="TextSkill">#{skill}</p>
+            {/each}
+          {:else}
+            <p>{$_('ui.profileSkillsNone')}</p>
+          {/if}
+        </details>
+      </div>
+      {#if $currentMezig.links}
+        <ul>
+          {#each $currentMezig.links as link}
+            {#if link.isSocialNetwork === false}
+              {#if $user_id !== null || link.isPublic === true}
+                <Link {link} />
+              {/if}
+            {/if}
+          {/each}
+        </ul>
+        <div class="DivRS">
+          {#each $currentMezig.links as link}
+            {#if link.isSocialNetwork === true}
+              {#if $user_id !== null || link.isPublic === true}
+                <LinkRS {link} />
+              {/if}
+            {/if}
+          {/each}
+        </div>
+      {/if}
+    </div>
+  {:else}
+    <div class="EmptyMsg">{$_('ui.unknownUser')}</div>
+  {/if}
+{/await}
+
 <style>
   .Profil {
     padding-top: 10vh;
@@ -43,11 +96,30 @@
     height: 10vh;
     justify-content: center;
   }
+  .Skills {
+    display: flex;
+    height: 5%;
+    justify-content: center;
+    font-size: 2vmin;
+    color: white;
+    margin-bottom: 4vmin;
+  }
+  .TextSkill {
+    display: inline-flex;
+    align-items: center;
+    margin: 1vmin;
+  }
+  summary{
+    text-align: center;
+    -moz-user-select: none;
+    user-select: none;
+    outline: none;
+  }
   .Biography {
     color: white;
     text-align: center;
     font-size: 2vmin;
-    margin-bottom: 5vmin;
+    margin-bottom: 2vmin;
   }
   .EmptyMsg {
     position: absolute;
@@ -62,44 +134,3 @@
     text-align: center;
   }
 </style>
-
-<svelte:head>
-  <title>{publicName} | {$_('ui.appName')}</title>
-</svelte:head>
-
-{#await Meteor.subscribe('mezigs.profile', { publicName })}
-  <Spinner />
-{:then}
-  {#if $currentMezig}
-    <div class="Profil">
-      {#if $currentMezig.blacklist === true}
-        <h3 class="BlacklistInfo">{$_('ui.profileBlacklisted')}</h3>
-      {/if}
-      <div class="ProfilPic"><img src={$currentMezig.profilPic || blankUser} alt={$_('ui.avatarTitle')} /></div>
-      <h1>{publicName}</h1>
-      <p class="Biography">{$currentMezig.biography || ''}</p>
-      {#if $currentMezig.links}
-        <ul>
-          {#each $currentMezig.links as link}
-            {#if link.isSocialNetwork === false}
-              {#if $user_id !== null || link.isPublic === true}
-                <Link {link} />
-              {/if}
-            {/if}
-          {/each}
-        </ul>
-        <div class="DivRS">
-          {#each $currentMezig.links as link}
-            {#if link.isSocialNetwork === true}
-              {#if $user_id !== null || link.isPublic === true}
-                <LinkRS {link} />
-              {/if}
-            {/if}
-          {/each}
-        </div>
-      {/if}
-    </div>
-  {:else}
-    <div class="EmptyMsg">{$_('ui.unknownUser')}</div>
-  {/if}
-{/await}

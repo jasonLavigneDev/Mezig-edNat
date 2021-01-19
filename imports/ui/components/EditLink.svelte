@@ -10,6 +10,8 @@
   import '@smui/chips/bare.css';
   import { Item, Meta } from '@smui/list/bare';
   import '@smui/list/bare.css';
+  import Button from '@smui/button/bare';
+  import '@smui/button/bare.css';
   import { createEventDispatcher } from 'svelte';
 
   export let mezigLink;
@@ -48,6 +50,12 @@ function dispAlert(){
   #suppr{
     height: 35%;
   }
+  .supprDialog{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 5% 0%;
+  }
 </style>
 
 {#if supprAlert == false}
@@ -76,13 +84,17 @@ function dispAlert(){
 </div>
 {/if}
 {#if supprAlert == true}
-<div>
+<div class="supprDialog">
   <FormField>
-    <Textfield class="FullWidth" label={$_('ui.editLink.label')} />
+    <span>{$_('ui.delLink')}</span>
+    <Button on:click={dispAlert, () => {
+      dispatch('deleteLink', { index: linkIndex });
+    }}>
+  {$_('ui.yes')}
+</Button>
+<Button on:click={dispAlert}>
+  {$_('ui.no')}
+</Button>
   </FormField>
-  <button on:click={dispAlert}>Change</button>
-  <button on:click={() => {
-    dispatch('deleteLink', { index: linkIndex });
-  }}>Non</button>
 </div>
 {/if}

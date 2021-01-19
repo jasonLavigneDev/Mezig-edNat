@@ -6,6 +6,9 @@
     }
   },
   "ui": {
+    "yes": "Oui",
+    "no" : "Non",
+    "delLink" : "Voulez-vous vraiment supprimer ce lien ?",
     "appName": "Mezig",
     "search": "Rechercher",
     "connection": "Se connecter",

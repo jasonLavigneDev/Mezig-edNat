@@ -6,6 +6,9 @@
     }
   },
   "ui": {
+    "yes": "Yes",
+    "no" : "No",
+    "delLink" : "Do you really want to delete this link ?",
     "appName": "Mezig",
     "search": "Search",
     "connection": "Log in",

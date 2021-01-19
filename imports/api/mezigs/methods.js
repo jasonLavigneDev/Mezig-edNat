@@ -72,3 +72,44 @@ export const removeMezig = new ValidatedMethod({
     return Mezigs.remove({ _id: mezigId });
   },
 });
+
+// build query for all searched mezigs
+const regexSkills = /#/;
+const queryAllMezigs = ({ search }) => {
+  const query = { $and: [{ blacklist: false }] };
+  for (let i = 0; i < search.split(' ').length; i += 1) {
+    if (regexSkills.test(search.split(' ')[i])) {
+      query.$and.push({ skills: search.split(' ')[i].split('#')[1] });
+    } else {
+      const nameRegExp = search.split(' ')[i];
+      query.$and.push({
+        $or: [
+          { publicName: { $regex: nameRegExp, $options: 'i' } },
+          { firstName: { $regex: nameRegExp, $options: 'i' } },
+          { lastName: { $regex: nameRegExp, $options: 'i' } },
+        ],
+      });
+    }
+  }
+  return query;
+};
+
+export const getMezigs = new ValidatedMethod({
+  name: 'mezigs.getMezigs',
+  validate: new SimpleSchema({
+    page: { type: SimpleSchema.Integer, defaultValue: 1 },
+    itemPerPage: { type: SimpleSchema.Integer, defaultValue: 10 },
+    search: { type: String, defaultValue: '' },
+  }).validator({ clean: true }),
+  run({ page, itemPerPage, search }) {
+    const query = queryAllMezigs({ search });
+    const total = Mezigs.find(query).count();
+    const data = Mezigs.find(query, {
+      fields: Mezigs.searchFields,
+      skip: itemPerPage * (page - 1),
+      limit: itemPerPage,
+      sort: { publicName: 1 },
+    }).fetch();
+    return { total, data };
+  },
+});

@@ -1,58 +1,117 @@
 <script>
   import { Meteor } from 'meteor/meteor';
-  import { useTracker } from 'meteor/rdb:svelte-meteor-data';
   import { onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
-  import Mezigs from '../../api/mezigs/mezigs';
+  import SvelteInfiniteScroll from 'svelte-infinite-scroll';
   import SearchResult from '../components/SearchResult.svelte';
-  import Spinner from '../components/Spinner.svelte';
   import { searchingStore } from '../../stores/stores';
 
-  let users = [];
-  let query = '';
   let searching = '';
   let previousSearch = '';
-  const regexSkills = /#/;
   let noResult = '';
+  let page = 1;
+  let itemPerPage = 20;
+  let usersScroll = [];
+  let newLoadedMezigs = [];
+  let totalFoundMezigs = 0;
+  let timeout;
+  let ulMezigs;
 
   onMount(async () => {
     searching = previousSearch;
-    Meteor.subscribe('mezigs.whitelist');
+    ActuSearch();
   });
 
-  $: mezigCount = useTracker(() => Mezigs.find({}).count());
   $: previousSearch = $searchingStore;
-  $: users = ActuSearch(searching);
+  $: usersScroll = [...usersScroll, ...newLoadedMezigs];
 
   function handleClickSkill(event) {
+    console.log('usersScroll.length', usersScroll.length);
     searching += ` #${event.detail.text}`; // Add skill to existing search string
+    ActuSearch();
   }
 
-  const ActuSearch = (searchingString) => {
-    searchingStore.set(searchingString);
-    if (searchingString.length >= 3) {
-      query = { $and: [] };
-      for (let i = 0; i < searchingString.split(' ').length; i++) {
-        if (regexSkills.test(searchingString.split(' ')[i])) {
-          query.$and.push({ skills: { $regex: searchingString.split(' ')[i].split('#')[1], $options: 'i' } });
-        } else {
-          query.$and.push({ publicName: { $regex: '' + searchingString.split(' ')[i], $options: 'i' } });
-        }
-      }
-      users = Mezigs.find(query).fetch();
+  const debounceFunc = (func, wait) => {
+    return (...args) => {
+      const later = () => {
+        timeout = null;
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  };
 
-      if (users.length == 0) {
-        noResult = $_('ui.noSearchResult') + searchingString + '...';
-      } else {
-        noResult = '';
-      }
+  function ActuSearch() {
+    searchingStore.set(searching);
+    usersScroll = [];
+    usersScroll = usersScroll;
+    newLoadedMezigs = [];
+    totalFoundMezigs = 0;
+    page = 1;
+    ulMezigs.scrollTop = 0;
+    if (searching.length >= 3) {
+      res = Meteor.call('mezigs.getMezigs', { search: searching, itemPerPage }, (err, res) => {
+        newLoadedMezigs = res.data;
+        totalFoundMezigs = res.total;
+        if (totalFoundMezigs == 0) {
+          noResult = $_('ui.noSearchResult') + searching + '...';
+        } else {
+          noResult = '';
+        }
+      });
     } else {
       noResult = '';
-      users = [];
     }
-    return users;
-  };
+  }
+
+  function loadmore() {
+    console.log(`loadmore p=${page}, loaded=${usersScroll.length}`);
+    page++;
+    res = Meteor.call('mezigs.getMezigs', { search: searching, page, itemPerPage }, (err, res) => {
+      newLoadedMezigs = res.data;
+      totalFoundMezigs = res.total;
+    });
+  }
 </script>
+
+<svelte:head>
+  <title>Acceuil | {$_('ui.appName')}</title>
+</svelte:head>
+
+<form on:submit|preventDefault role="search" style={usersScroll.length > 0 ? 'top: 15%;' : ''}>
+  <label for="search">{$_('ui.searchLabel')}</label>
+  <input
+    id="search"
+    autocomplete="off"
+    autofocus
+    type="search"
+    placeholder={$_('ui.searchPlaceHolder')}
+    bind:value={searching}
+    on:input={debounceFunc(ActuSearch, 400)}
+    required
+  />
+  {#if totalFoundMezigs !== 0}
+    <p id="infos" class:red={usersScroll.length === totalFoundMezigs}>
+      {usersScroll.length}
+      affichés sur
+      {totalFoundMezigs}
+      au total
+    </p>
+  {/if}
+</form>
+
+<ul id="results" class="SearchResultDiv" bind:this={ulMezigs}>
+  {#each usersScroll as user}
+    <SearchResult {user} on:clickSkills={handleClickSkill} />
+  {/each}
+  <SvelteInfiniteScroll
+    threshold={itemPerPage}
+    on:loadMore={() => loadmore()}
+    hasMore={usersScroll.length < totalFoundMezigs}
+  />
+</ul>
+<p class="noResult">{noResult}</p>
 
 <style>
   form {
@@ -77,7 +136,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 20rem;
+    /* width: 20rem; */
     max-width: 90vw;
     background: var(--color-brand);
     border-radius: var(--rad);
@@ -116,6 +175,8 @@
     transform: translate(-50%, 0);
     top: 25%;
     width: 90%;
+    max-height: 600px;
+    overflow-y: scroll;
   }
   .noResult {
     color: white;
@@ -125,6 +186,27 @@
     top: 30%;
     left: 50%;
     transform: translate(-50%);
+  }
+  #infos {
+    margin-left: auto;
+  }
+  .red {
+    color: red;
+  }
+
+  #results::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+  }
+
+  #results::-webkit-scrollbar {
+    width: 9px;
+  }
+
+  #results::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #555;
   }
 
   @media (min-width: 576px) {
@@ -150,32 +232,9 @@
       width: 40%;
     }
   }
+  /* ul {
+    width: 90%;
+    max-height: 600px;
+    overflow-y: scroll;
+  } */
 </style>
-
-<svelte:head>
-  <title>Acceuil | {$_('ui.appName')}</title>
-</svelte:head>
-
-{#if mezigCount <= 1}
-  <Spinner />
-{:else}
-  <form on:submit|preventDefault role="search" style={users.length > 0 ? 'top: 15%;' : ''}>
-    <label for="search">{$_('ui.searchLabel')}</label>
-    <input
-      id="search"
-      autocomplete="off"
-      autofocus
-      type="search"
-      placeholder={$_('ui.searchPlaceHolder')}
-      bind:value={searching}
-      required />
-  </form>
-
-  <div class="SearchResultDiv">
-    {#each users as user}
-      <SearchResult {user} on:clickSkills={handleClickSkill} />
-    {/each}
-  </div>
-
-  <p class="noResult">{noResult}</p>
-{/if}

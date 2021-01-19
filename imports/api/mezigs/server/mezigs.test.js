@@ -8,7 +8,7 @@ import { Random } from 'meteor/random';
 import { Factory } from 'meteor/dburles:factory';
 import Mezigs from '../mezigs';
 import './publications';
-import { createMezig, updateMezig, removeMezig } from '../methods';
+import { createMezig, updateMezig, removeMezig, getMezigs } from '../methods';
 
 describe('mezig', function () {
   describe('mutators', function () {
@@ -40,15 +40,6 @@ describe('mezig', function () {
       Factory.create('mezigs', { username: 'ollicsom' });
       Factory.create('mezigs', { publicName: 'toto' });
       Factory.create('mezigs', { blacklist: true });
-    });
-    describe('mezigs.whitelist', function () {
-      it('sends all mezigs', function (done) {
-        const collector = new PublicationCollector({});
-        collector.collect('mezigs.whitelist', (collections) => {
-          assert.equal(collections.mezigs.length, 4);
-          done();
-        });
-      });
     });
     describe('mezigs.self', function () {
       it('sends currrent user mezig', function (done) {
@@ -177,6 +168,18 @@ describe('mezig', function () {
           Meteor.Error,
           /api.mezigs.methods.removeMezig.notFound/,
         );
+      });
+    });
+    describe('mezigs.checkProfile', function () {
+      it('sends all mezigs', function () {
+        // checkProfile._execute({ userId }, {});
+        // FIXME
+      });
+    });
+    describe('mezigs.getMezigs', function () {
+      it('sends all mezigs', function () {
+        // FIXME
+        getMezigs._execute({}, { page: 1, itemPerPage: 2, search: 'yo' });
       });
     });
   });

@@ -1,18 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import Mezigs from '../mezigs';
 
-// publish all mezigs to client (no links, for search page)
-Meteor.publish('mezigs.whitelist', function publishAllUsers() {
-  return Mezigs.find(
-    { blacklist: false },
-    {
-      fields: Mezigs.searchFields,
-      limit: 10000,
-      sort: { lastName: 1 },
-    },
-  );
-});
-
 // publish currrent user profile to client
 Meteor.publish('mezigs.self', function publishSelf() {
   if (this.userId !== null) {

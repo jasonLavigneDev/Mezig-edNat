@@ -66,7 +66,6 @@
 
 <div
   on:click={handleGoProfile}
-  out:fade={{ duration: 500 }}
   in:fly={{ y: 100, duration: 500, delay: 200 }}
   class="Result">
   <img src={user.profilPic || blankUser} alt="Avatar de l'utilisateur" />

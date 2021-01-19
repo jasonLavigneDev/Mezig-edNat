@@ -25,6 +25,8 @@
     "profilSub": "Go to your profile",
     "disconnectionSub": "Disconnect",
     "profileBlacklisted": "Your profile is not published to other users",
+    "profileSkills": "Skills",
+    "profileSkillsNone": "No skills provided",
     "editProfil": {
       "title": "My profile",
       "showProfile": "Show my profile",

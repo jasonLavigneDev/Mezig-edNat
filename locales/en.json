@@ -43,8 +43,7 @@
     "editLink": {
       "label": "Label",
       "url": "URL",
-      "showLink": "Show this link",
-      "socialNetwork": "Social Network"
+      "showLink": "Show this link"
     }
   }
 }

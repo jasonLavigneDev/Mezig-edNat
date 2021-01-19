@@ -41,24 +41,7 @@
         </details>
       </div>
       {#if $currentMezig.links}
-        <ul>
-          {#each $currentMezig.links as link}
-            {#if link.isSocialNetwork === false}
-              {#if $user_id !== null || link.isPublic === true}
-                <Link {link} />
-              {/if}
-            {/if}
-          {/each}
-        </ul>
-        <div class="DivRS">
-          {#each $currentMezig.links as link}
-            {#if link.isSocialNetwork === true}
-              {#if $user_id !== null || link.isPublic === true}
-                <LinkRS {link} />
-              {/if}
-            {/if}
-          {/each}
-        </div>
+        <Links {currentMezig}/>
       {/if}
     </div>
   {:else}
@@ -133,27 +116,3 @@
     text-align: center;
   }
 </style>
-
-<svelte:head>
-  <title>{publicName} | {$_('ui.appName')}</title>
-</svelte:head>
-
-{#await Meteor.subscribe('mezigs.profile', { publicName })}
-  <Spinner />
-{:then}
-  {#if $currentMezig}
-    <div class="Profil">
-      {#if $currentMezig.blacklist === true}
-        <h3 class="BlacklistInfo">{$_('ui.profileBlacklisted')}</h3>
-      {/if}
-      <div class="ProfilPic"><img src={$currentMezig.profilPic || blankUser} alt={$_('ui.avatarTitle')} /></div>
-      <h1>{publicName}</h1>
-      <p class="Biography">{$currentMezig.biography || ''}</p>
-      {#if $currentMezig.links}
-        <Links {currentMezig}/>
-      {/if}
-    </div>
-  {:else}
-    <div class="EmptyMsg">{$_('ui.unknownUser')}</div>
-  {/if}
-{/await}

@@ -14,39 +14,75 @@
 
   export let mezigLink;
   export let linkIndex;
+  let supprAlert = false;
 
   const dispatch = createEventDispatcher();
+
+
+function dispAlert(){
+  supprAlert = !supprAlert;
+  console.log(supprAlert, "tests");
+}
+
 </script>
 
 <style>
   * :global(.FullWidth) {
     width: 100%;
   }
+  .link{
+    display: flex;
+    padding: 3%;
+  }
+  .link:hover{
+    background-color: rgba(30, 30, 90, 0.1);
+  }
+  .switch{
+    margin-left: 3%;
+    display: flex;
+    text-align: center;
+  }
+  #suppr:hover{
+    color:crimson;
+  }
+  #suppr{
+    height: 35%;
+  }
 </style>
 
-<Item>
+{#if supprAlert == false}
+<div class="link">
   <FormField>
     <Textfield class="FullWidth" bind:value={mezigLink.label} label={$_('ui.editLink.label')} />
   </FormField>
   <FormField>
     <Textfield class="FullWidth" bind:value={mezigLink.URL} label={$_('ui.editLink.url')} />
   </FormField>
-  <FormField>
+  <div class="switch">
+  <FormField >
     <Switch bind:checked={mezigLink.isPublic} />
     <span slot="label">{$_('ui.editLink.showLink')}</span>
   </FormField>
-  <FormField>
-    <Switch bind:checked={mezigLink.isSocialNetwork} />
-    <span slot="label">{$_('ui.editLink.socialNetwork')}</span>
-  </FormField>
-  <Meta>
+  </div>
+  <div id="suppr">
     <Icon
-      class="material-icons"
-      trailing
-      on:click={() => {
-        dispatch('deleteLink', { index: linkIndex });
-      }}>
-      cancel
-    </Icon>
-  </Meta>
-</Item>
+    on:click={dispAlert}
+    class="material-icons"
+    trailing
+    >
+        cancel
+      </Icon>
+  </div>
+</div>
+{/if}
+{#if supprAlert == true}
+<div>
+  <FormField>
+    <Textfield class="FullWidth" label={$_('ui.editLink.label')} />
+  </FormField>
+  <button on:click={dispAlert}>Change</button>
+  <button on:click={() => {
+    dispatch('deleteLink', { index: linkIndex });
+  }}>Non</button>
+</div>
+{/if}

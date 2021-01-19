@@ -104,7 +104,7 @@
     left: 50%;
     top: 13%;
     transform: translate(-50%, 0%);
-    width: 30rem;
+    width: 40rem;
     max-width: 90vw;
     background: var(--color-light);
     border-radius: var(--rad);

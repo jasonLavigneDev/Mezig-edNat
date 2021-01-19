@@ -3,8 +3,7 @@
   import { useTracker } from 'meteor/rdb:svelte-meteor-data';
   import { _ } from 'svelte-i18n';
   import Mezigs from '../../api/mezigs/mezigs';
-  import Link from '../components/Link.svelte';
-  import LinkRS from '../components/LinkRS.svelte';
+  import Links from '../components/Links.svelte';
   import Spinner from '../components/Spinner.svelte';
 
   export let publicName = '';
@@ -134,3 +133,27 @@
     text-align: center;
   }
 </style>
+
+<svelte:head>
+  <title>{publicName} | {$_('ui.appName')}</title>
+</svelte:head>
+
+{#await Meteor.subscribe('mezigs.profile', { publicName })}
+  <Spinner />
+{:then}
+  {#if $currentMezig}
+    <div class="Profil">
+      {#if $currentMezig.blacklist === true}
+        <h3 class="BlacklistInfo">{$_('ui.profileBlacklisted')}</h3>
+      {/if}
+      <div class="ProfilPic"><img src={$currentMezig.profilPic || blankUser} alt={$_('ui.avatarTitle')} /></div>
+      <h1>{publicName}</h1>
+      <p class="Biography">{$currentMezig.biography || ''}</p>
+      {#if $currentMezig.links}
+        <Links {currentMezig}/>
+      {/if}
+    </div>
+  {:else}
+    <div class="EmptyMsg">{$_('ui.unknownUser')}</div>
+  {/if}
+{/await}

@@ -46,6 +46,7 @@ function dispAlert(){
   }
   #suppr:hover{
     color:crimson;
+    cursor: pointer;
   }
   #suppr{
     height: 35%;

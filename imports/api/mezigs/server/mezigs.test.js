@@ -170,12 +170,6 @@ describe('mezig', function () {
         );
       });
     });
-    describe('mezigs.checkProfile', function () {
-      it('sends all mezigs', function () {
-        // checkProfile._execute({ userId }, {});
-        // FIXME
-      });
-    });
     describe('mezigs.getMezigs', function () {
       beforeEach(function () {
         _.times(4, () => {

@@ -34,6 +34,9 @@ export const updateMezig = new ValidatedMethod({
   }).validator({ clean: true }),
   run({ mezigId, data }) {
     // check if logged in
+    if (data.publicName.length < 3) {
+      throw new Meteor.Error('api.mezigs.methods.updateMezig.shortPublicName', 'PublicName is too short.');
+    }
     if (!this.userId) {
       throw new Meteor.Error('api.mezigs.methods.updateMezig.notLoggedIn', 'You must be logged in.');
     }

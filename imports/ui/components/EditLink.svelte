@@ -32,6 +32,7 @@ function dispAlert(){
   .link{
     display: flex;
     padding: 3%;
+    border: solid grey 1px;
   }
   .link:hover{
     background-color: rgba(30, 30, 90, 0.1);
@@ -47,12 +48,18 @@ function dispAlert(){
   }
   #suppr{
     height: 35%;
+    color: grey;
   }
   .supprDialog{
     display: flex;
     justify-content: center;
     width: 100%;
     padding: 5% 0%;
+  }
+  .buttonDel{
+    margin-left: 3%;
+    display: flex;
+    align-items: center;
   }
 </style>
 
@@ -83,16 +90,16 @@ function dispAlert(){
 {/if}
 {#if supprAlert == true}
 <div class="supprDialog">
-  <FormField>
-    <span>{$_('ui.delLink')}</span>
-    <Button on:click={dispAlert, () => {
+  <p>{$_('ui.delLink')}</p>
+  <div class="buttonDel">
+    <Button class="marginButton" on:click={supprAlert=!supprAlert} on:click={() => {
       dispatch('deleteLink', { index: linkIndex });
-    }}>
-  {$_('ui.yes')}
-</Button>
-<Button on:click={dispAlert}>
-  {$_('ui.no')}
-</Button>
-  </FormField>
+      }}>
+      {$_('ui.yes')}
+    </Button>
+    <Button on:click={dispAlert}>
+      {$_('ui.no')}
+    </Button>
+  </div>
 </div>
 {/if}

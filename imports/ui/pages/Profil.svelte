@@ -5,6 +5,7 @@
   import Mezigs from '../../api/mezigs/mezigs';
   import Links from '../components/Links.svelte';
   import Spinner from '../components/Spinner.svelte';
+  import Share from '../components/Share.svelte';
 
   export let publicName = '';
   const blankUser = '/blank_user.svg';
@@ -27,6 +28,7 @@
       {/if}
       <div class="ProfilPic"><img src={$currentMezig.profilPic || blankUser} alt={$_('ui.avatarTitle')} /></div>
       <h1>{publicName}</h1>
+      <Share />
       <p class="Biography">{$currentMezig.biography || ''}</p>
       <div class="Skills">
         <details>

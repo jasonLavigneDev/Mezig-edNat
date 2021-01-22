@@ -8,8 +8,6 @@
   import '@smui/switch/bare.css';
   import { Icon, Text } from '@smui/chips/bare';
   import '@smui/chips/bare.css';
-  import { Item, Meta } from '@smui/list/bare';
-  import '@smui/list/bare.css';
   import Button from '@smui/button/bare';
   import '@smui/button/bare.css';
   import { createEventDispatcher } from 'svelte';
@@ -23,7 +21,6 @@
 
 function dispAlert(){
   supprAlert = !supprAlert;
-  console.log(supprAlert, "tests");
 }
 
 </script>
@@ -75,12 +72,12 @@ function dispAlert(){
   </div>
   <div id="suppr">
     <Icon
-    on:click={dispAlert}
-    class="material-icons"
-    trailing
+      on:click={dispAlert}
+      class="material-icons"
+      trailing
     >
         cancel
-      </Icon>
+    </Icon>
   </div>
 </div>
 {/if}

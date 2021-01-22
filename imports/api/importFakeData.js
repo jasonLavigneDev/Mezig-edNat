@@ -98,6 +98,7 @@ if (Meteor.settings.private.fillWithFakeData) {
         lastName: user.lastName,
         username: user.username || `${user.firstName}.${user.lastName}`,
         publicName: user.username || `${user.firstName}.${user.lastName}`,
+        email: user.emails[0].address,
         profilPic: user.avatar || '',
         biography: "Tout petit déjà, il n'était pas grand.",
         blacklist: Random.fraction() * 100 >= 90, // génère 10% de blacklist = true

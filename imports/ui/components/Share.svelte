@@ -1,20 +1,8 @@
 <script>
-  import FormField from '@smui/form-field/bare';
-  import '@smui/form-field/bare.css';
-  import Textfield from '@smui/textfield/bare';
-  import '@smui/textfield/bare.css';
-  import Switch from '@smui/switch/bare';
-  import '@smui/switch/bare.css';
-  import Button from '@smui/button/bare';
-  import '@smui/button/bare.css';
   import Snackbar, { Label } from '@smui/snackbar/bare';
   import '@smui/snackbar/bare.css';
-  import IconButton, { Icon } from '@smui/icon-button/bare';
+  import { Icon } from '@smui/icon-button/bare';
   import '@smui/icon-button/bare.css';
-  import Paper from '@smui/paper/bare';
-  import '@smui/paper/bare.css';
-  import Chip, { Set, Text } from '@smui/chips/bare';
-  import '@smui/chips/bare.css';
 
   import { _ } from 'svelte-i18n';
 
@@ -44,8 +32,5 @@
   .shareLink {
     cursor: pointer;
     color: whitesmoke;
-    position: absolute;
-    top: 30vh;
-    left: 57%;
   }
 </style>

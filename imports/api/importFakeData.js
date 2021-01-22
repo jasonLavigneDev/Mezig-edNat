@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import Mezigs from './mezigs/mezigs';
-import fakeData from '../../fakeData.json';
 
 if (Meteor.settings.private.fillWithFakeData) {
   let nbMezigsAdded = 0;
@@ -92,7 +91,6 @@ if (Meteor.settings.private.fillWithFakeData) {
 
   if (Mezigs.find().count() <= 10) {
     console.log('Add FakeDatas');
-    fakeData.map((mezigs) => createMezig(mezigs));
     const allUsers = Meteor.users.find({}).fetch();
     allUsers.forEach((user) => {
       const mez = {

@@ -4,7 +4,12 @@
   import { link as routerLink, navigate } from 'svelte-routing';
   import { _ } from 'svelte-i18n';
   import Mezigs from '../../api/mezigs/mezigs';
+
   import Spinner from '../components/Spinner.svelte';
+  import EditTableLinks from '../components/EditTableLinks.svelte';
+
+  import Dialog, {Title, Content, Actions} from '@smui/dialog/bare';
+  import '@smui/dialog/bare.css';
   import Chip, { Set, Icon, Text } from '@smui/chips/bare';
   import '@smui/chips/bare.css';
   import Textfield from '@smui/textfield/bare';
@@ -17,10 +22,10 @@
   import '@smui/switch/bare.css';
   import Paper from '@smui/paper/bare';
   import '@smui/paper/bare.css';
-  import EditTableLinks from '../components/EditTableLinks.svelte';
   // FIXME : npm add only required packages instead of whole 'svelte-material-ui'
 
   export let profileOk = true;
+  export let simpleDialog;
   let loading = true;
   let whitelist = true;
   let publicName = '';
@@ -29,6 +34,7 @@
   let links = [];
   let skills = [];
   let newSkill = '';
+  let error = '';
 
   const validateForm = (publicName) => {
     return publicName !== '';
@@ -60,7 +66,8 @@
     userData = { blacklist: !whitelist, publicName, biography, profilPic, links, skills, profileChecked: true };
     Meteor.call('mezigs.updateMezig', { mezigId: $currentMezig._id, data: userData }, (err) => {
       if (err) {
-        alert(err.reason);
+        error = err;
+        simpleDialog.open()
       } else {
         // set loading to true to permit reload from api
         profileOk = true;
@@ -183,6 +190,7 @@
               </Button>
             </FormField>
           </Paper>
+            
         </div>
         <div>
           <span class="PaperTitle">{$_('ui.editProfil.links')}</span>
@@ -190,8 +198,21 @@
             <EditTableLinks bind:links />
           </Paper>
         </div>
-        <Button on:click={handleSubmit} disabled={!formValid}>{$_('ui.editProfil.submit')}</Button>
+        
+        <Button on:click={handleSubmit} disabled={!formValid} variant="raised" style="margin: 3%; font-size: 1.3rem">{$_('ui.editProfil.submit')}</Button>
+
       </form>
+      <Dialog bind:this={simpleDialog} aria-labelledby="simple-title" aria-describedby="simple-content">
+        <Title id="simple-title">Error</Title>
+        <Content id="simple-content">
+          {error}
+        </Content>
+        <Actions>
+          <Button>
+            <Label>Ok.</Label>
+          </Button>
+        </Actions>
+      </Dialog>
     {:else}
       <div class="EmptyMsg">{$_('ui.unknownUser')}</div>
     {/if}

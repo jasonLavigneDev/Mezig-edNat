@@ -26,9 +26,14 @@
       {#if $currentMezig.blacklist === true}
         <h3 class="BlacklistInfo">{$_('ui.profileBlacklisted')}</h3>
       {/if}
-      <div class="ProfilPic"><img src={$currentMezig.profilPic || blankUser} alt={$_('ui.avatarTitle')} /></div>
+      <div class="ProfilPic">
+        <div class="shareButton"><Share /></div>
+        <img src={$currentMezig.profilPic || blankUser} alt={$_('ui.avatarTitle')} />
+      </div>
       <h1>{publicName}</h1>
-      <Share />
+      {#if $currentMezig.email !== ''}
+        <h2><a href={`mailto:${$currentMezig.email}`}>{$currentMezig.email}</a></h2>
+      {/if}
       <p class="Biography">{$currentMezig.biography || ''}</p>
       <div class="Skills">
         <details>
@@ -43,7 +48,7 @@
         </details>
       </div>
       {#if $currentMezig.links}
-        <Links {currentMezig}/>
+        <Links {currentMezig} />
       {/if}
     </div>
   {:else}
@@ -75,6 +80,15 @@
     margin-top: 1vmin;
     color: white;
   }
+  h2 {
+    text-align: center;
+    display: block;
+    margin: 0;
+    margin-bottom: 2vmin;
+    font-size: 2vmin;
+    margin-top: 1vmin;
+    color: white;
+  }
   .DivRS {
     display: flex;
     height: 10vh;
@@ -93,7 +107,7 @@
     align-items: center;
     margin: 1vmin;
   }
-  summary{
+  summary {
     text-align: center;
     -moz-user-select: none;
     user-select: none;
@@ -116,5 +130,11 @@
   .BlacklistInfo {
     color: red;
     text-align: center;
+  }
+  .shareButton {
+    position: absolute;
+    top: 12%;
+    left: 65%;
+    width: min-content;
   }
 </style>

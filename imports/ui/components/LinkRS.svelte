@@ -26,7 +26,7 @@
 {#each Object.keys(tabSN) as NomSN}
 
   {#if link.URL.includes(NomSN)}
-    <a target="_blank" href={link.URL}><svg
+    <a target="_blank" href={link.URL} title={link.label}><svg
         enable-background="new 0 0 24 24"
         viewBox="0 0 24 24"
         alt="Logo {NomSN}"><path class:nonPublic d={tabSN[NomSN]["svg"]} /></svg></a>

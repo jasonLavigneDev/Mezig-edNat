@@ -32,7 +32,6 @@ function dispAlert(){
   .link{
     display: flex;
     padding: 3%;
-    border: solid grey 1px;
   }
   .link:hover{
     background-color: rgba(30, 30, 90, 0.1);
@@ -79,6 +78,7 @@ function dispAlert(){
   </div>
   <div id="suppr">
     <Icon
+      title={$_('ui.delLinkTitle')}
       on:click={dispAlert}
       class="material-icons"
       trailing

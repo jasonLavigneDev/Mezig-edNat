@@ -7,8 +7,9 @@
   },
   "ui": {
     "yes": "Oui",
-    "no" : "Non",
-    "delLink" : "Voulez-vous vraiment supprimer ce lien ?",
+    "no": "Non",
+    "delLink": "Voulez-vous vraiment supprimer ce lien ?",
+    "delLinkTitle": "Supprimer ce lien",
     "appName": "Mezig",
     "search": "Rechercher",
     "connection": "Se connecter",
@@ -24,7 +25,7 @@
     "backToHome": "Retour à la recherche",
     "edit": "Modifier",
     "editSub": "Modifier votre profil",
-    "copiedLink" : "Le lien a été copié dans votre presse-papier.",
+    "copiedLink": "Le lien a été copié dans votre presse-papier.",
     "profil": "Mon mézig",
     "profilSub": "Voir votre profil",
     "disconnectionSub": "Déconnectez-vous",
@@ -36,6 +37,7 @@
       "showProfile": "Publier mon profil",
       "publicName": "Nom public",
       "biography": "Biographie",
+      "email": "Email",
       "skills": "Compétences",
       "addSkills": "Ajouter",
       "newSkill": "Nouvelle compétence",
@@ -47,8 +49,8 @@
     "editLink": {
       "label": "Label",
       "url": "URL",
-      "showLink": "Montrer ce lien"
+      "showLink": "Lien Public"
     },
-    "share" : "Copier le lien du profil !"
+    "share": "Copier le lien du profil"
   }
 }

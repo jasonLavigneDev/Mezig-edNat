@@ -8,7 +8,7 @@
   import Spinner from '../components/Spinner.svelte';
   import EditTableLinks from '../components/EditTableLinks.svelte';
 
-  import Dialog, {Title, Content, Actions} from '@smui/dialog/bare';
+  import Dialog, { Title, Content, Actions } from '@smui/dialog/bare';
   import '@smui/dialog/bare.css';
   import Chip, { Set, Icon, Text } from '@smui/chips/bare';
   import '@smui/chips/bare.css';
@@ -35,6 +35,7 @@
   let skills = [];
   let newSkill = '';
   let error = '';
+  let email = '';
 
   const validateForm = (publicName) => {
     return publicName !== '';
@@ -46,6 +47,7 @@
         whitelist = !mezig.blacklist;
         publicName = mezig.publicName;
         biography = mezig.biography || '';
+        email = mezig.email || '';
         profilPic = mezig.profilPic || '';
         links = mezig.links || [];
         skills = mezig.skills || [];
@@ -67,7 +69,7 @@
     Meteor.call('mezigs.updateMezig', { mezigId: $currentMezig._id, data: userData }, (err) => {
       if (err) {
         error = err;
-        simpleDialog.open()
+        simpleDialog.open();
       } else {
         // set loading to true to permit reload from api
         profileOk = true;
@@ -83,6 +85,86 @@
     newSkill = '';
   };
 </script>
+
+<svelte:head>
+  <title>{$_('ui.editProfil.title')} | {$_('ui.appName')}</title>
+</svelte:head>
+
+{#if $user_id === null}
+  <h1>{$_('api.notLoggedIn')}</h1>
+{:else}
+  {#await Meteor.subscribe('mezigs.self')}
+    <Spinner />
+  {:then}
+    {#if $currentMezig}
+      <form on:submit|preventDefault>
+        {#if profileOk === false}<span class="validationNeeded">{$_('ui.editProfil.validationNeeded')} </span>{/if}
+        <div class="MezigField">
+          <FormField>
+            <Switch bind:checked={whitelist} />
+            <span slot="label">{$_('ui.editProfil.showProfile')}</span>
+          </FormField>
+        </div>
+        <div class="MezigField">
+          <Textfield
+            class="FullWidth"
+            variant="outlined"
+            bind:value={publicName}
+            label={$_('ui.editProfil.publicName')}
+          />
+        </div>
+        <div class="MezigField">
+          <Textfield class="FullWidth" variant="outlined" bind:value={email} label={$_('ui.editProfil.email')} />
+        </div>
+        <div class="MezigField">
+          <Textfield textarea fullwidth bind:value={biography} label={$_('ui.editProfil.biography')} />
+        </div>
+        <div>
+          <FormField>
+            <Set chips={skills} let:chip input>
+              <Chip>
+                <Text>{chip}</Text>
+                <Icon class="material-icons" trailing tabindex="0">cancel</Icon>
+              </Chip>
+            </Set>
+            <FormField>
+              <Textfield bind:value={newSkill} label={$_('ui.editProfil.newSkill')} />
+              <Button
+                variant="raised"
+                on:click={addSkill}
+                disabled={newSkill === '' || skills.indexOf(newSkill) !== -1}
+              >
+                <Label>{$_('ui.editProfil.addSkills')}</Label>
+              </Button>
+            </FormField>
+          </FormField>
+        </div>
+        <div>
+          <Paper>
+            <EditTableLinks bind:links />
+          </Paper>
+        </div>
+
+        <Button on:click={handleSubmit} disabled={!formValid} variant="raised" style="margin: 3%; font-size: 1.3rem"
+          >{$_('ui.editProfil.submit')}</Button
+        >
+      </form>
+      <Dialog bind:this={simpleDialog} aria-labelledby="simple-title" aria-describedby="simple-content">
+        <Title id="simple-title">Error</Title>
+        <Content id="simple-content">
+          {error}
+        </Content>
+        <Actions>
+          <Button>
+            <Label>Ok.</Label>
+          </Button>
+        </Actions>
+      </Dialog>
+    {:else}
+      <div class="EmptyMsg">{$_('ui.unknownUser')}</div>
+    {/if}
+  {/await}
+{/if}
 
 <style>
   :root {
@@ -141,80 +223,3 @@
     text-align: center;
   }
 </style>
-
-<svelte:head>
-  <title>{$_('ui.editProfil.title')} | {$_('ui.appName')}</title>
-</svelte:head>
-
-{#if $user_id === null}
-  <h1>{$_('api.notLoggedIn')}</h1>
-{:else}
-  {#await Meteor.subscribe('mezigs.self')}
-    <Spinner />
-  {:then}
-    {#if $currentMezig}
-      <form on:submit|preventDefault>
-        {#if profileOk === false}<span class="validationNeeded">{$_('ui.editProfil.validationNeeded')} </span>{/if}
-        <div class="MezigField">
-          <FormField>
-            <Switch bind:checked={whitelist} />
-            <span slot="label">{$_('ui.editProfil.showProfile')}</span>
-          </FormField>
-        </div>
-        <div class="MezigField">
-          <Textfield
-            class="FullWidth"
-            variant="outlined"
-            bind:value={publicName}
-            label={$_('ui.editProfil.publicName')} />
-        </div>
-        <div class="MezigField">
-          <Textfield textarea fullwidth bind:value={biography} label={$_('ui.editProfil.biography')} />
-        </div>
-        <div>
-          <span class="PaperTitle">{$_('ui.editProfil.skills')}</span>
-          <Paper>
-            <Set chips={skills} let:chip input>
-              <Chip>
-                <Text>{chip}</Text>
-                <Icon class="material-icons" trailing tabindex="0">cancel</Icon>
-              </Chip>
-            </Set>
-            <FormField>
-              <Textfield bind:value={newSkill} label={$_('ui.editProfil.newSkill')} />
-              <Button
-                variant="raised"
-                on:click={addSkill}
-                disabled={newSkill === '' || skills.indexOf(newSkill) !== -1}>
-                <Label>{$_('ui.editProfil.addSkills')}</Label>
-              </Button>
-            </FormField>
-          </Paper>
-            
-        </div>
-        <div>
-          <span class="PaperTitle">{$_('ui.editProfil.links')}</span>
-          <Paper>
-            <EditTableLinks bind:links />
-          </Paper>
-        </div>
-        
-        <Button on:click={handleSubmit} disabled={!formValid} variant="raised" style="margin: 3%; font-size: 1.3rem">{$_('ui.editProfil.submit')}</Button>
-
-      </form>
-      <Dialog bind:this={simpleDialog} aria-labelledby="simple-title" aria-describedby="simple-content">
-        <Title id="simple-title">Error</Title>
-        <Content id="simple-content">
-          {error}
-        </Content>
-        <Actions>
-          <Button>
-            <Label>Ok.</Label>
-          </Button>
-        </Actions>
-      </Dialog>
-    {:else}
-      <div class="EmptyMsg">{$_('ui.unknownUser')}</div>
-    {/if}
-  {/await}
-{/if}

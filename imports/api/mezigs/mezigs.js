@@ -36,6 +36,11 @@ Mezigs.schema = new SimpleSchema(
       type: String,
       optional: true,
     },
+    email: {
+      type: String,
+      regEx: SimpleSchema.RegEx.Email,
+      optional: true,
+    },
     username: {
       type: String,
       optional: false,
@@ -93,6 +98,7 @@ Mezigs.searchFields = {
   blacklist: 1,
   firstName: 1,
   lastName: 1,
+  email: 1,
   publicName: 1,
   profilPic: 1,
   skills: 1,

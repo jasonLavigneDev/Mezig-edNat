@@ -90,6 +90,7 @@ const queryAllMezigs = ({ search }) => {
           { publicName: { $regex: nameRegExp, $options: 'i' } },
           { firstName: { $regex: nameRegExp, $options: 'i' } },
           { lastName: { $regex: nameRegExp, $options: 'i' } },
+          { email: { $regex: nameRegExp, $options: 'i' } },
         ],
       });
     }

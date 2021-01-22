@@ -66,6 +66,7 @@
     font-size: 1rem;
     font-weight: bold;
     background: var(--color-brand);
+    border-radius: 10px;
   }
   .loginMsg {
     position: absolute;

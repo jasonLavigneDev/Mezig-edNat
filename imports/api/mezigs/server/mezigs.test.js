@@ -170,16 +170,55 @@ describe('mezig', function () {
         );
       });
     });
-    describe('mezigs.checkProfile', function () {
-      it('sends all mezigs', function () {
-        // checkProfile._execute({ userId }, {});
-        // FIXME
-      });
-    });
     describe('mezigs.getMezigs', function () {
-      it('sends all mezigs', function () {
-        // FIXME
-        getMezigs._execute({}, { page: 1, itemPerPage: 2, search: 'yo' });
+      beforeEach(function () {
+        _.times(4, () => {
+          Factory.create('mezigs', { skills: ['svelte'] });
+        });
+        _.times(4, () => {
+          Factory.create('mezigs', { firstName: `yoyo${Random.id()}` });
+        });
+        Factory.create('mezigs', { firstName: 'yoyo', skills: ['svelte'] });
+      });
+      it('sends all mezigs with empty search string', function () {
+        const res = getMezigs._execute({}, { page: 1, itemPerPage: 20, search: '' });
+        assert.equal(res.total, 9);
+        assert.equal(res.data.length, 9);
+      });
+      it('sends all mezigs with userId and empty search string', function () {
+        const res = getMezigs._execute({ userId }, { page: 1, itemPerPage: 20, search: '' });
+        assert.equal(res.total, 9);
+        assert.equal(res.data.length, 9);
+      });
+      it('sends first page of mezigs with empty search string', function () {
+        const res = getMezigs._execute({}, { page: 1, itemPerPage: 5, search: '' });
+        assert.equal(res.total, 9);
+        assert.equal(res.data.length, 5);
+      });
+      it('sends second page of mezigs with empty search string', function () {
+        const res = getMezigs._execute({}, { page: 2, itemPerPage: 5, search: '' });
+        assert.equal(res.total, 9);
+        assert.equal(res.data.length, 4);
+      });
+      it('sends mezigs with search string = "yoyo"', function () {
+        const res = getMezigs._execute({}, { page: 1, itemPerPage: 20, search: 'yoyo' });
+        assert.equal(res.total, 5);
+        assert.equal(res.data.length, 5);
+      });
+      it('sends mezigs with search string = "#svelte"', function () {
+        const res = getMezigs._execute({}, { page: 1, itemPerPage: 20, search: '#svelte' });
+        assert.equal(res.total, 5);
+        assert.equal(res.data.length, 5);
+      });
+      it('sends mezigs with search string = "yoyo #svelte"', function () {
+        const res = getMezigs._execute({}, { page: 1, itemPerPage: 20, search: 'yoyo #svelte' });
+        assert.equal(res.total, 1);
+        assert.equal(res.data.length, 1);
+      });
+      it('sends mezigs with search string = "noresults"', function () {
+        const res = getMezigs._execute({}, { page: 1, itemPerPage: 20, search: 'noresults' });
+        assert.equal(res.total, 0);
+        assert.equal(res.data.length, 0);
       });
     });
   });

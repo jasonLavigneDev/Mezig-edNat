@@ -26,7 +26,6 @@
   $: usersScroll = [...usersScroll, ...newLoadedMezigs];
 
   function handleClickSkill(event) {
-    console.log('usersScroll.length', usersScroll.length);
     searching += ` #${event.detail.text}`; // Add skill to existing search string
     ActuSearch();
   }
@@ -66,7 +65,6 @@
   }
 
   function loadmore() {
-    console.log(`loadmore p=${page}, loaded=${usersScroll.length}`);
     page++;
     res = Meteor.call('mezigs.getMezigs', { search: searching, page, itemPerPage }, (err, res) => {
       newLoadedMezigs = res.data;

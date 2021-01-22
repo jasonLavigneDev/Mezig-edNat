@@ -24,6 +24,7 @@
     "backToHome": "Back to search",
     "edit": "Edit",
     "editSub": "Edit your profile",
+    "copiedLink" : "The link has been copied to your clipboard.",
     "profil": "My mezig",
     "profilSub": "Go to your profile",
     "disconnectionSub": "Disconnect",
@@ -47,6 +48,7 @@
       "label": "Label",
       "url": "URL",
       "showLink": "Show this link"
-    }
+    },
+    "share" : "Copy profile link !"
   }
 }

@@ -24,6 +24,7 @@
     "backToHome": "Retour à la recherche",
     "edit": "Modifier",
     "editSub": "Modifier votre profil",
+    "copiedLink" : "Le lien a été copié dans votre presse-papier.",
     "profil": "Mon mézig",
     "profilSub": "Voir votre profil",
     "disconnectionSub": "Déconnectez-vous",
@@ -47,6 +48,7 @@
       "label": "Label",
       "url": "URL",
       "showLink": "Montrer ce lien"
-    }
+    },
+    "share" : "Copier le lien du profil !"
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import Mezigs from './mezigs/mezigs';

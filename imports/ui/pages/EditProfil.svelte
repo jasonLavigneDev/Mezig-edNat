@@ -20,8 +20,6 @@
   import '@smui/form-field/bare.css';
   import Switch from '@smui/switch/bare';
   import '@smui/switch/bare.css';
-  import Paper from '@smui/paper/bare';
-  import '@smui/paper/bare.css';
   // FIXME : npm add only required packages instead of whole 'svelte-material-ui'
 
   export let profileOk = true;
@@ -37,8 +35,11 @@
   let error = '';
   let email = '';
 
-  const validateForm = (publicName) => {
-    return publicName !== '';
+  const validateForm = (publicName, links) => {
+    publicNameOK = publicName !== '';
+    // No empty values in links
+    linksOK = links.reduce((acc, cur) => acc && cur.label != '' && cur.URL != '', true);
+    return publicNameOK && linksOK;
   };
 
   const initData = (mezig) => {
@@ -62,13 +63,22 @@
     return Mezigs.findOne({ username: user.username });
   });
   $: initData($currentMezig);
-  $: formValid = validateForm(publicName);
+  $: formValid = validateForm(publicName, links);
 
   const handleSubmit = () => {
-    userData = { blacklist: !whitelist, publicName, biography, profilPic, links, skills, profileChecked: true };
+    userData = {
+      blacklist: !whitelist,
+      publicName,
+      biography,
+      profilPic,
+      links,
+      skills,
+      email: email || null,
+      profileChecked: true,
+    };
     Meteor.call('mezigs.updateMezig', { mezigId: $currentMezig._id, data: userData }, (err) => {
       if (err) {
-        error = err;
+        error = err.message;
         simpleDialog.open();
       } else {
         // set loading to true to permit reload from api
@@ -76,6 +86,19 @@
         navigate(`/profil/${publicName}`, { state: `/profil/${publicName}` });
       }
     });
+  };
+
+  const handleCancel = () => {
+    // set loading to true to permit reload from api
+    profileOk = true;
+    navigate(`/profil/${$currentMezig.publicName}`, { state: `/profil/${$currentMezig.publicName}` });
+  };
+
+  const handleUpdateLinks = () => {
+    // 'updateLink' event emit by EditLink component on input values in label and URL fields
+    // => update links array to dynamicaly launch validateForm
+    // https://svelte.dev/tutorial/updating-arrays-and-objects
+    links = links;
   };
 
   const addSkill = () => {
@@ -99,7 +122,7 @@
     {#if $currentMezig}
       <form on:submit|preventDefault>
         {#if profileOk === false}<span class="validationNeeded">{$_('ui.editProfil.validationNeeded')} </span>{/if}
-        <div class="MezigField">
+        <div class="MezigField center">
           <FormField>
             <Switch bind:checked={whitelist} />
             <span slot="label">{$_('ui.editProfil.showProfile')}</span>
@@ -119,7 +142,8 @@
         <div class="MezigField">
           <Textfield textarea fullwidth bind:value={biography} label={$_('ui.editProfil.biography')} />
         </div>
-        <div>
+        <div class="part">
+          <p class="partTitle">{$_('ui.editProfil.skills')}</p>
           <FormField>
             <Set chips={skills} let:chip input>
               <Chip>
@@ -139,15 +163,16 @@
             </FormField>
           </FormField>
         </div>
-        <div>
-          <Paper>
-            <EditTableLinks bind:links />
-          </Paper>
+        <div class="part">
+          <p class="partTitle" style="margin-bottom: 0">{$_('ui.editProfil.links')}</p>
+          <EditTableLinks bind:links on:updateLink={handleUpdateLinks} />
         </div>
-
-        <Button on:click={handleSubmit} disabled={!formValid} variant="raised" style="margin: 3%; font-size: 1.3rem"
-          >{$_('ui.editProfil.submit')}</Button
-        >
+        <div class="center">
+          <Button on:click={handleCancel} style="margin: 3%; font-size: 1.2rem;">{$_('ui.editProfil.cancel')}</Button>
+          <Button on:click={handleSubmit} style="margin: 3%; font-size: 1.2rem;" disabled={!formValid} variant="raised"
+            >{$_('ui.editProfil.submit')}</Button
+          >
+        </div>
       </form>
       <Dialog bind:this={simpleDialog} aria-labelledby="simple-title" aria-describedby="simple-content">
         <Title id="simple-title">Error</Title>
@@ -156,7 +181,7 @@
         </Content>
         <Actions>
           <Button>
-            <Label>Ok.</Label>
+            <Label>Ok</Label>
           </Button>
         </Actions>
       </Dialog>
@@ -210,9 +235,6 @@
   .MezigField {
     margin: 10px auto;
   }
-  .PaperTitle {
-    margin: 5px;
-  }
   * :global(.FullWidth) {
     width: 100%;
   }
@@ -220,6 +242,22 @@
     color: red;
     display: block;
     width: 100%;
+    text-align: center;
+  }
+  .part {
+    margin: 10px 0;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #9e9e9e;
+    border-radius: 4px;
+  }
+  .partTitle {
+    margin: 10px 0;
+    margin-left: 10px;
+    font-size: 1.6vmin;
+    color: #9e9e9e;
+  }
+  .center {
     text-align: center;
   }
 </style>

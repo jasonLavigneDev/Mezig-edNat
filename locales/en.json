@@ -43,6 +43,7 @@
       "newSkill": "New skill",
       "links": "Links",
       "submit": "Submit",
+      "cancel": "Cancel",
       "validationNeeded": "Please validate your profile to continue"
     },
     "editTableLinks": { "addLink": "Add a link" },

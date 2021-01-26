@@ -6,17 +6,11 @@
 
   import { _ } from 'svelte-i18n';
 
+  export let publicName;
   let mySnackbar;
 
   function handleCopy() {
-    var dummy = document.createElement('input'),
-      text = window.location.href;
-    document.body.appendChild(dummy);
-    dummy.value = text;
-    dummy.select();
-    document.execCommand('copy');
-    document.body.removeChild(dummy);
-    mySnackbar.open();
+    navigator.clipboard.writeText(`${Meteor.absoluteUrl()}profil/${publicName}`).then(mySnackbar.open());
   }
 </script>
 

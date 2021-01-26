@@ -15,7 +15,7 @@ Meteor.methods({
 export const createMezig = new ValidatedMethod({
   name: 'mezigs.createMezig',
   validate: new SimpleSchema({
-    data: Mezigs.schema.omit('blacklist', 'profilPic', 'biography', 'links', 'skills'),
+    data: Mezigs.schema.omit('blacklist', 'profilPic', 'biography', 'email', 'links', 'skills'),
   }).validator({ clean: true }),
   run({ data }) {
     // check if logged in

@@ -43,6 +43,7 @@
       "newSkill": "Nouvelle compétence",
       "links": "Liens",
       "submit": "Valider",
+      "cancel": "Annuler",
       "validationNeeded": "Veuillez valider votre profil pour continuer"
     },
     "editTableLinks": { "addLink": "Ajouter un lien" },

@@ -50,19 +50,15 @@
     page = 1;
     ulMezigs.scrollTop = 0;
     if (searching.length >= 3) {
-      res = Meteor.call(
-        'mezigs.getMezigs',
-        { search: searching == '***' ? '' : searching, itemPerPage },
-        (err, res) => {
-          newLoadedMezigs = res.data;
-          totalFoundMezigs = res.total;
-          if (totalFoundMezigs == 0) {
-            noResult = $_('ui.noSearchResult') + searching + '...';
-          } else {
-            noResult = '';
-          }
-        },
-      );
+      res = Meteor.call('mezigs.getMezigs', { search: searching, itemPerPage }, (err, res) => {
+        newLoadedMezigs = res.data;
+        totalFoundMezigs = res.total;
+        if (totalFoundMezigs == 0) {
+          noResult = $_('ui.noSearchResult') + searching + '...';
+        } else {
+          noResult = '';
+        }
+      });
     } else {
       noResult = '';
     }
@@ -70,14 +66,10 @@
 
   function loadmore() {
     page++;
-    res = Meteor.call(
-      'mezigs.getMezigs',
-      { search: searching == '***' ? '' : searching, page, itemPerPage },
-      (err, res) => {
-        newLoadedMezigs = res.data;
-        totalFoundMezigs = res.total;
-      },
-    );
+    res = Meteor.call('mezigs.getMezigs', { search: searching, page, itemPerPage }, (err, res) => {
+      newLoadedMezigs = res.data;
+      totalFoundMezigs = res.total;
+    });
   }
 </script>
 

@@ -98,7 +98,7 @@
     required
   />
   {#if totalFoundMezigs !== 0}
-    <p id="infos" class:red={usersScroll.length === totalFoundMezigs}>
+    <p id="infos" class:end={usersScroll.length === totalFoundMezigs}>
       {usersScroll.length}
       affichés sur
       {totalFoundMezigs}
@@ -196,23 +196,29 @@
   #infos {
     margin-left: auto;
   }
-  .red {
-    color: red;
+  .end {
+    font-weight: bold;
   }
 
   #results::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: inset 0 0 6px #2f2f2f;
     border-radius: 10px;
   }
 
   #results::-webkit-scrollbar {
     width: 9px;
   }
+  #results {
+    scrollbar-color: #57bd84 #2f2f2f;
+  }
 
   #results::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: #555;
+    background-color: #57bd84;
+  }
+  #results::scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #57bd84;
   }
 
   @media (min-width: 576px) {

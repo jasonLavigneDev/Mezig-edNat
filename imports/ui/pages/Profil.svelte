@@ -27,11 +27,11 @@
         <h3 class="BlacklistInfo">{$_('ui.profileBlacklisted')}</h3>
       {/if}
       <div class="ProfilPic">
-        <div class="shareButton"><Share /></div>
         <img src={$currentMezig.profilPic || blankUser} alt={$_('ui.avatarTitle')} />
+        <div class="shareButton"><Share {publicName} /></div>
       </div>
       <h1>{publicName}</h1>
-      {#if $currentMezig.email !== ''}
+      {#if $currentMezig.email}
         <h2><a href={`mailto:${$currentMezig.email}`}>{$currentMezig.email}</a></h2>
       {/if}
       <p class="Biography">{$currentMezig.biography || ''}</p>
@@ -63,6 +63,7 @@
   .ProfilPic {
     display: block;
     padding-top: 5%;
+    position: relative;
   }
   .ProfilPic > img {
     display: block;
@@ -87,7 +88,10 @@
     margin-bottom: 2vmin;
     font-size: 2vmin;
     margin-top: 1vmin;
+  }
+  h2 > a {
     color: white;
+    text-decoration: none;
   }
   .DivRS {
     display: flex;
@@ -108,6 +112,7 @@
     margin: 1vmin;
   }
   summary {
+    cursor: pointer;
     text-align: center;
     -moz-user-select: none;
     user-select: none;
@@ -134,7 +139,7 @@
   .shareButton {
     position: absolute;
     top: 12%;
-    left: 65%;
+    left: 68%;
     width: min-content;
   }
 </style>

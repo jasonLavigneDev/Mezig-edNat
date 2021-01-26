@@ -18,6 +18,18 @@
   };
 </script>
 
+<div on:click={handleGoProfile} in:fly={{ y: 100, duration: 500, delay: 200 }} class="Result">
+  <img src={user.profilPic || blankUser} alt="Avatar de l'utilisateur" />
+  <div class="textResult">
+    <h3>{user.publicName}</h3>
+    <div class="skillsResult">
+      {#each user.skills as skill}
+        <p on:click|stopPropagation={clickSkills(skill)}>#{skill}</p>
+      {/each}
+    </div>
+  </div>
+</div>
+
 <style>
   p {
     cursor: pointer;
@@ -27,6 +39,7 @@
     border-radius: 20px;
     display: flex;
     margin-bottom: 15px;
+    margin-right: 10px;
     cursor: pointer;
   }
   h3 {
@@ -63,18 +76,3 @@
     line-break: auto;
   }
 </style>
-
-<div
-  on:click={handleGoProfile}
-  in:fly={{ y: 100, duration: 500, delay: 200 }}
-  class="Result">
-  <img src={user.profilPic || blankUser} alt="Avatar de l'utilisateur" />
-  <div class="textResult">
-    <h3>{user.publicName}</h3>
-    <div class="skillsResult">
-      {#each user.skills as skill}
-        <p on:click|stopPropagation={clickSkills(skill)}>#{skill}</p>
-      {/each}
-    </div>
-  </div>
-</div>

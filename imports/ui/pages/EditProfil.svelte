@@ -14,6 +14,10 @@
   import '@smui/chips/bare.css';
   import Textfield from '@smui/textfield/bare';
   import '@smui/textfield/bare.css';
+  import HelperText from '@smui/textfield/helper-text/bare';
+  import '@smui/textfield/helper-text/bare.css';
+  import CharacterCounter from '@smui/textfield/character-counter/bare';
+  import '@smui/textfield/character-counter/bare.css';
   import Button, { Label } from '@smui/button/bare';
   import '@smui/button/bare.css';
   import FormField from '@smui/form-field/bare';
@@ -31,6 +35,7 @@
   let profilPic = '';
   let links = [];
   let skills = [];
+  const maxSkillsCar = 32;
   let newSkill = '';
   let error = '';
   let email = '';
@@ -102,7 +107,7 @@
   };
 
   const addSkill = () => {
-    skills.push(newSkill);
+    skills.push(newSkill.replaceAll(' ', '_'));
     // svelte does not seem to react to push
     skills = skills;
     newSkill = '';
@@ -151,17 +156,31 @@
                 <Icon class="material-icons" trailing tabindex="0">cancel</Icon>
               </Chip>
             </Set>
-            <FormField>
-              <Textfield bind:value={newSkill} label={$_('ui.editProfil.newSkill')} />
-              <Button
-                variant="raised"
-                on:click={addSkill}
-                disabled={newSkill === '' || skills.indexOf(newSkill) !== -1}
-              >
-                <Label>{$_('ui.editProfil.addSkills')}</Label>
-              </Button>
-            </FormField>
           </FormField>
+          <div class="MezigField center">
+            <FormField>
+              <Textfield
+                bind:value={newSkill}
+                label={$_('ui.editProfil.newSkill')}
+                input$maxlength={maxSkillsCar}
+                input$aria-controls="helper-text-char-count-a"
+                input$aria-describedby="helper-text-char-count-a"
+              />
+              <HelperText id="helper-text-char-count-a">
+                <span slot="character-counter"><CharacterCounter>0 / {maxSkillsCar}</CharacterCounter></span>
+              </HelperText>
+              <div class="spaceAround">
+                <Button
+                  class="spaceAround"
+                  variant="raised"
+                  on:click={addSkill}
+                  disabled={newSkill === '' || skills.indexOf(newSkill) !== -1}
+                >
+                  <Label>{$_('ui.editProfil.addSkills')}</Label>
+                </Button>
+              </div>
+            </FormField>
+          </div>
         </div>
         <div class="part">
           <p class="partTitle" style="margin-bottom: 0">{$_('ui.editProfil.links')}</p>
@@ -256,6 +275,9 @@
     margin-left: 10px;
     font-size: 1.6vmin;
     color: #9e9e9e;
+  }
+  .spaceAround {
+    margin: 20px;
   }
   .center {
     text-align: center;

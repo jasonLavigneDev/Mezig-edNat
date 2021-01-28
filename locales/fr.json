@@ -1,0 +1,57 @@
+{
+  "api": {
+    "notLoggedIn": "Vous devez être connecté.",
+    "mezigs": {
+      "notFound": "Mezig inconnu."
+    }
+  },
+  "ui": {
+    "yes": "Oui",
+    "no": "Non",
+    "delLink": "Voulez-vous vraiment supprimer ce lien ?",
+    "delLinkTitle": "Supprimer ce lien",
+    "appName": "Mezig",
+    "search": "Rechercher",
+    "connection": "Se connecter",
+    "disconnection": "Déconnexion",
+    "loginLaboite": "connexion à LaBoite",
+    "loginMsg": "Votre utilisateur n'a pas de compte LaBoite, veuillez cliquer sur le bouton ci-dessous pour le créer, puis cliquez sur ",
+    "loginLink": "ce lien",
+    "unknownUser": "Utilisateur inconnu",
+    "avatarTitle": "Avatar de l'utilisateur",
+    "noSearchResult": "Aucun résultat pour la recherche ",
+    "searchLabel": "recherche d'utilisateurs",
+    "searchPlaceHolder": "Rechercher...",
+    "backToHome": "Retour à la recherche",
+    "edit": "Modifier",
+    "editSub": "Modifier votre profil",
+    "copiedLink": "Le lien a été copié dans votre presse-papier.",
+    "profil": "Mon mézig",
+    "profilSub": "Voir votre profil",
+    "disconnectionSub": "Déconnectez-vous",
+    "profileBlacklisted": "Votre profil n'est pas visible par les autres utilisateurs",
+    "profileSkills": "Compétences",
+    "profileSkillsNone": "Aucunes compétences renseignées",
+    "editProfil": {
+      "title": "Mon profil",
+      "showProfile": "Publier mon profil",
+      "publicName": "Nom public",
+      "biography": "Biographie",
+      "email": "Email",
+      "skills": "Compétences",
+      "addSkills": "Ajouter",
+      "newSkill": "Nouvelle compétence",
+      "links": "Liens",
+      "submit": "Valider",
+      "cancel": "Annuler",
+      "validationNeeded": "Veuillez valider votre profil pour continuer"
+    },
+    "editTableLinks": { "addLink": "Ajouter un lien" },
+    "editLink": {
+      "label": "Label",
+      "url": "URL",
+      "showLink": "Lien Public"
+    },
+    "share": "Copier le lien du profil"
+  }
+}

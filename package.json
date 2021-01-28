@@ -1,0 +1,56 @@
+{
+  "name": "mezig",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "start": "MONGO_URL='mongodb://127.0.0.1:3001/meteor' meteor --port 3002 --settings config/settings.development.json",
+    "lint": "eslint . --ext js,jsx",
+    "lintfix": "eslint --fix . --ext js,jsx",
+    "test": "meteor test --once --exclude-archs 'web.browser.legacy, web.cordova' --driver-package meteortesting:mocha --allow-superuser",
+    "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
+    "visualize": "meteor --production --extra-packages bundle-visualizer"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.12.5",
+    "chai": "^4.2.0",
+    "jquery": "^3.5.1",
+    "meteor-node-stubs": "^1.0.1",
+    "simpl-schema": "^1.10.2",
+    "svelte": "^3.29.4",
+    "svelte-i18n": "^3.3.0",
+    "svelte-infinite-scroll": "^1.5.1",
+    "svelte-routing": "^1.4.2",
+    "svelte-spinner": "^2.0.2"
+  },
+  "meteor": {
+    "mainModule": {
+      "client": "client/main.js",
+      "server": "server/main.js"
+    }
+  },
+  "eslintConfig": {
+    "extends": "@meteorjs/eslint-config-meteor"
+  },
+  "devDependencies": {
+    "@meteorjs/eslint-config-meteor": "^1.0.5",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.9.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-import-resolver-meteor": "^0.4.0",
+    "eslint-plugin-i18n": "^2.0.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx": "^0.1.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-meteor": "^7.2.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.1.2",
+    "eslint-plugin-standard": "^4.0.1",
+    "prettier": "^2.1.2",
+    "svelte-material-ui": "^1.0.0"
+  }
+}

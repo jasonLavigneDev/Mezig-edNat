@@ -124,6 +124,15 @@
     font-size: 2vmin;
     text-decoration: none;
   }
+  @media screen and (max-width: 1000px) {
+  #linkSearch {
+    font-size: 4vmin;
+  }
+  button{
+    font-size: 2rem;
+    height: 60%;
+  }
+}
 </style>
 
 <nav>

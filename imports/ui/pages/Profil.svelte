@@ -6,6 +6,8 @@
   import Links from '../components/Links.svelte';
   import Spinner from '../components/Spinner.svelte';
   import Share from '../components/Share.svelte';
+  import PackageJSON from '../../../package.json';
+  let version = PackageJSON.version;
 
   export let publicName = '';
   const blankUser = '/blank_user.svg';
@@ -15,7 +17,7 @@
 </script>
 
 <svelte:head>
-  <title>{publicName} | {$_('ui.appName')}</title>
+  <title>{publicName} | {$_('ui.appName')} {version}</title>
 </svelte:head>
 
 {#await Meteor.subscribe('mezigs.profile', { publicName })}

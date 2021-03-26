@@ -25,6 +25,8 @@
   import Switch from '@smui/switch/bare';
   import '@smui/switch/bare.css';
   // FIXME : npm add only required packages instead of whole 'svelte-material-ui'
+  import PackageJSON from '../../../package.json';
+  let version = PackageJSON.version;
 
   export let profileOk = true;
   export let simpleDialog;
@@ -115,7 +117,7 @@
 </script>
 
 <svelte:head>
-  <title>{$_('ui.editProfil.title')} | {$_('ui.appName')}</title>
+  <title>{$_('ui.editProfil.title')} | {$_('ui.appName')} {version}</title>
 </svelte:head>
 
 {#if $user_id === null}

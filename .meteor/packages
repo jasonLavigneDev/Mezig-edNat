@@ -22,7 +22,6 @@ svelte:compiler
 rdb:svelte-meteor-data
 static-html
 hotello:accounts-keycloak
-insecure@1.0.7
 dburles:factory
 johanbrook:publication-collector
 accounts-base@1.8.0

@@ -52,6 +52,15 @@
       "url": "URL",
       "showLink": "Public link"
     },
+    "Signin": {
+      "title": "Connection",
+      "loginMsg": "Connect with laboite account",
+      "signupMsg": "Signup",
+      "email": "Username or email",
+      "password": "Password",
+      "submit": "Submit",
+      "loginError": "incorrect Username or password"
+    },
     "share": "Copy profile link"
   }
 }

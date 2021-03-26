@@ -6,6 +6,7 @@
   import Nav from './components/Nav.svelte';
   import Spinner from './components/Spinner.svelte';
   import EditProfil from './pages/EditProfil.svelte';
+  import Signin from './pages/Signin.svelte';
 
   export let url = '';
   let userRedirect = false;
@@ -19,24 +20,25 @@
 {#if $isLoading}
   <Spinner />
 {:else}
-{#if userRedirect === false}
-<Router {url}>
-  <div class="container">
-    {#if profileOk === false}
-    <div>
-      <Route>
-        <EditProfil bind:profileOk />
-      </Route>
-    </div>
-    {:else}
-    <div>
-      <Route path="profil/:publicName" component={Profil} />
-      <Route path="/edit" component={EditProfil} />
-      <Route component={Search} />
-    </div>
-    {/if}
-  </div>
-</Router>
-{/if}
-<Nav bind:userRedirect bind:profileOk/>
+  {#if userRedirect === false}
+    <Router {url}>
+      <div class="container">
+        {#if profileOk === false}
+          <div>
+            <Route>
+              <EditProfil bind:profileOk />
+            </Route>
+          </div>
+        {:else}
+          <div>
+            <Route path="profil/:publicName" component={Profil} />
+            <Route path="signin" component={Signin} />
+            <Route path="/edit" component={EditProfil} />
+            <Route component={Search} />
+          </div>
+        {/if}
+      </div>
+    </Router>
+  {/if}
+  <Nav bind:userRedirect bind:profileOk />
 {/if}

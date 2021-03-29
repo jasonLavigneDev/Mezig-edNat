@@ -29,4 +29,4 @@ aldeed:collection2
 aldeed:schema-index
 mdg:validated-method
 meteortesting:mocha
-accounts-password
+accounts-password@1.7.0

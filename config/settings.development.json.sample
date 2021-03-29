@@ -5,6 +5,7 @@
         "useLocationOrigin": true
       }
     },
+    "laboiteUrl": "http://localhost:3000",
     "enableKeycloak": true,
     "keycloakUrl": "https://auth.appseducation.fr/auth",
     "keycloakRealm": "apps"

@@ -52,6 +52,15 @@
       "url": "URL",
       "showLink": "Lien Public"
     },
+    "Signin": {
+      "title": "Connexion",
+      "loginMsg": "Connexion avec un compte laboite",
+      "signupMsg": "Créer un compte",
+      "email": "Identifiant ou courriel",
+      "password": "Mot de passe",
+      "submit": "Valider",
+      "loginError": "Identifiant ou mot de passe incorrects"
+    },
     "share": "Copier le lien du profil"
   }
 }

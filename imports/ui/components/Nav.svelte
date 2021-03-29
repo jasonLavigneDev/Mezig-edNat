@@ -24,7 +24,7 @@
   $: userId = useTracker(() => Meteor.userId());
   $: user = useTracker(() => Meteor.user());
   $: userMezig = useTracker(() => Mezigs.findOne({ username: $user ? $user.username : '' }));
-  $: user && checkProfile();
+  $: userMezig && checkProfile();
 
   const checkProfile = () => {
     Meteor.call('mezigs.checkProfile', {}, (err, res) => {
@@ -32,8 +32,12 @@
     });
   };
 
-  const keycloakLogin = () => {
-    Meteor.loginWithKeycloak();
+  const doLogin = () => {
+    if (Meteor.settings.public.enableKeycloak === true) {
+      Meteor.loginWithKeycloak();
+    } else {
+      navigate('/signin', { replace: false });
+    }
   };
 
   // detect account creation failure (i.e: if logging in from keycloak)
@@ -45,6 +49,67 @@
     stopCallback();
   });
 </script>
+
+<nav>
+  <a id="linkSearch" href="/" use:routerLink>{$_('ui.search')}</a>
+  {#if userRedirect === true}
+    <div class="loginMsg">
+      <p>{$_('ui.loginMsg')}<a href="#" on:click={keycloakLogin}>{$_('ui.loginLink')}</a></p>
+      <button id="redirectButton" on:click={() => window.open(`${Meteor.settings.public.laboiteUrl}/signin`, '_blank')}
+        >{$_('ui.loginLaboite')}</button
+      >
+    </div>
+  {:else}
+    <div class="loginMenu">
+      {#if $userId === null}
+        <button id="buttonConnect" on:click={doLogin}>{$_('ui.connection')}</button>
+      {:else}
+        <div class="loggedMenu">
+          {#await Meteor.subscribe('mezigs.self')}
+            <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
+          {:then}
+            <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
+            {#if $userMezig}
+              <img
+                bind:this={anchor}
+                id="ProfilPic"
+                src={$userMezig.profilPic || blankUser}
+                alt="Avatar"
+                on:click={() => menu.setOpen(true)}
+                use:Anchor
+              />
+              <Menu bind:this={menu} anchor={true} bind:anchorElement={anchor} anchorCorner="BOTTOM_LEFT">
+                <List twoLine>
+                  <Item on:SMUI:action={() => navigate('/profil/' + $userMezig.publicName, { replace: false })}>
+                    <Text class="MenuText">
+                      <PrimaryText>{$_('ui.profil')}</PrimaryText>
+                      <SecondaryText>{$_('ui.profilSub')}</SecondaryText>
+                    </Text>
+                  </Item>
+                  <Item on:SMUI:action={() => navigate('/edit', { replace: false })}>
+                    <Text class="MenuText">
+                      <PrimaryText>{$_('ui.edit')}</PrimaryText>
+                      <SecondaryText>{$_('ui.editSub')}</SecondaryText>
+                    </Text>
+                  </Item>
+                  <Separator />
+                  <Item on:SMUI:action={() => Meteor.logout()}>
+                    <Text class="MenuText">
+                      <PrimaryText>{$_('ui.disconnection')}</PrimaryText>
+                      <SecondaryText>{$_('ui.disconnectionSub')}</SecondaryText>
+                    </Text>
+                  </Item>
+                </List>
+              </Menu>
+            {/if}
+          {/await}
+        </div>
+      {/if}
+    </div>
+  {/if}
+  <span />
+  <!-- Separator -->
+</nav>
 
 <style>
   :root {
@@ -82,11 +147,11 @@
     margin-right: 10%;
     color: var(--color-brand);
   }
-  .loggedMenu{
+  .loggedMenu {
     display: flex;
     justify-content: flex-end;
     height: 100%;
-    width: 10%
+    width: 10%;
   }
   * {
     align-items: center;
@@ -125,74 +190,12 @@
     text-decoration: none;
   }
   @media screen and (max-width: 1000px) {
-  #linkSearch {
-    font-size: 4vmin;
+    #linkSearch {
+      font-size: 4vmin;
+    }
+    button {
+      font-size: 2rem;
+      height: 60%;
+    }
   }
-  button{
-    font-size: 2rem;
-    height: 60%;
-  }
-}
 </style>
-
-<nav>
-  <a id="linkSearch" href="/" use:routerLink>{$_('ui.search')}</a>
-  {#if userRedirect === true}
-    <div class="loginMsg">
-      <p>{$_('ui.loginMsg')}<a href="#" on:click={keycloakLogin}>{$_('ui.loginLink')}</a></p>
-      <button
-        id="redirectButton"
-        on:click={() => window.open('http://localhost:3000/signin', '_blank')}>{$_('ui.loginLaboite')}</button>
-    </div>
-  {:else}
-    <div class="loginMenu">
-      {#if $userId === null}
-        <button id="buttonConnect" on:click={keycloakLogin}>{$_('ui.connection')}</button>
-      {:else}
-      <div class="loggedMenu">
-        {#await Meteor.subscribe('mezigs.self')}
-          <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
-        {:then}
-          <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
-          {#if $userMezig}
-            <img
-            bind:this={anchor}
-
-
-              id="ProfilPic"
-              src={$userMezig.profilPic || blankUser}
-              alt="Avatar"
-              on:click={() => menu.setOpen(true)}
-              use:Anchor />
-            <Menu bind:this={menu} anchor={true} bind:anchorElement={anchor} anchorCorner="BOTTOM_LEFT">
-              <List twoLine>
-                <Item on:SMUI:action={() => navigate('/profil/' + $userMezig.publicName, { replace: false })}>
-                  <Text class="MenuText">
-                    <PrimaryText>{$_('ui.profil')}</PrimaryText>
-                    <SecondaryText>{$_('ui.profilSub')}</SecondaryText>
-                  </Text>
-                </Item>
-                <Item on:SMUI:action={() => navigate('/edit', { replace: false })}>
-                  <Text class="MenuText">
-                    <PrimaryText>{$_('ui.edit')}</PrimaryText>
-                    <SecondaryText>{$_('ui.editSub')}</SecondaryText>
-                  </Text>
-                </Item>
-                <Separator />
-                <Item on:SMUI:action={() => Meteor.logout()}>
-                  <Text class="MenuText">
-                    <PrimaryText>{$_('ui.disconnection')}</PrimaryText>
-                    <SecondaryText>{$_('ui.disconnectionSub')}</SecondaryText>
-                  </Text>
-                </Item>
-              </List>
-            </Menu>  
-          {/if}
-        {/await}
-      </div>
-        {/if}
-    </div>
-  {/if}
-  <span />
-  <!-- Separator -->
-</nav>

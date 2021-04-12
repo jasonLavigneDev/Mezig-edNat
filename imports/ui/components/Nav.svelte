@@ -68,16 +68,11 @@
           {#await Meteor.subscribe('mezigs.self')}
             <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
           {:then}
-            <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
             {#if $userMezig}
-              <img
-                bind:this={anchor}
-                id="ProfilPic"
-                src={$userMezig.profilPic || blankUser}
-                alt="Avatar"
-                on:click={() => menu.setOpen(true)}
-                use:Anchor
-              />
+              <div bind:this={anchor} on:click={() => menu.setOpen(true)} use:Anchor>
+                <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
+                <img id="ProfilPic" src={$userMezig.profilPic || blankUser} alt="Avatar" />
+              </div>
               <Menu bind:this={menu} anchor={true} bind:anchorElement={anchor} anchorCorner="BOTTOM_LEFT">
                 <List twoLine>
                   <Item on:SMUI:action={() => navigate('/profil/' + $userMezig.publicName, { replace: false })}>
@@ -182,6 +177,10 @@
     justify-content: flex-end;
     height: 100%;
     width: 100%;
+  }
+  div {
+    display: contents;
+    cursor: pointer;
   }
   #linkSearch {
     font-family: var(--font-fam);

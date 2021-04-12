@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 
+import faviconoclast from 'faviconoclast';
 import Mezigs from './mezigs';
 
 Meteor.methods({
@@ -45,6 +46,15 @@ export const updateMezig = new ValidatedMethod({
     if (myzig === undefined) {
       throw new Meteor.Error('api.mezigs.methods.updateMezig.notFound', 'Mezig not found.');
     }
+    // get favicon for links
+    data.links.forEach((link, i) => {
+      if (!link.favicon) {
+        const wrappedGetFavicon = Meteor.wrapAsync(faviconoclast);
+        // eslint-disable-next-line no-param-reassign
+        data.links[i].favicon = wrappedGetFavicon(link.URL);
+      }
+    });
+
     try {
       return Mezigs.update({ _id: mezigId }, { $set: { ...data } });
     } catch (error) {

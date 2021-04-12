@@ -86,6 +86,10 @@ Mezigs.schema = new SimpleSchema(
       type: Boolean,
       defaultValue: true,
     },
+    'links.$.favicon': {
+      type: String,
+      defaultValue: '',
+    },
     profileChecked: {
       type: Boolean,
       defaultValue: false,

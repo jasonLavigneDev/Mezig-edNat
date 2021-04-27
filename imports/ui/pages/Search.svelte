@@ -5,6 +5,8 @@
   import SvelteInfiniteScroll from 'svelte-infinite-scroll';
   import SearchResult from '../components/SearchResult.svelte';
   import { searchingStore } from '../../stores/stores';
+  import PackageJSON from '../../../package.json';
+  let version = PackageJSON.version;
 
   let searching = '';
   let previousSearch = '';
@@ -74,7 +76,7 @@
 </script>
 
 <svelte:head>
-  <title>Acceuil | {$_('ui.appName')}</title>
+  <title>Acceuil | {$_('ui.appName')} {version}</title>
 </svelte:head>
 
 <form on:submit|preventDefault role="search" style={usersScroll.length > 0 ? 'top: 15%;' : ''}>

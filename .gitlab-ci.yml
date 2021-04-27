@@ -1,4 +1,4 @@
-image: hub.eole.education/proxyhub/geoffreybooth/meteor-base:2.0
+image: hub.eole.education/proxyhub/geoffreybooth/meteor-base:2.1.1
 
 stages:
   - deps
@@ -19,14 +19,20 @@ Deps:
   artifacts:
     paths:
       - node_modules/
+  rules:
+    - if: '$CI_COMMIT_MESSAGE  !~ /^(\[Draft\]|\(Draft\)|Draft:|\[WIP\]|WIP:)/'
 
 Lint:
   stage: lint
   script:
     - meteor npm install --only=dev
     - meteor npm run lint
+  rules:
+    - if: '$CI_COMMIT_MESSAGE  !~ /^(\[Draft\]|\(Draft\)|Draft:|\[WIP\]|WIP:)/'
 
 Test:
   stage: test
   script:
     - meteor npm test
+  rules:
+    - if: '$CI_COMMIT_MESSAGE  !~ /^(\[Draft\]|\(Draft\)|Draft:|\[WIP\]|WIP:)/'

@@ -22,7 +22,6 @@ svelte:compiler
 rdb:svelte-meteor-data
 static-html
 hotello:accounts-keycloak
-insecure@1.0.7
 dburles:factory
 johanbrook:publication-collector
 accounts-base@1.8.0
@@ -30,3 +29,4 @@ aldeed:collection2
 aldeed:schema-index
 mdg:validated-method
 meteortesting:mocha
+accounts-password@1.7.0

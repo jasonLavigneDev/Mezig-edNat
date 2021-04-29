@@ -86,7 +86,7 @@
     autocomplete="off"
     autofocus
     type="search"
-    placeholder={$_('ui.searchPlaceHolder')}
+    placeholder={$_('ui.searchTooltip')}
     bind:value={searching}
     on:input={debounceFunc(ActuSearch, 400)}
     required

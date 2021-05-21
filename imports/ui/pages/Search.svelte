@@ -52,15 +52,20 @@
     page = 1;
     ulMezigs.scrollTop = 0;
     if (searching.length >= 3) {
-      res = Meteor.call('mezigs.getMezigs', { search: searching, itemPerPage }, (err, res) => {
-        newLoadedMezigs = res.data;
-        totalFoundMezigs = res.total;
-        if (totalFoundMezigs == 0) {
-          noResult = $_('ui.noSearchResult') + searching + '...';
-        } else {
-          noResult = '';
-        }
-      });
+      try {
+        new RegExp(searching);
+        res = Meteor.call('mezigs.getMezigs', { search: searching, itemPerPage }, (err, res) => {
+          newLoadedMezigs = res.data;
+          totalFoundMezigs = res.total;
+          if (totalFoundMezigs == 0) {
+            noResult = $_('ui.noSearchResult') + searching + '...';
+          } else {
+            noResult = '';
+          }
+        });
+      } catch (e) {
+        noResult = $_('ui.noSearchResult') + searching + '...';
+      }
     } else {
       noResult = '';
     }
@@ -73,6 +78,7 @@
       totalFoundMezigs = res.total;
     });
   }
+
 </script>
 
 <svelte:head>
@@ -243,4 +249,5 @@
     max-height: 600px;
     overflow-y: scroll;
   } */
+
 </style>

@@ -19,24 +19,33 @@
     links = links;
   };
 
+  let sortable;
   let example1;
 
   setTimeout(function () {
     console.log(example1);
-    new Sortable(example1, {
+    sortable = new Sortable(example1, {
       animation: 150,
       ghostClass: 'blue-background-class',
+      onEnd: () => {
+        Test();
+      },
     });
   }, 3000);
+
+  function Test() {
+    console.log(sortable);
+    console.log(links);
+    links.forEach((link) => {});
+  }
 
 </script>
 
 <div twoLine bind:this={example1}>
   {#each links as mezigLink, linkIndex}
-    <div>
+    {#if linkIndex !== links.length - 1}{/if}
+    <div data-value={linkIndex} class="div-link">
       <EditLink {mezigLink} {linkIndex} on:deleteLink={deleteLink} on:updateLink />
-      <Separator />
-      {#if linkIndex !== links.length - 1}{/if}
     </div>
   {/each}
 </div>
@@ -65,6 +74,9 @@
     width: 100%;
     justify-content: center;
     align-items: center;
+  }
+  .div-link {
+    border-top: 1px solid rgba(0, 0, 0, 0.5);
   }
 
 </style>

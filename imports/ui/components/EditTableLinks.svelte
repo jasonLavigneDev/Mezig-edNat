@@ -21,30 +21,35 @@
 
   let sortable;
   let example1;
+  let sortedLinks = [];
+  let notSortedLinks = [...links];
 
   setTimeout(function () {
-    console.log(example1);
     sortable = new Sortable(example1, {
       animation: 150,
       ghostClass: 'blue-background-class',
-      onEnd: () => {
+      onEnd: (e) => {
         Test();
       },
     });
   }, 3000);
 
   function Test() {
-    console.log(sortable);
+    example2 = example1.children;
+    for (let i = 0; i < example2.length; i++) {
+      y = example2[i].id;
+      sortedLinks[i] = notSortedLinks[y];
+    }
+    links = sortedLinks;
     console.log(links);
-    links.forEach((link) => {});
   }
 
 </script>
 
 <div twoLine bind:this={example1}>
   {#each links as mezigLink, linkIndex}
-    {#if linkIndex !== links.length - 1}{/if}
-    <div data-value={linkIndex} class="div-link">
+    <div id={linkIndex} class="div-link sortable">
+      {console.log(mezigLink)}
       <EditLink {mezigLink} {linkIndex} on:deleteLink={deleteLink} on:updateLink />
     </div>
   {/each}

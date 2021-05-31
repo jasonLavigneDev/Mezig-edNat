@@ -76,7 +76,6 @@
   const handleSubmit = () => {
     if (sortedLinks.length > 0) {
       links = sortedLinks;
-      console.log('hello');
     }
     userData = {
       blacklist: !whitelist,

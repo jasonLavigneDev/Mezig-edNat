@@ -20,12 +20,12 @@
   };
 
   let sortable;
-  let example1;
+  let sortableDiv;
   export let sortedLinks = [];
   let notSortedLinks = [...links];
 
   setTimeout(function () {
-    sortable = new Sortable(example1, {
+    sortable = new Sortable(sortableDiv, {
       animation: 150,
       ghostClass: 'blue-background-class',
       onEnd: (e) => {
@@ -35,17 +35,16 @@
   }, 3000);
 
   function Test() {
-    example2 = example1.children;
-    for (let i = 0; i < example2.length; i++) {
-      y = example2[i].id;
+    sortableDivChild = sortableDiv.children;
+    for (let i = 0; i < sortableDivChild.length; i++) {
+      y = sortableDivChild[i].id;
       sortedLinks[i] = notSortedLinks[y];
     }
-    //links = sortedLinks;
   }
 
 </script>
 
-<div twoLine bind:this={example1}>
+<div twoLine bind:this={sortableDiv}>
   {#each links as mezigLink, linkIndex}
     <div id={linkIndex} class="div-link sortable">
       <EditLink {mezigLink} {linkIndex} on:deleteLink={deleteLink} on:updateLink />

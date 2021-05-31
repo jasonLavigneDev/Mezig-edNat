@@ -21,7 +21,7 @@
 
   let sortable;
   let example1;
-  let sortedLinks = [];
+  export let sortedLinks = [];
   let notSortedLinks = [...links];
 
   setTimeout(function () {
@@ -40,8 +40,7 @@
       y = example2[i].id;
       sortedLinks[i] = notSortedLinks[y];
     }
-    links = sortedLinks;
-    console.log(links);
+    //links = sortedLinks;
   }
 
 </script>
@@ -49,7 +48,6 @@
 <div twoLine bind:this={example1}>
   {#each links as mezigLink, linkIndex}
     <div id={linkIndex} class="div-link sortable">
-      {console.log(mezigLink)}
       <EditLink {mezigLink} {linkIndex} on:deleteLink={deleteLink} on:updateLink />
     </div>
   {/each}

@@ -5,6 +5,7 @@
   import EditLink from '../components/EditLink.svelte';
   import { Icon } from '@smui/chips/bare';
   import '@smui/chips/bare.css';
+  import Sortable from 'sortablejs';
 
   export let links;
 
@@ -17,16 +18,39 @@
     links.splice(event.detail.index, 1);
     links = links;
   };
+
+  let sortable;
+  let sortableDiv;
+  export let sortedLinks = [];
+  let notSortedLinks = [...links];
+
+  setTimeout(function () {
+    sortable = new Sortable(sortableDiv, {
+      animation: 150,
+      ghostClass: 'blue-background-class',
+      onEnd: (e) => {
+        Test();
+      },
+    });
+  }, 3000);
+
+  function Test() {
+    sortableDivChild = sortableDiv.children;
+    for (let i = 0; i < sortableDivChild.length; i++) {
+      y = sortableDivChild[i].id;
+      sortedLinks[i] = notSortedLinks[y];
+    }
+  }
+
 </script>
 
-<List twoLine>
+<div twoLine bind:this={sortableDiv}>
   {#each links as mezigLink, linkIndex}
-    <EditLink {mezigLink} {linkIndex} on:deleteLink={deleteLink} on:updateLink />
-    {#if linkIndex !== links.length - 1}
-      <Separator />
-    {/if}
+    <div id={linkIndex} class="div-link sortable">
+      <EditLink {mezigLink} {linkIndex} on:deleteLink={deleteLink} on:updateLink />
+    </div>
   {/each}
-</List>
+</div>
 
 <div class="IconDiv">
   <span class="IconAddLink">
@@ -35,8 +59,7 @@
       title={$_('ui.editTableLinks.addLink')}
       class="material-icons"
       style="font-size: 3.5vmin;"
-      trailing
-    >add_circle_outline</Icon
+      trailing>add_circle_outline</Icon
     >
   </span>
 </div>
@@ -54,4 +77,8 @@
     justify-content: center;
     align-items: center;
   }
+  .div-link {
+    border-top: 1px solid rgba(0, 0, 0, 0.5);
+  }
+
 </style>

@@ -36,6 +36,7 @@
   let biography = '';
   let profilPic = '';
   let links = [];
+  let sortedLinks = [];
   let skills = [];
   const maxSkillsCar = 32;
   let newSkill = '';
@@ -73,6 +74,9 @@
   $: formValid = validateForm(publicName, links);
 
   const handleSubmit = () => {
+    if (sortedLinks.length > 0) {
+      links = sortedLinks;
+    }
     userData = {
       blacklist: !whitelist,
       publicName,
@@ -105,7 +109,12 @@
     // 'updateLink' event emit by EditLink component on input values in label and URL fields
     // => update links array to dynamicaly launch validateForm
     // https://svelte.dev/tutorial/updating-arrays-and-objects
-    links = links;
+    console.log(sortedLinks);
+    if (sortedLinks.length > 0) {
+      links = sortedLinks;
+    } else {
+      links = links;
+    }
   };
 
   const addSkill = () => {
@@ -114,6 +123,7 @@
     skills = skills;
     newSkill = '';
   };
+
 </script>
 
 <svelte:head>
@@ -186,7 +196,7 @@
         </div>
         <div class="part">
           <p class="partTitle" style="margin-bottom: 0">{$_('ui.editProfil.links')}</p>
-          <EditTableLinks bind:links on:updateLink={handleUpdateLinks} />
+          <EditTableLinks bind:sortedLinks bind:links on:updateLink={handleUpdateLinks} />
         </div>
         <div class="center">
           <Button on:click={handleCancel} style="margin: 3%; font-size: 1.2rem;">{$_('ui.editProfil.cancel')}</Button>
@@ -284,4 +294,5 @@
   .center {
     text-align: center;
   }
+
 </style>

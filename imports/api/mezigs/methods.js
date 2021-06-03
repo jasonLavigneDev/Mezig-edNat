@@ -50,8 +50,12 @@ export const updateMezig = new ValidatedMethod({
     data.links.forEach((link, i) => {
       if (!link.favicon) {
         const wrappedGetFavicon = Meteor.wrapAsync(faviconoclast);
-        // eslint-disable-next-line no-param-reassign
-        data.links[i].favicon = wrappedGetFavicon(link.URL);
+        try {
+          // eslint-disable-next-line no-param-reassign
+          data.links[i].favicon = wrappedGetFavicon(link.URL);
+        } catch (error) {
+          console.log(`api.mezigs.methods.updateMezig`, error);
+        }
       }
     });
 

@@ -8,6 +8,7 @@
   import Sortable from 'sortablejs';
 
   export let links;
+  export let sortableDiv;
 
   const addLink = () => {
     links.push({ label: '', URL: '', isSocialNetwork: false, isPublic: true });
@@ -20,27 +21,14 @@
   };
 
   let sortable;
-  let sortableDiv;
-  export let sortedLinks = [];
-  let notSortedLinks = [...links];
 
   setTimeout(function () {
     sortable = new Sortable(sortableDiv, {
       animation: 150,
       ghostClass: 'blue-background-class',
-      onEnd: (e) => {
-        Test();
-      },
+      onEnd: (e) => {},
     });
-  }, 3000);
-
-  function Test() {
-    sortableDivChild = sortableDiv.children;
-    for (let i = 0; i < sortableDivChild.length; i++) {
-      y = sortableDivChild[i].id;
-      sortedLinks[i] = notSortedLinks[y];
-    }
-  }
+  }, 1000);
 
 </script>
 
@@ -65,7 +53,8 @@
 </div>
 
 <style>
-  .IconAddLink {
+  .IconAddLink,
+  .sortButton {
     cursor: pointer;
   }
   .IconAddLink:hover {

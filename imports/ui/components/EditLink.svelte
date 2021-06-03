@@ -21,10 +21,12 @@
   function dispAlert() {
     supprAlert = !supprAlert;
   }
+
 </script>
 
 {#if supprAlert == false}
   <div class="link">
+    <span class="grippy" />
     <FormField>
       <Textfield
         class="FullWidth"
@@ -56,8 +58,7 @@
         title={$_('ui.delLinkTitle')}
         on:click={dispAlert}
         class="material-icons"
-        style="top: 16px;position: relative;left: 30px;"
-      >cancel</Icon
+        style="top: 16px;position: relative;left: 30px;">cancel</Icon
       >
     </div>
   </div>
@@ -83,12 +84,35 @@
 {/if}
 
 <style>
+  span.grippy {
+    content: '....';
+    width: 10px;
+    height: 40px;
+    display: inline-block;
+    overflow: hidden;
+    line-height: 7px;
+    padding: 3px 4px;
+    cursor: grab;
+    vertical-align: middle;
+    margin-top: 0.3em;
+    margin-right: 0.3em;
+    margin-left: -0.2em;
+    font-size: 12px;
+    font-family: sans-serif;
+    letter-spacing: 2px;
+    color: #cccccc;
+    text-shadow: 1px 0 1px black;
+  }
+  span.grippy::after {
+    content: '.. .. .. .. .. ..';
+  }
   * :global(.FullWidth) {
     width: 100%;
   }
   .link {
     display: flex;
-    padding: 3%;
+    padding: 6px;
+    cursor: grab;
   }
   .link:hover {
     background-color: rgba(30, 30, 90, 0.1);
@@ -118,4 +142,5 @@
     display: flex;
     align-items: center;
   }
+
 </style>

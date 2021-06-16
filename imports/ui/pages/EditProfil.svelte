@@ -76,14 +76,12 @@
 
   const handleSubmit = () => {
     notSortedLinks = [...links];
-    console.log(notSortedLinks);
     sortableDivChild = sortableDiv.children;
     for (let i = 0; i < sortableDivChild.length; i++) {
       y = sortableDivChild[i].id;
       sortedLinks[i] = notSortedLinks[y];
     }
     links = sortedLinks;
-    console.log(links);
     userData = {
       blacklist: !whitelist,
       publicName,
@@ -116,11 +114,7 @@
     // 'updateLink' event emit by EditLink component on input values in label and URL fields
     // => update links array to dynamicaly launch validateForm
     // https://svelte.dev/tutorial/updating-arrays-and-objects
-    if (sortedLinks.length > 0) {
-      links = sortedLinks;
-    } else {
-      links = links;
-    }
+    links = links;
   };
 
   const addSkill = () => {

@@ -11,7 +11,6 @@
   import Button from '@smui/button/bare';
   import '@smui/button/bare.css';
   import { createEventDispatcher } from 'svelte';
-
   export let mezigLink;
   export let linkIndex;
   let supprAlert = false;
@@ -21,6 +20,15 @@
   function dispAlert() {
     supprAlert = !supprAlert;
   }
+
+  const onChange = (e) => {
+    const http = new RegExp('(https?://)');
+    if (http.test(e.target.value) == false) {
+      e.target.value = 'https://' + e.target.value;
+      mezigLink.URL = e.target.value;
+      dispatch('updateLink');
+    }
+  };
 
 </script>
 
@@ -41,6 +49,7 @@
       <Textfield
         class="FullWidth"
         bind:value={mezigLink.URL}
+        on:change={onChange}
         label={$_('ui.editLink.url')}
         on:input={() => {
           dispatch('updateLink');

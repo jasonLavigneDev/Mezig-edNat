@@ -45,6 +45,8 @@
       "links": "Links",
       "submit": "Submit",
       "cancel": "Cancel",
+      "delete": "Delete account",
+      "deleteQuestion": "Are you sure you want to delete your Mézig account ?",
       "validationNeeded": "Please validate your profile to continue"
     },
     "editTableLinks": { "addLink": "Add a link" },

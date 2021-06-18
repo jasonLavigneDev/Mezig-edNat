@@ -30,6 +30,7 @@
 
   export let profileOk = true;
   export let simpleDialog;
+  export let simpleDialogSuppr;
   let loading = true;
   let whitelist = true;
   let publicName = '';
@@ -43,6 +44,7 @@
   let newSkill = '';
   let error = '';
   let email = '';
+  let open;
 
   const validateForm = (publicName, links) => {
     publicNameOK = publicName !== '';
@@ -108,6 +110,20 @@
     // set loading to true to permit reload from api
     profileOk = true;
     navigate(`/profil/${$currentMezig.publicName}`, { state: `/profil/${$currentMezig.publicName}` });
+  };
+
+  const handleDelete = () => {
+    // set loading to true to permit reload from api
+    Meteor.call('mezigs.removeMezig', { mezigId: $currentMezig._id }, (err) => {
+      if (err) {
+        error = err.message;
+        simpleDialog.open();
+      } else {
+        // set loading to true to permit reload from api
+        Meteor.logout();
+        navigate(`/`, { state: `/` });
+      }
+    });
   };
 
   const handleUpdateLinks = () => {
@@ -204,8 +220,17 @@
             >{$_('ui.editProfil.submit')}</Button
           >
         </div>
+        <div class="center">
+          <Button
+            on:click={() => {
+              simpleDialogSuppr.open();
+            }}
+            style="margin: 3%; font-size: 1.2rem;"
+            variant="raised">{$_('ui.editProfil.delete')}</Button
+          >
+        </div>
       </form>
-      <Dialog bind:this={simpleDialog} aria-labelledby="simple-title" aria-describedby="simple-content">
+      <Dialog bind:this={open} aria-labelledby="simple-title" aria-describedby="simple-content">
         <Title id="simple-title">Error</Title>
         <Content id="simple-content">
           {error}
@@ -213,6 +238,20 @@
         <Actions>
           <Button>
             <Label>Ok</Label>
+          </Button>
+        </Actions>
+      </Dialog>
+
+      <Dialog bind:this={simpleDialogSuppr} aria-labelledby="simple-title" aria-describedby="simple-content">
+        <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
+        <Title id="simple-title">{$_('ui.editProfil.delete')}</Title>
+        <Content id="simple-content">{$_('ui.editProfil.deleteQuestion')}</Content>
+        <Actions>
+          <Button on:click={() => ''}>
+            <Label>{$_('ui.no')}</Label>
+          </Button>
+          <Button on:click={() => handleDelete()}>
+            <Label>{$_('ui.yes')}</Label>
           </Button>
         </Actions>
       </Dialog>

@@ -59,8 +59,9 @@ export const updateMezig = new ValidatedMethod({
       }
     });
 
+    let mezigData = null;
     try {
-      return Mezigs.update({ _id: mezigId }, { $set: { ...data } });
+      mezigData = Mezigs.update({ _id: mezigId }, { $set: { ...data } });
     } catch (error) {
       if (error.code === 11000) {
         throw new Meteor.Error('api.mezigs.methods.updateMezig.duplicatePublicName', 'PublicName already exits.');
@@ -68,6 +69,18 @@ export const updateMezig = new ValidatedMethod({
         throw error;
       }
     }
+    // add or remove publicName to Meteor.users collection
+    try {
+      const published = data.blacklist === false || (data.blacklist === undefined && myzig.blacklist === false);
+      if (published === true) {
+        Meteor.users.update({ username: myzig.username }, { $set: { mezigName: data.publicName || myzig.publicName } });
+      } else {
+        Meteor.users.update({ username: myzig.username }, { $unset: { mezigName: true } });
+      }
+    } catch (error) {
+      console.log('api.mezigs.methods.updateMezig.updateUserError', error);
+    }
+    return mezigData;
   },
 });
 

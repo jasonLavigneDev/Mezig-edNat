@@ -111,7 +111,7 @@ export const updateMezig = new ValidatedMethod({
         Meteor.users.update({ username: myzig.username }, { $unset: { mezigName: true } });
       }
     } catch (error) {
-      console.log('api.mezigs.methods.updateMezig.updateUserError', error);
+      throw new Meteor.Error('api.mezigs.methods.updateMezig.updateUserError', error.reason || error.message);
     }
     return mezigData;
   },

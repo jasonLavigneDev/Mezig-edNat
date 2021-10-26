@@ -29,4 +29,7 @@ aldeed:collection2
 aldeed:schema-index
 mdg:validated-method
 meteortesting:mocha
-accounts-password@1.7.0
+accounts-password
+alanning:roles
+universe:i18n
+percolate:find-from-publication

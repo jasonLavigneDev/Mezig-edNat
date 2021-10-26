@@ -1,16 +1,21 @@
 <script>
   import { Router, Route } from 'svelte-routing';
   import { isLoading } from 'svelte-i18n';
+  import { Meteor } from 'meteor/meteor';
   import Search from './pages/Search.svelte';
   import Profil from './pages/Profil.svelte';
   import Nav from './components/Nav.svelte';
   import Spinner from './components/Spinner.svelte';
   import EditProfil from './pages/EditProfil.svelte';
   import Signin from './pages/Signin.svelte';
+  import Signup from './pages/Signup.svelte';
+  import Admin from './pages/Admin.svelte';
 
   export let url = '';
   let userRedirect = false;
   let profileOk = true;
+  let userActive = false;
+  const { laboiteUrl, enableKeycloak } = Meteor.settings.public;
 </script>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
@@ -23,7 +28,7 @@
   {#if userRedirect === false}
     <Router {url}>
       <div class="container">
-        {#if profileOk === false}
+        {#if profileOk === false && userActive === true}
           <div>
             <Route>
               <EditProfil bind:profileOk />
@@ -31,14 +36,24 @@
           </div>
         {:else}
           <div>
-            <Route path="profil/:publicName" component={Profil} />
-            <Route path="signin" component={Signin} />
-            <Route path="/edit" component={EditProfil} />
+            <Route path="/profil/:publicName" component={Profil} />
+            {#if !enableKeycloak}
+              <Route path="/signin" component={Signin} />
+            {/if}
+            {#if !laboiteUrl && !enableKeycloak}
+              <Route path="/signup" component={Signup} />
+            {/if}
+            {#if userActive === true}
+              <Route path="/edit" component={EditProfil} />
+              {#if !laboiteUrl}
+                <Route path="/admin" component={Admin} />
+              {/if}
+            {/if}
             <Route component={Search} />
           </div>
         {/if}
       </div>
     </Router>
   {/if}
-  <Nav bind:userRedirect bind:profileOk />
+  <Nav bind:userRedirect bind:profileOk bind:userActive />
 {/if}

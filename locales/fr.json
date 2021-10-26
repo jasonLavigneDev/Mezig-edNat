@@ -1,8 +1,15 @@
 {
   "api": {
     "notLoggedIn": "Vous devez être connecté.",
+    "validationNeeded": "Votre compte est en attente de validation.",
+    "adminNeeded": "Cette action nécessite les droits d'administrateur",
     "mezigs": {
-      "notFound": "Mezig inconnu."
+      "notFound": "Mezig inconnu.",
+      "alreadyExists": "Cet identifiant/nom public existe déjà dans la base.",
+      "nameTooShort": "Nom public trop court (3 caractères au minimum)."
+    },
+    "users": {
+      "unknownUser": "Utilisateur inconnu"
     }
   },
   "ui": {
@@ -15,7 +22,7 @@
     "connection": "Se connecter",
     "disconnection": "Déconnexion",
     "loginLaboite": "connexion à LaBoite",
-    "loginMsg": "Votre utilisateur n'a pas de compte LaBoite, veuillez cliquer sur le bouton ci-dessous pour le créer, puis cliquez sur ",
+    "loginMsg": "Votre utilisateur n'a pas de compte LaBoite, veuillez cliquer sur le bouton pour le créer, puis cliquez sur ",
     "loginLink": "ce lien",
     "unknownUser": "Utilisateur inconnu",
     "avatarTitle": "Avatar de l'utilisateur",
@@ -30,9 +37,12 @@
     "profil": "Mon mézig",
     "profilSub": "Voir votre profil",
     "disconnectionSub": "Déconnectez-vous",
+    "admin": "Administrer",
+    "adminSub": "Administrer les utilisateurs",
     "profileBlacklisted": "Votre profil n'est pas visible par les autres utilisateurs",
     "profileSkills": "Compétences",
-    "profileSkillsNone": "Aucunes compétences renseignées",
+    "profileSkillsNone": "Compétences non renseignées",
+    "activationNeeded": "Votre compte est en attente de validation",
     "editProfil": {
       "title": "Mon profil",
       "showProfile": "Publier mon profil",
@@ -49,7 +59,20 @@
       "deleteQuestion": "Êtes-vous sur de vouloir supprimer votre compte Mézig ?",
       "validationNeeded": "Veuillez valider votre profil pour continuer"
     },
-    "editTableLinks": { "addLink": "Ajouter un lien" },
+    "Admin": {
+      "title": "Administrez",
+      "rowPerPage": "Lignes par page",
+      "username": "Nom d'utilisateur",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "activated": "Activé",
+      "actions": "Actions",
+      "supprAccount": "Supprimer ce compte",
+      "supprMessage": "Êtes vous sur de vouloir supprimer le profil de "
+    },
+    "editTableLinks": {
+      "addLink": "Ajouter un lien"
+    },
     "editLink": {
       "label": "Label",
       "url": "URL",
@@ -62,7 +85,16 @@
       "email": "Identifiant ou courriel",
       "password": "Mot de passe",
       "submit": "Valider",
+      "error": "Erreur",
       "loginError": "Identifiant ou mot de passe incorrects"
+    },
+    "Signup": {
+      "title": "Enregistrement",
+      "registerMsg": "Créer un compte",
+      "confirm": "Confirmation",
+      "submit": "Valider",
+      "firstName": "Prénom",
+      "lastName": "Nom"
     },
     "share": "Copier le lien du profil"
   }

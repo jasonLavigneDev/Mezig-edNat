@@ -1,14 +1,15 @@
 <script>
   import { _ } from 'svelte-i18n';
-  import List, { Separator } from '@smui/list/bare';
   import '@smui/list/bare.css';
   import EditLink from '../components/EditLink.svelte';
-  import { Icon } from '@smui/chips/bare';
   import '@smui/chips/bare.css';
   import Sortable from 'sortablejs';
+  import IconButton from '@smui/icon-button';
+  import '@smui/icon-button/bare.css';
 
-  export let links;
+  export let links = [];
   export let sortableDiv;
+  let sortable;
 
   const addLink = () => {
     links.push({ label: '', URL: '', isSocialNetwork: false, isPublic: true });
@@ -20,16 +21,16 @@
     links = links;
   };
 
-  let sortable;
+  const initSortable = (sortEl) => {
+    if (sortEl) {
+      sortable = new Sortable(sortEl, {
+        animation: 150,
+        ghostClass: 'blue-background-class',
+      });
+    }
+  };
 
-  setTimeout(function () {
-    sortable = new Sortable(sortableDiv, {
-      animation: 150,
-      ghostClass: 'blue-background-class',
-      onEnd: (e) => {},
-    });
-  }, 1000);
-
+  $: initSortable(sortableDiv);
 </script>
 
 <div twoLine bind:this={sortableDiv}>
@@ -42,12 +43,12 @@
 
 <div class="IconDiv">
   <span class="IconAddLink">
-    <Icon
+    <IconButton
       on:click={addLink}
       title={$_('ui.editTableLinks.addLink')}
       class="material-icons"
       style="font-size: 3.5vmin;"
-      trailing>add_circle_outline</Icon
+      trailing>add_circle_outline</IconButton
     >
   </span>
 </div>
@@ -69,5 +70,4 @@
   .div-link {
     border-top: 1px solid rgba(0, 0, 0, 0.5);
   }
-
 </style>

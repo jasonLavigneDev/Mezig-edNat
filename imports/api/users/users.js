@@ -89,6 +89,14 @@ Meteor.users.schema = new SimpleSchema(
     'favGroups.$': {
       type: { type: String, regEx: SimpleSchema.RegEx.Id },
     },
+    favUserBookmarks: {
+      type: Array,
+      defaultValue: [],
+      label: getLabel('api.users.labels.favUserBookmarks'),
+    },
+    'favUserBookmarks.$': {
+      type: { type: String, regEx: SimpleSchema.RegEx.Id },
+    },
     structure: {
       type: String,
       optional: true,
@@ -110,6 +118,11 @@ Meteor.users.schema = new SimpleSchema(
       optional: true,
       allowedValues: ['ask', 'local', 'global'],
       label: getLabel('api.users.labels.logoutType'),
+    },
+    advancedPersonalPage: {
+      type: Boolean,
+      defaultValue: false,
+      label: getLabel('api.users.labels.advancedPersonalPage'),
     },
     articlesCount: {
       type: SimpleSchema.Integer,
@@ -136,8 +149,24 @@ Meteor.users.schema = new SimpleSchema(
       defaultValue: 10,
       label: getLabel('api.users.labels.groupQuota'),
     },
+    mezigName: {
+      type: String,
+      optional: true,
+      label: getLabel('api.users.labels.primaryEmail'),
+    },
+    nclocator: {
+      type: String,
+      optional: true,
+      label: getLabel('api.users.labels.ncloud'),
+    },
+    articlesEnable: {
+      type: Boolean,
+      optional: true,
+      defaultValue: false,
+      label: getLabel('api.users.labels.articlesEnable'),
+    },
   },
-  { tracker: Tracker },
+  { clean: { removeEmptyStrings: false }, tracker: Tracker },
 );
 
 if (Meteor.isServer) {

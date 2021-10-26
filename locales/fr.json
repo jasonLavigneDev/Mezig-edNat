@@ -9,7 +9,34 @@
       "nameTooShort": "Nom public trop court (3 caractères au minimum)."
     },
     "users": {
-      "unknownUser": "Utilisateur inconnu"
+      "unknownUser": "Utilisateur inconnu",
+      "labels": {
+        "id": "Id Utilisateur",
+        "username": "Pseudonyme",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "emails": "Adresse Électronique",
+        "emailAddress": "Adresse Électronique",
+        "emailVerified": "Adresse Vérifiée",
+        "createdAt": "Crée Le",
+        "profile": "Profil",
+        "services": "Services",
+        "heartbeat": "heartbeat",
+        "isActive": "Utilisateur Actif",
+        "isRequest": "Utilisateur En Attente De Validation",
+        "favServices": "Services Favoris",
+        "favUserBookmarks": "Marque-pages favoris",
+        "structure": "Structure De Rattachement",
+        "primaryEmail": "Adresse Électronique principale",
+        "language": "Langage Préféré",
+        "logoutType": "Méthode De Déconnexion",
+        "lastLogin": "Date de dernière connexion",
+        "avatar": "URL de l'avatar",
+        "groupCount": "Nombre de groupes créés",
+        "groupQuota": "Quota de groupes",
+        "ncloud": "URL Nextcloud",
+        "advancedPersonalPage": "Page personnelle avancée"
+      }
     }
   },
   "ui": {
@@ -57,7 +84,8 @@
       "cancel": "Annuler",
       "delete": "Supprimer le compte",
       "deleteQuestion": "Êtes-vous sur de vouloir supprimer votre compte Mézig ?",
-      "validationNeeded": "Veuillez valider votre profil pour continuer"
+      "validationNeeded": "Veuillez valider votre profil pour continuer",
+      "error": "Erreur"
     },
     "Admin": {
       "title": "Administrez",

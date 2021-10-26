@@ -27,7 +27,7 @@
   let version = PackageJSON.version;
 
   export let profileOk = true;
-  export let simpleDialog;
+  export let errorDialog;
   export let simpleDialogSuppr;
   let loading = true;
   let whitelist = true;
@@ -42,7 +42,6 @@
   let newSkill = '';
   let error = '';
   let email = '';
-  let open;
 
   const validateForm = (publicName, links) => {
     publicNameOK = publicName !== '';
@@ -95,7 +94,7 @@
     Meteor.call('mezigs.updateMezig', { mezigId: $currentMezig._id, data: userData }, (err) => {
       if (err) {
         error = err.message;
-        simpleDialog.setOpen(true);
+        errorDialog.setOpen(true);
       } else {
         // set loading to true to permit reload from api
         profileOk = true;
@@ -115,7 +114,7 @@
     Meteor.call('mezigs.removeMezig', { mezigId: $currentMezig._id }, (err) => {
       if (err) {
         error = err.message;
-        simpleDialog.open();
+        simpleDialogSuppr.open();
       } else {
         // set loading to true to permit reload from api
         Meteor.logout();
@@ -226,9 +225,9 @@
           >
         </div>
       </form>
-      <Dialog bind:this={open} aria-labelledby="simple-title" aria-describedby="simple-content">
-        <Title id="simple-title">Error</Title>
-        <Content id="simple-content">
+      <Dialog bind:this={errorDialog} aria-labelledby="error-title" aria-describedby="error-content">
+        <Title id="error-title">{$_('ui.editProfil.error')}</Title>
+        <Content id="error-content">
           {error}
         </Content>
         <Actions>

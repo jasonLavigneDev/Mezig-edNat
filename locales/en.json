@@ -9,7 +9,34 @@
       "nameTooShort": "PublicName is too short (minimum is 3 characters)."
     },
     "users": {
-      "unknownUser": "Unknown user"
+      "unknownUser": "Unknown user",
+      "labels": {
+        "id": "User Id",
+        "username": "User Name",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "emails": "Email",
+        "emailAddress": "Email Address",
+        "emailVerified": "Email Verified",
+        "createdAt": "User Creation Date",
+        "profile": "Profile",
+        "services": "Services",
+        "heartbeat": "Heartbeat",
+        "isActive": "User Is Active",
+        "isRequest": "User Awaits Activation",
+        "favServices": "Favorite Services",
+        "favUserBookmarks": "Favorite Bookmarks",
+        "structure": "Attachment Structure",
+        "primaryEmail": "Primary Email",
+        "language": "Preferred Language",
+        "logoutType": "Logout Method",
+        "lastLogin": "Last login date",
+        "avatar": "avatar URL",
+        "groupCount": "Amount of created groups",
+        "groupQuota": "Amount of groups creatable",
+        "ncloud": "Nextcloud URL",
+        "advancedPersonalPage": "Advanced personal page"
+      }
     }
   },
   "ui": {
@@ -57,7 +84,8 @@
       "cancel": "Cancel",
       "delete": "Delete account",
       "deleteQuestion": "Are you sure you want to delete your Mézig account ?",
-      "validationNeeded": "Please validate your profile to continue"
+      "validationNeeded": "Please validate your profile to continue",
+      "error": "Erreur"
     },
     "Admin": {
       "title": "Administrate",

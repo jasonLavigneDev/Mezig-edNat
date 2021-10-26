@@ -12,7 +12,7 @@
   export let publicName = '';
   const blankUser = '/blank_user.svg';
 
-  $: user_id = useTracker(() => Meteor.userId());
+  $: currentUser = useTracker(() => Meteor.user());
   $: currentMezig = useTracker(() => Mezigs.findOne({ publicName }));
 </script>
 
@@ -25,6 +25,9 @@
 {:then}
   {#if $currentMezig}
     <div class="Profil">
+      {#if $currentUser && $currentUser.isActive === false}
+        <h3 class="BlacklistInfo">{$_('ui.activationNeeded')}</h3>
+      {/if}
       {#if $currentMezig.blacklist === true}
         <h3 class="BlacklistInfo">{$_('ui.profileBlacklisted')}</h3>
       {/if}

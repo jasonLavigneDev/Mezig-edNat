@@ -1,7 +1,7 @@
 <script>
-  import Snackbar, { Label } from '@smui/snackbar/bare';
+  import Snackbar, { Label } from '@smui/snackbar';
   import '@smui/snackbar/bare.css';
-  import { Icon } from '@smui/icon-button/bare';
+  import IconButton from '@smui/icon-button';
   import '@smui/icon-button/bare.css';
 
   import { _ } from 'svelte-i18n';
@@ -15,7 +15,7 @@
 </script>
 
 <div class="shareLink">
-  <Icon title={$_('ui.share')} on:click={handleCopy} class="material-icons" trailing>link</Icon>
+  <IconButton title={$_('ui.share')} on:click={handleCopy} class="material-icons" trailing>link</IconButton>
 </div>
 
 <Snackbar bind:this={mySnackbar}>

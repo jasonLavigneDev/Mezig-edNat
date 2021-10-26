@@ -1,16 +1,16 @@
 <script>
   import { _ } from 'svelte-i18n';
-  import FormField from '@smui/form-field/bare';
+  import FormField from '@smui/form-field';
   import '@smui/form-field/bare.css';
-  import Textfield from '@smui/textfield/bare';
+  import Textfield from '@smui/textfield';
   import '@smui/textfield/bare.css';
-  import Switch from '@smui/switch/bare';
+  import Switch from '@smui/switch';
   import '@smui/switch/bare.css';
-  import { Icon } from '@smui/chips/bare';
-  import '@smui/chips/bare.css';
-  import Button from '@smui/button/bare';
+  import Button from '@smui/button';
   import '@smui/button/bare.css';
   import { createEventDispatcher } from 'svelte';
+  import IconButton from '@smui/icon-button';
+  import '@smui/icon-button/bare.css';
   export let mezigLink;
   export let linkIndex;
   let supprAlert = false;
@@ -29,7 +29,6 @@
       dispatch('updateLink');
     }
   };
-
 </script>
 
 {#if supprAlert == false}
@@ -63,11 +62,11 @@
       </FormField>
     </div>
     <div id="suppr">
-      <Icon
+      <IconButton
         title={$_('ui.delLinkTitle')}
         on:click={dispAlert}
         class="material-icons"
-        style="top: 16px;position: relative;left: 30px;">cancel</Icon
+        style="position: relative;left: 10px;">cancel</IconButton
       >
     </div>
   </div>
@@ -122,6 +121,7 @@
     display: flex;
     padding: 6px;
     cursor: grab;
+    align-items: center;
   }
   .link:hover {
     background-color: rgba(30, 30, 90, 0.1);
@@ -151,5 +151,4 @@
     display: flex;
     align-items: center;
   }
-
 </style>

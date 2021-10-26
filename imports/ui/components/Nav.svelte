@@ -1,30 +1,41 @@
 <script>
   import { Meteor } from 'meteor/meteor';
+  import { Roles } from 'meteor/alanning:roles';
   import { useTracker } from 'meteor/rdb:svelte-meteor-data';
   import { Accounts } from 'meteor/accounts-base';
   import { onDestroy } from 'svelte';
   import { _ } from 'svelte-i18n';
-  import Menu from '@smui/menu/bare';
-  import { Anchor } from '@smui/menu-surface/bare';
-  import List, { Item, Separator, Text, PrimaryText, SecondaryText } from '@smui/list/bare';
+  import Menu from '@smui/menu';
+  import { Anchor } from '@smui/menu-surface';
+  import List, { Item, Separator, Text, PrimaryText, SecondaryText } from '@smui/list';
   import '@smui/menu/bare.css';
   import '@smui/menu-surface/bare.css';
   import '@smui/list/bare.css';
-  import '@smui/button/bare.css';
   import Mezigs from '../../api/mezigs/mezigs';
   import { link as routerLink, navigate } from 'svelte-routing';
 
   const blankUser = '/blank_user.svg';
   let menu;
   let anchor;
+  let isAdmin = false;
+  const { enableKeycloak, laboiteUrl } = Meteor.settings.public;
 
   export let userRedirect = false;
   export let profileOk = true;
+  export let userActive = false;
 
-  $: userId = useTracker(() => Meteor.userId());
-  $: user = useTracker(() => Meteor.user());
+  const userId = useTracker(() => Meteor.userId());
+  const user = useTracker(() => Meteor.user());
+  const roles = useTracker(() => Meteor.roleAssignment.find().fetch());
   $: userMezig = useTracker(() => Mezigs.findOne({ username: $user ? $user.username : '' }));
-  $: userMezig && checkProfile();
+  $: if (!!$user) userActive = $user.isActive;
+  $: !!$userMezig && checkProfile();
+  $: isAdmin = !!$roles && Roles.userIsInRole($userId, 'admin');
+  // make sure that profileOk and isActive are reset when logging out
+  $: if ($userId === null) {
+    profileOk = true;
+    userActive = true;
+  }
 
   const checkProfile = () => {
     Meteor.call('mezigs.checkProfile', {}, (err, res) => {
@@ -33,7 +44,7 @@
   };
 
   const doLogin = () => {
-    if (Meteor.settings.public.enableKeycloak === true) {
+    if (enableKeycloak === true) {
       Meteor.loginWithKeycloak();
     } else {
       navigate('/signin', { replace: false });
@@ -54,10 +65,10 @@
   <a id="linkSearch" href="/" use:routerLink>{$_('ui.search')}</a>
   {#if userRedirect === true}
     <div class="loginMsg">
-      <p>{$_('ui.loginMsg')}<a href="#" on:click={keycloakLogin}>{$_('ui.loginLink')}</a></p>
-      <button id="redirectButton" on:click={() => window.open(`${Meteor.settings.public.laboiteUrl}/signin`, '_blank')}
-        >{$_('ui.loginLaboite')}</button
-      >
+      <p>{$_('ui.loginMsg')}<a href="#" on:click={doLogin}>{$_('ui.loginLink')}</a></p>
+      <button id="redirectButton" on:click={() => window.open(`${laboiteUrl}/signin`, '_blank')}
+        >{$_('ui.loginLaboite')}
+      </button>
     </div>
   {:else}
     <div class="loginMenu">
@@ -69,11 +80,14 @@
             <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
           {:then}
             {#if $userMezig}
-              <div bind:this={anchor} on:click={() => menu.setOpen(true)} use:Anchor>
-                <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
+              <div class="userInfo" on:click={() => menu.setOpen(true)}>
+                <h1 id="loginUser">
+                  {($user || { firstName: '' }).firstName}
+                </h1>
                 <img id="ProfilPic" src={$userMezig.profilPic || blankUser} alt="Avatar" />
+                <div id="menuAnchor" bind:this={anchor} use:Anchor />
               </div>
-              <Menu bind:this={menu} anchor={true} bind:anchorElement={anchor} anchorCorner="BOTTOM_LEFT">
+              <Menu bind:this={menu} anchor={true} bind:anchorElement={anchor} anchorCorner="BOTTOM_RIGHT">
                 <List twoLine>
                   <Item on:SMUI:action={() => navigate('/profil/' + $userMezig.publicName, { replace: false })}>
                     <Text class="MenuText">
@@ -81,12 +95,22 @@
                       <SecondaryText>{$_('ui.profilSub')}</SecondaryText>
                     </Text>
                   </Item>
-                  <Item on:SMUI:action={() => navigate('/edit', { replace: false })}>
-                    <Text class="MenuText">
-                      <PrimaryText>{$_('ui.edit')}</PrimaryText>
-                      <SecondaryText>{$_('ui.editSub')}</SecondaryText>
-                    </Text>
-                  </Item>
+                  {#if userActive === true}
+                    <Item on:SMUI:action={() => navigate('/edit', { replace: false })}>
+                      <Text class="MenuText">
+                        <PrimaryText>{$_('ui.edit')}</PrimaryText>
+                        <SecondaryText>{$_('ui.editSub')}</SecondaryText>
+                      </Text>
+                    </Item>
+                    {#if isAdmin && !laboiteUrl}
+                      <Item on:SMUI:action={() => navigate('/admin', { replace: false })}>
+                        <Text class="MenuText">
+                          <PrimaryText>{$_('ui.admin')}</PrimaryText>
+                          <SecondaryText>{$_('ui.adminSub')}</SecondaryText>
+                        </Text>
+                      </Item>
+                    {/if}
+                  {/if}
                   <Separator />
                   <Item on:SMUI:action={() => Meteor.logout()}>
                     <Text class="MenuText">
@@ -136,17 +160,26 @@
     font-weight: bold;
     color: var(--color-brand);
   }
+  .userInfo {
+    display: flex;
+    cursor: pointer;
+    justify-content: flex-end;
+    height: inherit;
+  }
   #loginUser {
+    display: flex;
     font-weight: bold;
     margin: 0;
     margin-right: 10%;
     color: var(--color-brand);
   }
+  #menuAnchor {
+    display: flex;
+    height: 100%;
+  }
   .loggedMenu {
     display: flex;
-    justify-content: flex-end;
     height: 100%;
-    width: 10%;
   }
   * {
     align-items: center;
@@ -167,6 +200,7 @@
     border: solid whitesmoke 0.5px;
   }
   #ProfilPic {
+    display: flex;
     width: auto;
     max-height: 75%;
     border-radius: 50%;
@@ -180,7 +214,6 @@
   }
   div {
     display: contents;
-    cursor: pointer;
   }
   #linkSearch {
     font-family: var(--font-fam);

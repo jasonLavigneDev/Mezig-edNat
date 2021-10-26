@@ -90,9 +90,9 @@ if (Meteor.settings.private.fillWithFakeData) {
     },
   ];
 
-  if (Mezigs.find().count() <= 10) {
+  const allUsers = Meteor.users.find({}).fetch();
+  if (Mezigs.find().count() < allUsers.length) {
     console.log('Add FakeDatas');
-    const allUsers = Meteor.users.find({}).fetch();
     allUsers.forEach((user) => {
       const mez = {
         firstName: user.firstName,
@@ -121,6 +121,7 @@ if (Meteor.settings.private.fillWithFakeData) {
             Random.choice(allLinks),
           ]),
         ],
+        isActive: Random.choice(Boolean),
       };
       createMezig(mez);
     });

@@ -3,6 +3,7 @@
 import { PublicationCollector } from 'meteor/johanbrook:publication-collector';
 import { assert } from 'chai';
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 import { _ } from 'meteor/underscore';
 import { Random } from 'meteor/random';
 import { Factory } from 'meteor/dburles:factory';
@@ -65,11 +66,16 @@ describe('mezig', function () {
 
   describe('methods', function () {
     let userId;
+    let adminId;
     let mezigId;
     let mezigData;
+    let mezigAdminData;
     beforeEach(function () {
+      Meteor.roleAssignment.remove({});
       Meteor.users.remove({});
+      Meteor.roles.remove({});
       Mezigs.remove({});
+      Roles.createRole('admin');
 
       // Generate 'user'
       userId = Random.id();
@@ -80,12 +86,27 @@ describe('mezig', function () {
         username: 'ollicsom',
       };
       Meteor.users.insert(userData);
-
+      // Generate admin user
+      adminId = Random.id();
+      const adminData = {
+        _id: adminId,
+        firstName: 'Admin',
+        lastName: 'Admin',
+        username: 'admin',
+      };
+      Meteor.users.insert(adminData);
+      Roles.addUsersToRoles(adminId, 'admin');
       mezigData = {
         firstName: 'Léo',
         lastName: 'Moscillo',
         username: 'ollicsom',
         publicName: 'ollicsom',
+      };
+      mezigAdminData = {
+        firstName: 'Cmoi',
+        lastName: 'Ladmin',
+        username: 'admin',
+        publicName: 'bofh',
       };
     });
     describe('createMezig', function () {
@@ -105,9 +126,16 @@ describe('mezig', function () {
       });
     });
     describe('updateMezig', function () {
-      it('does update a mezig', function () {
+      it('does update current user mezig', function () {
         mezigId = Factory.create('mezigs', mezigData)._id;
         updateMezig._execute({ userId }, { mezigId, data: { ...mezigData, publicName: 'toto' } });
+        const reqMezig = Mezigs.findOne({ _id: mezigId });
+        assert.typeOf(reqMezig, 'object');
+        assert.equal(reqMezig.publicName, 'toto');
+      });
+      it("does update another user mezig if you're admin", function () {
+        mezigId = Factory.create('mezigs', mezigData)._id;
+        updateMezig._execute({ userId: adminId }, { mezigId, data: { ...mezigData, publicName: 'toto' } });
         const reqMezig = Mezigs.findOne({ _id: mezigId });
         assert.typeOf(reqMezig, 'object');
         assert.equal(reqMezig.publicName, 'toto');
@@ -120,6 +148,16 @@ describe('mezig', function () {
           },
           Meteor.Error,
           /api.mezigs.methods.updateMezig.notLoggedIn/,
+        );
+      });
+      it("does not update another mezig if you're not admin", function () {
+        assert.throws(
+          () => {
+            const mezigAdminId = Factory.create('mezigs', mezigAdminData)._id;
+            updateMezig._execute({ userId }, { mezigId: mezigAdminId, data: mezigData });
+          },
+          Meteor.Error,
+          /api.mezigs.methods.updateMezig.adminNeeded/,
         );
       });
       it('throw error if mezig to update is not found', function () {
@@ -147,7 +185,7 @@ describe('mezig', function () {
       it('does remove a mezig', function () {
         mezigId = Factory.create('mezigs', mezigData)._id;
         assert.typeOf(Mezigs.findOne({ _id: mezigId }), 'object');
-        removeMezig._execute({ userId }, { mezigId });
+        removeMezig._execute({ userId: adminId }, { mezigId });
         assert.equal(Mezigs.findOne({ _id: mezigId }), undefined);
       });
       it("does not remove a mezig if you're not logged in", function () {
@@ -160,10 +198,19 @@ describe('mezig', function () {
           /api.mezigs.methods.removeMezig.notLoggedIn/,
         );
       });
-      it('throw error if mezig to remove is not found', function () {
+      it('throw error if not admin', function () {
         assert.throws(
           () => {
             removeMezig._execute({ userId }, { mezigId: Random.id() });
+          },
+          Meteor.Error,
+          /api.mezigs.methods.removeMezig.adminNeeded/,
+        );
+      });
+      it('throw error if mezig to remove is not found', function () {
+        assert.throws(
+          () => {
+            removeMezig._execute({ userId: adminId }, { mezigId: Random.id() });
           },
           Meteor.Error,
           /api.mezigs.methods.removeMezig.notFound/,

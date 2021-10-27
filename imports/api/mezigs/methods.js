@@ -1,8 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
+import { Roles } from 'meteor/alanning:roles';
 
 import faviconoclast from 'faviconoclast';
+import i18n from 'meteor/universe:i18n';
 import Mezigs from './mezigs';
 
 Meteor.methods({
@@ -21,11 +23,31 @@ export const createMezig = new ValidatedMethod({
   run({ data }) {
     // check if logged in
     if (!this.userId) {
-      throw new Meteor.Error('api.mezigs.methods.createMezig.notLoggedIn', 'You must be logged in.');
+      throw new Meteor.Error('api.mezigs.methods.createMezig.notLoggedIn', i18n.__('api.notLoggedIn'));
     }
-    Mezigs.insert(data);
+    try {
+      Mezigs.insert(data);
+    } catch (error) {
+      if (error.code === 11000) {
+        throw new Meteor.Error('api.mezigs.createMezig.duplicateName', i18n.__('api.mezigs.alreadyExist'));
+      } else {
+        throw error;
+      }
+    }
   },
 });
+
+// export const updateProfilPic = new ValidatedMethod({
+//   name: 'mezigs.updateProfilPic',
+//   validate: new SimpleSchema({
+//     userId: { type: String, regEx: SimpleSchema.RegEx.Id },
+//     data: Mezigs.schema.omit('username', 'firstName', 'lastName'),
+//   }).validator({ clean: true }),
+//   run({ userId, data }) {
+//     // check if logged in
+//     console.log(userId, data);
+//   },
+// });
 
 export const updateMezig = new ValidatedMethod({
   name: 'mezigs.updateMezig',
@@ -36,15 +58,23 @@ export const updateMezig = new ValidatedMethod({
   run({ mezigId, data }) {
     // check if logged in
     if (data.publicName.length < 3) {
-      throw new Meteor.Error('api.mezigs.methods.updateMezig.shortPublicName', 'PublicName is too short.');
+      throw new Meteor.Error('api.mezigs.methods.updateMezig.shortPublicName', i18n.__('api.mezigs.nameTooShort'));
     }
     if (!this.userId) {
-      throw new Meteor.Error('api.mezigs.methods.updateMezig.notLoggedIn', 'You must be logged in.');
+      throw new Meteor.Error('api.mezigs.methods.updateMezig.notLoggedIn', i18n.__('api.notLoggedIn'));
     }
     // check mezig existence
     const myzig = Mezigs.findOne({ _id: mezigId });
     if (myzig === undefined) {
-      throw new Meteor.Error('api.mezigs.methods.updateMezig.notFound', 'Mezig not found.');
+      throw new Meteor.Error('api.mezigs.methods.updateMezig.notFound', i18n.__('api.mezigs.nameTooShort'));
+    }
+    const currentUser = Meteor.users.findOne(this.userId);
+    // check if user is activated, if not admin user can only update it's own Mezig
+    if (currentUser.isActive === false) {
+      throw new Meteor.Error('api.mezigs.methods.updateMezig.validationNeeded', i18n.__('api.validationNeeded'));
+    }
+    if (myzig.username !== currentUser.username && !Roles.userIsInRole(this.userId, 'admin')) {
+      throw new Meteor.Error('api.mezigs.methods.updateMezig.adminNeeded', i18n.__('api.adminNeeded'));
     }
     // get favicon for links
     data.links.forEach((link, i) => {
@@ -59,15 +89,31 @@ export const updateMezig = new ValidatedMethod({
       }
     });
 
+    let mezigData = null;
     try {
-      return Mezigs.update({ _id: mezigId }, { $set: { ...data } });
+      mezigData = Mezigs.update({ _id: mezigId }, { $set: { ...data } });
     } catch (error) {
       if (error.code === 11000) {
-        throw new Meteor.Error('api.mezigs.methods.updateMezig.duplicatePublicName', 'PublicName already exits.');
+        throw new Meteor.Error(
+          'api.mezigs.methods.updateMezig.duplicatePublicName',
+          i18n.__('api.mezigs.alreadyExists.'),
+        );
       } else {
         throw error;
       }
     }
+    // add or remove publicName to Meteor.users collection
+    try {
+      const published = data.blacklist === false || (data.blacklist === undefined && myzig.blacklist === false);
+      if (published === true) {
+        Meteor.users.update({ username: myzig.username }, { $set: { mezigName: data.publicName || myzig.publicName } });
+      } else {
+        Meteor.users.update({ username: myzig.username }, { $unset: { mezigName: true } });
+      }
+    } catch (error) {
+      throw new Meteor.Error('api.mezigs.methods.updateMezig.updateUserError', error.reason || error.message);
+    }
+    return mezigData;
   },
 });
 
@@ -79,12 +125,15 @@ export const removeMezig = new ValidatedMethod({
   run({ mezigId }) {
     // check if logged in
     if (!this.userId) {
-      throw new Meteor.Error('api.mezigs.methods.removeMezig.notLoggedIn', 'You must be logged in.');
+      throw new Meteor.Error('api.mezigs.methods.removeMezig.notLoggedIn', i18n.__('api.notLoggedIn'));
+    }
+    if (!Roles.userIsInRole(this.userId, 'admin')) {
+      throw new Meteor.Error('api.mezigs.methods.removeMezig.adminNeeded', i18n.__('api.adminNeeded'));
     }
     // check mezig existence
     const myzig = Mezigs.findOne({ _id: mezigId });
     if (myzig === undefined) {
-      throw new Meteor.Error('api.mezigs.methods.removeMezig.notFound', 'Mezig not found.');
+      throw new Meteor.Error('api.mezigs.methods.removeMezig.notFound', i18n.__('api.mezigs.notFound'));
     }
     return Mezigs.remove({ _id: mezigId });
   },
@@ -131,3 +180,10 @@ export const getMezigs = new ValidatedMethod({
     return { total, data };
   },
 });
+
+// Meteor.methods({
+//   'mezigs.getAllData': function getAllData() {
+//     const data = Mezigs.find().fetch();
+//     return data;
+//   },
+// });

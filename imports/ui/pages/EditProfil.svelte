@@ -8,28 +8,27 @@
   import Spinner from '../components/Spinner.svelte';
   import EditTableLinks from '../components/EditTableLinks.svelte';
 
-  import Dialog, { Title, Content, Actions } from '@smui/dialog/bare';
+  import Dialog, { Title, Content, Actions } from '@smui/dialog';
   import '@smui/dialog/bare.css';
-  import Chip, { Set, Icon, Text } from '@smui/chips/bare';
+  import Chip, { Set, TrailingAction, Text } from '@smui/chips';
   import '@smui/chips/bare.css';
-  import Textfield from '@smui/textfield/bare';
+  import Textfield from '@smui/textfield';
   import '@smui/textfield/bare.css';
-  import HelperText from '@smui/textfield/helper-text/bare';
-  import '@smui/textfield/helper-text/bare.css';
-  import CharacterCounter from '@smui/textfield/character-counter/bare';
+  import CharacterCounter from '@smui/textfield/character-counter';
   import '@smui/textfield/character-counter/bare.css';
-  import Button, { Label } from '@smui/button/bare';
+  import Button, { Label } from '@smui/button';
   import '@smui/button/bare.css';
-  import FormField from '@smui/form-field/bare';
+  import FormField from '@smui/form-field';
   import '@smui/form-field/bare.css';
-  import Switch from '@smui/switch/bare';
+  import Switch from '@smui/switch';
   import '@smui/switch/bare.css';
   // FIXME : npm add only required packages instead of whole 'svelte-material-ui'
   import PackageJSON from '../../../package.json';
   let version = PackageJSON.version;
 
   export let profileOk = true;
-  export let simpleDialog;
+  export let errorDialog;
+  export let simpleDialogSuppr;
   let loading = true;
   let whitelist = true;
   let publicName = '';
@@ -76,14 +75,12 @@
 
   const handleSubmit = () => {
     notSortedLinks = [...links];
-    console.log(notSortedLinks);
     sortableDivChild = sortableDiv.children;
     for (let i = 0; i < sortableDivChild.length; i++) {
       y = sortableDivChild[i].id;
       sortedLinks[i] = notSortedLinks[y];
     }
     links = sortedLinks;
-    console.log(links);
     userData = {
       blacklist: !whitelist,
       publicName,
@@ -97,7 +94,7 @@
     Meteor.call('mezigs.updateMezig', { mezigId: $currentMezig._id, data: userData }, (err) => {
       if (err) {
         error = err.message;
-        simpleDialog.open();
+        errorDialog.setOpen(true);
       } else {
         // set loading to true to permit reload from api
         profileOk = true;
@@ -112,15 +109,25 @@
     navigate(`/profil/${$currentMezig.publicName}`, { state: `/profil/${$currentMezig.publicName}` });
   };
 
+  const handleDelete = () => {
+    // set loading to true to permit reload from api
+    Meteor.call('mezigs.removeMezig', { mezigId: $currentMezig._id }, (err) => {
+      if (err) {
+        error = err.message;
+        simpleDialogSuppr.open();
+      } else {
+        // set loading to true to permit reload from api
+        Meteor.logout();
+        navigate(`/`, { state: `/` });
+      }
+    });
+  };
+
   const handleUpdateLinks = () => {
     // 'updateLink' event emit by EditLink component on input values in label and URL fields
     // => update links array to dynamicaly launch validateForm
     // https://svelte.dev/tutorial/updating-arrays-and-objects
-    if (sortedLinks.length > 0) {
-      links = sortedLinks;
-    } else {
-      links = links;
-    }
+    links = links;
   };
 
   const addSkill = () => {
@@ -129,7 +136,6 @@
     skills = skills;
     newSkill = '';
   };
-
 </script>
 
 <svelte:head>
@@ -153,40 +159,39 @@
         </div>
         <div class="MezigField">
           <Textfield
-            class="FullWidth"
+            style="width: 100%;"
             variant="outlined"
             bind:value={publicName}
             label={$_('ui.editProfil.publicName')}
           />
         </div>
         <div class="MezigField">
-          <Textfield class="FullWidth" variant="outlined" bind:value={email} label={$_('ui.editProfil.email')} />
+          <Textfield style="width: 100%;" variant="outlined" bind:value={email} label={$_('ui.editProfil.email')} />
         </div>
         <div class="MezigField">
-          <Textfield textarea fullwidth bind:value={biography} label={$_('ui.editProfil.biography')} />
+          <Textfield
+            textarea
+            style="width: 100%;"
+            helperLine$style="width: 100%;"
+            bind:value={biography}
+            label={$_('ui.editProfil.biography')}
+          />
         </div>
         <div class="part">
           <p class="partTitle">{$_('ui.editProfil.skills')}</p>
           <FormField>
             <Set chips={skills} let:chip input>
-              <Chip>
+              <Chip {chip}>
                 <Text>{chip}</Text>
-                <Icon class="material-icons" trailing tabindex="0">cancel</Icon>
+                <TrailingAction icon$class="material-icons">cancel</TrailingAction>
               </Chip>
             </Set>
           </FormField>
           <div class="MezigField center">
             <FormField>
-              <Textfield
-                bind:value={newSkill}
-                label={$_('ui.editProfil.newSkill')}
-                input$maxlength={maxSkillsCar}
-                input$aria-controls="helper-text-char-count-a"
-                input$aria-describedby="helper-text-char-count-a"
-              />
-              <HelperText id="helper-text-char-count-a">
-                <span slot="character-counter"><CharacterCounter>0 / {maxSkillsCar}</CharacterCounter></span>
-              </HelperText>
+              <Textfield bind:value={newSkill} label={$_('ui.editProfil.newSkill')} input$maxlength={maxSkillsCar}>
+                <span slot="helper"><CharacterCounter>0 / {maxSkillsCar}</CharacterCounter></span>
+              </Textfield>
               <div class="spaceAround">
                 <Button
                   class="spaceAround"
@@ -210,15 +215,38 @@
             >{$_('ui.editProfil.submit')}</Button
           >
         </div>
+        <div class="center">
+          <Button
+            on:click={() => {
+              simpleDialogSuppr.open();
+            }}
+            style="margin: 3%; font-size: 1.2rem;"
+            variant="raised">{$_('ui.editProfil.delete')}</Button
+          >
+        </div>
       </form>
-      <Dialog bind:this={simpleDialog} aria-labelledby="simple-title" aria-describedby="simple-content">
-        <Title id="simple-title">Error</Title>
-        <Content id="simple-content">
+      <Dialog bind:this={errorDialog} aria-labelledby="error-title" aria-describedby="error-content">
+        <Title id="error-title">{$_('ui.editProfil.error')}</Title>
+        <Content id="error-content">
           {error}
         </Content>
         <Actions>
           <Button>
             <Label>Ok</Label>
+          </Button>
+        </Actions>
+      </Dialog>
+
+      <Dialog bind:this={simpleDialogSuppr} aria-labelledby="simple-title" aria-describedby="simple-content">
+        <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
+        <Title id="simple-title">{$_('ui.editProfil.delete')}</Title>
+        <Content id="simple-content">{$_('ui.editProfil.deleteQuestion')}</Content>
+        <Actions>
+          <Button on:click={() => ''}>
+            <Label>{$_('ui.no')}</Label>
+          </Button>
+          <Button on:click={() => handleDelete()}>
+            <Label>{$_('ui.yes')}</Label>
           </Button>
         </Actions>
       </Dialog>
@@ -300,5 +328,4 @@
   .center {
     text-align: center;
   }
-
 </style>

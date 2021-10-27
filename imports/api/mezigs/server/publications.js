@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { FindFromPublication } from 'meteor/percolate:find-from-publication';
 import Mezigs from '../mezigs';
 
 // publish currrent user profile to client
@@ -56,4 +57,11 @@ Meteor.publish('mezigs.profile', function publishOneUser({ publicName }) {
     mezigsHandle.stop();
   });
   return self.ready();
+});
+
+FindFromPublication.publish('mezigs.all', function publishAll() {
+  if (this.userId !== null) {
+    return Mezigs.find({});
+  }
+  return this.ready();
 });

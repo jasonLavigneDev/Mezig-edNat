@@ -44,6 +44,7 @@ Mezigs.schema = new SimpleSchema(
     username: {
       type: String,
       optional: false,
+      unique: true,
     },
     publicName: {
       type: String,
@@ -131,9 +132,9 @@ Mezigs.attachSchema(Mezigs.schema);
 if (Meteor.isServer) {
   // create or update Mezig data for current user
   Accounts.onLogin((details) => {
+    let mez = {};
     if (details.type === 'keycloak') {
       // update data with keycloak info
-      let mez = {};
       if (details.user.services.keycloak.given_name) {
         mez.firstName = details.user.services.keycloak.given_name;
       }
@@ -143,35 +144,46 @@ if (Meteor.isServer) {
       if (details.user.services.keycloak.preferred_username) {
         mez.username = details.user.services.keycloak.preferred_username;
       }
-      // always update profilPic to laboite avatar
-      mez.profilPic = details.user.avatar || '';
-      // check if mezig already exists
-      const currentMezig = Mezigs.findOne({ username: mez.username });
-      if (currentMezig) {
-        // update only basic informations
-        if (
-          currentMezig.username !== mez.username ||
-          currentMezig.firstName !== mez.firstName ||
-          currentMezig.lastName !== mez.lastName ||
-          currentMezig.profilPic !== mez.profilPic
-        ) {
-          Mezigs.update({ _id: currentMezig._id }, { $set: mez });
-        }
-      } else {
-        // autocreate user, fetch additional data in users collection
-        mez = {
-          ...mez,
-          // user laboite username as default publicName
-          // if necessary, change to firstName.lastName and manage ducplicates
-          publicName: details.user.username,
-          biography: '',
-          blacklist: true,
-          skills: [],
-          links: [],
-          profileChecked: false,
-        };
-        Mezigs.insert(mez);
+    } else {
+      // local accounts
+      if (details.user.firstName) {
+        mez.firstName = details.user.firstName;
       }
+      if (details.user.lastName) {
+        mez.lastName = details.user.lastName;
+      }
+      if (details.user.username) {
+        mez.username = details.user.username;
+      }
+    }
+    // always update profilPic to laboite avatar
+    mez.profilPic = details.user.avatar || '';
+    // check if mezig already exists
+    const currentMezig = Mezigs.findOne({ username: mez.username });
+    if (currentMezig) {
+      // update only basic informations
+      if (
+        currentMezig.username !== mez.username ||
+        currentMezig.firstName !== mez.firstName ||
+        currentMezig.lastName !== mez.lastName ||
+        currentMezig.profilPic !== mez.profilPic
+      ) {
+        Mezigs.update({ _id: currentMezig._id }, { $set: mez });
+      }
+    } else {
+      // autocreate user, fetch additional data in users collection
+      mez = {
+        ...mez,
+        // user laboite username as default publicName
+        // if necessary, change to firstName.lastName and manage ducplicates
+        publicName: mez.username,
+        biography: '',
+        blacklist: true,
+        skills: [],
+        links: [],
+        profileChecked: false,
+      };
+      Mezigs.insert(mez);
     }
   });
 }

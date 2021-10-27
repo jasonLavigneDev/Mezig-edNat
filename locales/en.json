@@ -1,8 +1,42 @@
 {
   "api": {
     "notLoggedIn": "You must be logged in.",
+    "validationNeeded": "Your account is not validated.",
+    "adminNeeded": "This action requires admin rights",
     "mezigs": {
-      "notFound": "Mezig not found."
+      "notFound": "Mezig not found.",
+      "alreadyExists": "a Mezig entry already exists for this username/publicname.",
+      "nameTooShort": "PublicName is too short (minimum is 3 characters)."
+    },
+    "users": {
+      "unknownUser": "Unknown user",
+      "labels": {
+        "id": "User Id",
+        "username": "User Name",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "emails": "Email",
+        "emailAddress": "Email Address",
+        "emailVerified": "Email Verified",
+        "createdAt": "User Creation Date",
+        "profile": "Profile",
+        "services": "Services",
+        "heartbeat": "Heartbeat",
+        "isActive": "User Is Active",
+        "isRequest": "User Awaits Activation",
+        "favServices": "Favorite Services",
+        "favUserBookmarks": "Favorite Bookmarks",
+        "structure": "Attachment Structure",
+        "primaryEmail": "Primary Email",
+        "language": "Preferred Language",
+        "logoutType": "Logout Method",
+        "lastLogin": "Last login date",
+        "avatar": "avatar URL",
+        "groupCount": "Amount of created groups",
+        "groupQuota": "Amount of groups creatable",
+        "ncloud": "Nextcloud URL",
+        "advancedPersonalPage": "Advanced personal page"
+      }
     }
   },
   "ui": {
@@ -15,7 +49,7 @@
     "connection": "Log in",
     "disconnection": "Logout",
     "loginLaboite": "login to LaBoite",
-    "loginMsg": "Your user ha no LaBoite account, please click on the button below to create it, then follow ",
+    "loginMsg": "Your user ha no LaBoite account, please click on the button to create it, then follow ",
     "loginLink": "this link",
     "unknownUser": "Unknown user",
     "avatarTitle": "User avatar",
@@ -30,9 +64,12 @@
     "profil": "My mezig",
     "profilSub": "Go to your profile",
     "disconnectionSub": "Disconnect",
+    "admin": "Administrate",
+    "adminSub": "Administrate users",
     "profileBlacklisted": "Your profile is not published to other users",
     "profileSkills": "Skills",
     "profileSkillsNone": "No skills provided",
+    "activationNeeded": "Your account is awaiting validation",
     "editProfil": {
       "title": "My profile",
       "showProfile": "Show my profile",
@@ -45,7 +82,21 @@
       "links": "Links",
       "submit": "Submit",
       "cancel": "Cancel",
-      "validationNeeded": "Please validate your profile to continue"
+      "delete": "Delete account",
+      "deleteQuestion": "Are you sure you want to delete your Mézig account ?",
+      "validationNeeded": "Please validate your profile to continue",
+      "error": "Erreur"
+    },
+    "Admin": {
+      "title": "Administrate",
+      "rowPerPage": "Rows Per Page",
+      "username": "Username",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "activated": "Activated",
+      "actions": "Actions",
+      "supprAccount": "Delete this account",
+      "supprMessage": "Are you sure you want to delete this account : "
     },
     "editTableLinks": { "addLink": "Add a link" },
     "editLink": {
@@ -60,7 +111,16 @@
       "email": "Username or email",
       "password": "Password",
       "submit": "Submit",
+      "error": "Error",
       "loginError": "incorrect Username or password"
+    },
+    "Signup": {
+      "title": "Register",
+      "registerMsg": "Register an account",
+      "confirm": "Confirm",
+      "submit": "Submit",
+      "firstName": "fistName",
+      "lastName": "lastName"
     },
     "share": "Copy profile link"
   }

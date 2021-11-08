@@ -2,10 +2,9 @@ import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { Roles } from 'meteor/alanning:roles';
-
-import faviconoclast from 'faviconoclast';
 import i18n from 'meteor/universe:i18n';
 import Mezigs from './mezigs';
+import getFavicon from '../getFavicon';
 
 Meteor.methods({
   'mezigs.checkProfile': function checkProfile() {
@@ -55,7 +54,7 @@ export const updateMezig = new ValidatedMethod({
     mezigId: { type: String, regEx: SimpleSchema.RegEx.Id },
     data: Mezigs.schema.omit('username', 'firstName', 'lastName'),
   }).validator({ clean: true }),
-  run({ mezigId, data }) {
+  async run({ mezigId, data }) {
     // check if logged in
     if (data.publicName.length < 3) {
       throw new Meteor.Error('api.mezigs.methods.updateMezig.shortPublicName', i18n.__('api.mezigs.nameTooShort'));
@@ -76,22 +75,25 @@ export const updateMezig = new ValidatedMethod({
     if (myzig.username !== currentUser.username && !Roles.userIsInRole(this.userId, 'admin')) {
       throw new Meteor.Error('api.mezigs.methods.updateMezig.adminNeeded', i18n.__('api.adminNeeded'));
     }
+
     // get favicon for links
-    data.links.forEach((link, i) => {
-      if (!link.favicon) {
-        const wrappedGetFavicon = Meteor.wrapAsync(faviconoclast);
-        try {
-          // eslint-disable-next-line no-param-reassign
-          data.links[i].favicon = wrappedGetFavicon(link.URL);
-        } catch (error) {
-          console.log(`api.mezigs.methods.updateMezig`, error);
+    // https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
+    const links = await Promise.all(
+      data.links.map(async (link) => {
+        let favicon;
+        if (!link.favicon) {
+          favicon = await getFavicon(link.URL);
+        } else {
+          favicon = link.favicon;
         }
-      }
-    });
+        return { ...link, favicon };
+      }),
+    );
+    const finalData = { ...data, links };
 
     let mezigData = null;
     try {
-      mezigData = Mezigs.update({ _id: mezigId }, { $set: { ...data } });
+      mezigData = Mezigs.update({ _id: mezigId }, { $set: { ...finalData } });
     } catch (error) {
       if (error.code === 11000) {
         throw new Meteor.Error(

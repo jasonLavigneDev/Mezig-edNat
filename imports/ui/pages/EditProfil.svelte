@@ -136,6 +136,18 @@
     skills = skills;
     newSkill = '';
   };
+
+  // Add skills with pressing Enter key
+  const handleEnter = (event) => {
+    if (event.key === "Enter") {
+      // Delete other Enter event 
+      event.preventDefault();
+      if (newSkill != '') {
+        addSkill();
+      }
+    }
+  }
+
 </script>
 
 <svelte:head>
@@ -179,17 +191,15 @@
         </div>
         <div class="part">
           <p class="partTitle">{$_('ui.editProfil.skills')}</p>
-          <FormField>
-            <Set chips={skills} let:chip input>
+            <Set chips={skills} let:chip>
               <Chip {chip}>
                 <Text>{chip}</Text>
                 <TrailingAction icon$class="material-icons">cancel</TrailingAction>
               </Chip>
             </Set>
-          </FormField>
           <div class="MezigField center">
             <FormField>
-              <Textfield bind:value={newSkill} label={$_('ui.editProfil.newSkill')} input$maxlength={maxSkillsCar}>
+              <Textfield bind:value={newSkill} label={$_('ui.editProfil.newSkill')} input$maxlength={maxSkillsCar} on:keydown={handleEnter}>
                 <span slot="helper"><CharacterCounter>0 / {maxSkillsCar}</CharacterCounter></span>
               </Textfield>
               <div class="spaceAround">

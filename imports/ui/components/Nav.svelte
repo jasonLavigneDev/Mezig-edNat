@@ -59,10 +59,16 @@
   onDestroy(() => {
     stopCallback();
   });
+
+  // Give focus on textfield in search page
+  const handleFocusTextfield = () => {
+    document.getElementById("search").focus();
+  };
+
 </script>
 
 <nav>
-  <a id="linkSearch" href="/" use:routerLink>{$_('ui.search')}</a>
+  <a id="linkSearch" href="/" use:routerLink on:click={handleFocusTextfield}>{$_('ui.search')}</a>
   {#if userRedirect === true}
     <div class="loginMsg">
       <p>{$_('ui.loginMsg')}<a href="#" on:click={doLogin}>{$_('ui.loginLink')}</a></p>

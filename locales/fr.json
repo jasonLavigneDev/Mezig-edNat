@@ -56,7 +56,7 @@
     "noSearchResult": "Aucun résultat pour la recherche ",
     "searchLabel": "recherche d'utilisateurs",
     "searchPlaceHolder": "Rechercher un mézig...",
-    "searchTooltip": "Chercher un nom, un mail ou une compétence grâce au caractère '#'",
+    "searchTooltip": "Chercher un nom, un mail ou une compétence avec #",
     "backToHome": "Retour à la recherche",
     "edit": "Modifier",
     "editSub": "Modifier votre profil",
@@ -122,7 +122,8 @@
       "confirm": "Confirmation",
       "submit": "Valider",
       "firstName": "Prénom",
-      "lastName": "Nom"
+      "lastName": "Nom",
+      "createError": "Échec de la création du compte"
     },
     "share": "Copier le lien du profil"
   }

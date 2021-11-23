@@ -8,6 +8,7 @@
   import PackageJSON from '../../../package.json';
   let version = PackageJSON.version;
 
+  export let location = null;
   let searching = '';
   let previousSearch = '';
   let noResult = '';
@@ -78,7 +79,6 @@
       totalFoundMezigs = res.total;
     });
   }
-
 </script>
 
 <svelte:head>
@@ -107,7 +107,7 @@
   {/if}
 </form>
 
-<ul id="results" class="SearchResultDiv" bind:this={ulMezigs}>
+<ul id="results" class="SearchResultDiv" role="tablist" bind:this={ulMezigs}>
   {#each usersScroll as user}
     <SearchResult {user} on:clickSkills={handleClickSkill} />
   {/each}
@@ -130,8 +130,8 @@
     --dur: 0.3s;
     --color-dark: #2f2f2f;
     --color-light: #fff;
-    --color-brand: #57bd84;
-    --font-fam: 'Lato', sans-serif;
+    --color-brand: #011caa;
+    --color-blue: rgba(90, 161, 216, 0.4);
     --height: 3rem;
     --btn-width: 4rem;
     --bez: cubic-bezier(0, 0, 0.43, 1.49);
@@ -142,14 +142,12 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /* width: 20rem; */
     max-width: 90vw;
-    background: var(--color-brand);
+    background: var(--color-blue);
     border-radius: var(--rad);
   }
   input {
     height: var(--height);
-    font-family: var(--font-fam);
     border: 0;
     color: var(--color-dark);
     font-size: 1rem;
@@ -157,7 +155,7 @@
   input[type='search'] {
     outline: 0;
     width: 100%;
-    background: var(--color-light);
+    background: #fff;
     padding: 0 1.6rem;
     border-radius: var(--rad);
     appearance: none;
@@ -180,12 +178,12 @@
     left: 50%;
     transform: translate(-50%, 0);
     top: 25%;
-    width: 90%;
+    width: 100%;
     max-height: 600px;
     overflow-y: scroll;
   }
   .noResult {
-    color: white;
+    color: var(--color-dark);
     text-align: center;
     font-size: 2vmin;
     position: absolute;
@@ -194,7 +192,8 @@
     transform: translate(-50%);
   }
   #infos {
-    margin-left: auto;
+    margin-left: 1.6rem;
+    opacity: 100%;
   }
   .end {
     font-weight: bold;
@@ -209,16 +208,16 @@
     width: 9px;
   }
   #results {
-    scrollbar-color: #57bd84 #2f2f2f;
+    scrollbar-color: var(--color-blue) rgba(0, 0, 0, 0);
   }
 
   #results::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: #57bd84;
+    background-color: var(--color-blue);
   }
   #results::scrollbar-thumb {
     border-radius: 10px;
-    background-color: #57bd84;
+    background-color: var(--color-blue);
   }
 
   @media (min-width: 576px) {
@@ -249,5 +248,4 @@
     max-height: 600px;
     overflow-y: scroll;
   } */
-
 </style>

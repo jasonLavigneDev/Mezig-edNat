@@ -8,7 +8,7 @@
   import '@smui/icon-button/bare.css';
 
   export let links = [];
-  export let sortableDiv;
+  export let sortableDiv = null;
   let sortable;
 
   const addLink = () => {
@@ -59,7 +59,7 @@
     cursor: pointer;
   }
   .IconAddLink:hover {
-    color: grey;
+    color: #011caa;
   }
   .IconDiv {
     display: flex;

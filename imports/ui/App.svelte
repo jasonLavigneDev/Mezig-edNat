@@ -26,6 +26,7 @@
   <Spinner />
 {:else}
   {#if userRedirect === false}
+    <Nav bind:userRedirect bind:profileOk bind:userActive />
     <Router {url}>
       <div class="container">
         {#if profileOk === false && userActive === true}
@@ -55,5 +56,4 @@
       </div>
     </Router>
   {/if}
-  <Nav bind:userRedirect bind:profileOk bind:userActive />
 {/if}

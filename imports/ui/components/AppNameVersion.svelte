@@ -10,8 +10,6 @@
 </div>
 
 <style>
-  .name {
-  }
   .version {
     opacity: 0.3;
   }

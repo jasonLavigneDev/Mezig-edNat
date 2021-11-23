@@ -22,13 +22,15 @@
   import '@smui/form-field/bare.css';
   import Switch from '@smui/switch';
   import '@smui/switch/bare.css';
+
   // FIXME : npm add only required packages instead of whole 'svelte-material-ui'
   import PackageJSON from '../../../package.json';
   let version = PackageJSON.version;
 
   export let profileOk = true;
-  export let errorDialog;
-  export let simpleDialogSuppr;
+  export let location = null;
+  let simpleDialogSuppr;
+  let errorDialog;
   let loading = true;
   let whitelist = true;
   let publicName = '';
@@ -36,7 +38,7 @@
   let profilPic = '';
   let links = [];
   let sortedLinks = [];
-  let sortableDiv;
+  let sortableDiv;  
   let skills = [];
   const maxSkillsCar = 32;
   let newSkill = '';
@@ -139,15 +141,14 @@
 
   // Add skills with pressing Enter key
   const handleEnter = (event) => {
-    if (event.key === "Enter") {
-      // Delete other Enter event 
+    if (event.key === 'Enter') {
+      // Delete other Enter event
       event.preventDefault();
       if (newSkill != '') {
         addSkill();
       }
     }
-  }
-
+  };
 </script>
 
 <svelte:head>
@@ -165,7 +166,7 @@
         {#if profileOk === false}<span class="validationNeeded">{$_('ui.editProfil.validationNeeded')} </span>{/if}
         <div class="MezigField center">
           <FormField>
-            <Switch bind:checked={whitelist} />
+            <Switch color="primary" bind:checked={whitelist} />
             <span slot="label">{$_('ui.editProfil.showProfile')}</span>
           </FormField>
         </div>
@@ -191,15 +192,20 @@
         </div>
         <div class="part">
           <p class="partTitle">{$_('ui.editProfil.skills')}</p>
-            <Set chips={skills} let:chip>
-              <Chip {chip}>
-                <Text>{chip}</Text>
-                <TrailingAction icon$class="material-icons">cancel</TrailingAction>
-              </Chip>
-            </Set>
+          <Set chips={skills} let:chip>
+            <Chip {chip}>
+              <Text>{chip}</Text>
+              <TrailingAction id="cancel" icon$class="material-icons">cancel</TrailingAction>
+            </Chip>
+          </Set>
           <div class="MezigField center">
             <FormField>
-              <Textfield bind:value={newSkill} label={$_('ui.editProfil.newSkill')} input$maxlength={maxSkillsCar} on:keydown={handleEnter}>
+              <Textfield
+                bind:value={newSkill}
+                label={$_('ui.editProfil.newSkill')}
+                input$maxlength={maxSkillsCar}
+                on:keydown={handleEnter}
+              >
                 <span slot="helper"><CharacterCounter>0 / {maxSkillsCar}</CharacterCounter></span>
               </Textfield>
               <div class="spaceAround">
@@ -217,22 +223,34 @@
         </div>
         <div class="part">
           <p class="partTitle" style="margin-bottom: 0">{$_('ui.editProfil.links')}</p>
-          <EditTableLinks bind:sortableDiv bind:sortedLinks bind:links on:updateLink={handleUpdateLinks} />
+          <EditTableLinks bind:sortableDiv bind:links on:updateLink={handleUpdateLinks} />
         </div>
         <div class="center">
-          <Button on:click={handleCancel} style="margin: 3%; font-size: 1.2rem;">{$_('ui.editProfil.cancel')}</Button>
-          <Button on:click={handleSubmit} style="margin: 3%; font-size: 1.2rem;" disabled={!formValid} variant="raised"
-            >{$_('ui.editProfil.submit')}</Button
+          <Button
+            on:click={handleCancel}
+            style="margin: 3%; font-size: 1.2rem; background-color: #d5d5d5; color: black;"
           >
+            {$_('ui.editProfil.cancel')}
+          </Button>
+          <Button
+            on:click={handleSubmit}
+            style="margin: 3%; font-size: 1.2rem; background-color: #011CAA; color: white;"
+            disabled={!formValid}
+            variant="raised"
+          >
+            {$_('ui.editProfil.submit')}
+          </Button>
         </div>
         <div class="center">
           <Button
             on:click={() => {
               simpleDialogSuppr.open();
             }}
-            style="margin: 3%; font-size: 1.2rem;"
-            variant="raised">{$_('ui.editProfil.delete')}</Button
+            style="margin: 3%; font-size: 1.2rem; background-color: #E48231; color:white; font-weight:bold"
+            variant="raised"
           >
+            {$_('ui.editProfil.delete')}
+          </Button>
         </div>
       </form>
       <Dialog bind:this={errorDialog} aria-labelledby="error-title" aria-describedby="error-content">
@@ -271,9 +289,9 @@
     --rad: 0.7rem;
     --dur: 0.3s;
     --color-dark: #2f2f2f;
-    --color-light: #fff;
-    --color-brand: #57bd84;
-    --font-fam: 'Lato', sans-serif;
+    --color-light: #eceef8;
+    --color-brand: #011caa;
+    --color-labeltitle: #9e9e9e;
     --height: 3rem;
     --btn-width: 4rem;
     --bez: cubic-bezier(0, 0, 0.43, 1.49);
@@ -285,7 +303,7 @@
     margin-bottom: 2vmin;
     font-size: 3vmin;
     margin-top: 1vmin;
-    color: white;
+    color: var(--color-brand);
   }
   form {
     transition-duration: 0.7s;
@@ -295,7 +313,7 @@
     transform: translate(-50%, 0%);
     width: 40rem;
     max-width: 90vw;
-    background: var(--color-light);
+    background: white;
     border-radius: var(--rad);
     padding: 15px;
   }
@@ -323,14 +341,14 @@
     margin: 10px 0;
     border-width: 1px;
     border-style: solid;
-    border-color: #9e9e9e;
+    border-color: var(--color-labeltitle);
     border-radius: 4px;
   }
   .partTitle {
     margin: 10px 0;
     margin-left: 10px;
     font-size: 1.6vmin;
-    color: #9e9e9e;
+    color: var(--color-dark);
   }
   .spaceAround {
     margin: 20px;

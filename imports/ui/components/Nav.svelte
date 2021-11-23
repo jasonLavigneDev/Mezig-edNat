@@ -85,6 +85,14 @@
       isOpen = false;
     }
   }
+
+  const handleDisconnection = () => {
+    Meteor.logout();
+    window.location.reload(false);
+    if(window.location.pathname === "/edit") {
+      navigate('/');
+    }
+  }
 </script>
 
 <nav>
@@ -157,10 +165,7 @@
                     {/if}
                   {/if}
                   <Separator />
-                  <Item on:SMUI:action={() =>{ 
-                    Meteor.logout()
-                    window.location.reload(false);
-                  }}>
+                  <Item on:SMUI:action={handleDisconnection}>
                     <Text class="MenuText">
                       <PrimaryText>{$_('ui.disconnection')}</PrimaryText>
                       <SecondaryText>{$_('ui.disconnectionSub')}</SecondaryText>

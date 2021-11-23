@@ -120,7 +120,8 @@
       "confirm": "Confirm",
       "submit": "Submit",
       "firstName": "fistName",
-      "lastName": "lastName"
+      "lastName": "lastName",
+      "createError": "Account creation failed"
     },
     "share": "Copy profile link"
   }

@@ -11,7 +11,8 @@
   import '@smui/button/bare.css';
   // FIXME : npm add only required packages instead of whole 'svelte-material-ui'
 
-  export let simpleDialog = null;
+  export let location = null;
+  let simpleDialog = null;
   let email = '';
   let password = '';
   let error = '';
@@ -89,14 +90,12 @@
     --dur: 0.3s;
     --color-dark: #2f2f2f;
     --color-light: #fff;
-    --color-brand: #57bd84;
-    --font-fam: 'Lato', sans-serif;
+    --color-brand: #011caa;
     --height: 3rem;
     --btn-width: 4rem;
     --bez: cubic-bezier(0, 0, 0.43, 1.49);
   }
   h1 {
-    font-family: var(--font-fam);
     border-bottom: 5px;
     font-size: 1rem;
     font-weight: bold;

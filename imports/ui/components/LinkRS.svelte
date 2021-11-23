@@ -8,7 +8,7 @@
 
 <style>
   a {
-    color: white;
+    color: #011CAA;
     text-decoration: none;
     margin: 0% 5%;
   }
@@ -16,10 +16,10 @@
     height: 6vh;
   }
   path {
-    fill: white;
+    fill: #011CAA;
   }
   .nonPublic {
-    fill: #ff3e00;
+    fill: #E48231;
   }
 </style>
 

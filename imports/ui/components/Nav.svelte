@@ -14,7 +14,7 @@
   import Mezigs from '../../api/mezigs/mezigs';
   import { link as routerLink, navigate } from 'svelte-routing';
   import IconButton from '@smui/icon-button';
-  import { Label } from '@smui/button';
+  import { Group, Label, Icon } from '@smui/button';
   import Tooltip from './Tooltip.svelte';
 
   const blankUser = '/blank_user.svg';
@@ -105,6 +105,7 @@
             <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
           {:then}
             {#if $userMezig}
+            <Group>
               <button
                 class="userInfo"
                 aria-level="1"
@@ -116,6 +117,7 @@
                   {($user || { firstName: '' }).firstName}
                 </Label>
                 <img id="ProfilPic" src={$userMezig.profilPic || blankUser} alt="Avatar" />
+                <Icon class="material-icons">expand_more</Icon>
                 <div id="menuAnchor" bind:this={anchor} use:Anchor />
               </button>
               <Menu bind:this={menu} anchor={true} bind:anchorElement={anchor} anchorCorner="BOTTOM_RIGHT">
@@ -151,6 +153,7 @@
                   </Item>
                 </List>
               </Menu>
+            </Group>
             {/if}
           {/await}
         </div>
@@ -243,9 +246,10 @@
     display: flex;
     width: auto;
     min-height: 25%;
-    max-height: 143%;
+    max-height: 80%;
     border-radius: 50%;
-    margin: 0 20%;
+    margin-left: 20%;
+    margin-right: 10%;
   }
   nav > div {
     display: flex;

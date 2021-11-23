@@ -20,6 +20,7 @@
   const blankUser = '/blank_user.svg';
   const logoApps = '/apps-logo-sansfond.svg';
   let menu;
+  let isOpen = false;
   let anchor;
   let isAdmin = false;
   const { enableKeycloak, laboiteUrl } = Meteor.settings.public;
@@ -73,6 +74,17 @@
       searchField.focus();
     }
   };
+
+  const handleMenu = () => {
+    if (isOpen === false) {
+      menu.setOpen(true);
+      isOpen = true;
+    }
+    else {
+      menu.setOpen(false);
+      isOpen = false;
+    }
+  }
 </script>
 
 <nav>
@@ -110,7 +122,7 @@
                 aria-level="1"
                 aria-label="Menu du profil"
                 tabindex="0"
-                on:click={() => menu.setOpen(true)}
+                on:click={handleMenu}
               >
                 <Label id="loginUser">
                   {($user || { firstName: '' }).firstName}

@@ -163,7 +163,11 @@
     transition-property: width, border-radius;
     z-index: 1;
     position: relative;
+<<<<<<< HEAD
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+=======
+    box-shadow: 2px 2px 10px black;
+>>>>>>> refactor(search): Add box shadow on Search input to highlight it
   }
   label {
     position: absolute;

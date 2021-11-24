@@ -163,6 +163,7 @@
     transition-property: width, border-radius;
     z-index: 1;
     position: relative;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
   }
   label {
     position: absolute;

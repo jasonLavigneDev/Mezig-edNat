@@ -20,7 +20,6 @@
   const blankUser = '/blank_user.svg';
   const logoApps = '/apps-logo-sansfond.svg';
   let menu;
-  let isOpen = false;
   let anchor;
   let isAdmin = false;
   const { enableKeycloak, laboiteUrl } = Meteor.settings.public;
@@ -76,13 +75,7 @@
   };
 
   const handleMenu = () => {
-    if (isOpen === false) {
-      menu.setOpen(true);
-      isOpen = true;
-    } else {
-      menu.setOpen(false);
-      isOpen = false;
-    }
+    menu.setOpen(!menu.isOpen());
   };
 
   const handleDisconnection = () => {

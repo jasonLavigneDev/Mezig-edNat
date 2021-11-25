@@ -89,6 +89,8 @@
   const handleDisconnection = () => {
     Meteor.logout();
     window.location.reload(false);
+  const handleDisconnection = () => {
+    Meteor.logout();
     if(window.location.pathname === "/edit") {
       navigate('/');
     }

@@ -175,21 +175,9 @@
       {/if}
     </div>
   {/if}
-  <span />
-  <!-- Separator -->
 </nav>
 
 <style>
-  :root {
-    --rad: 0.7rem;
-    --dur: 0.3s;
-    --color-dark: #2f2f2f;
-    --color-light: #eceef8;
-    --color-brand: #011caa;
-    --height: 3rem;
-    --btn-width: 4rem;
-    --bez: cubic-bezier(0, 0, 0.43, 1.49);
-  }
   button {
     height: var(--height);
     border: 0;
@@ -251,11 +239,6 @@
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-  }
-  span {
-    width: 100%;
-    position: absolute;
-    top: 100%;
   }
   #ProfilPic {
     display: flex;

@@ -285,17 +285,6 @@
 {/if}
 
 <style>
-  :root {
-    --rad: 0.7rem;
-    --dur: 0.3s;
-    --color-dark: #2f2f2f;
-    --color-light: #eceef8;
-    --color-brand: #011caa;
-    --color-labeltitle: #9e9e9e;
-    --height: 3rem;
-    --btn-width: 4rem;
-    --bez: cubic-bezier(0, 0, 0.43, 1.49);
-  }
   h1 {
     text-align: center;
     display: block;

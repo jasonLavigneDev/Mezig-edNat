@@ -121,26 +121,11 @@
 
 <style>
   form {
-    position: absolute;
-    right: 0;
-  }
-
-  :root {
-    --rad: 0.7rem;
-    --dur: 0.3s;
-    --color-dark: #2f2f2f;
-    --color-light: #fff;
-    --color-brand: #011caa;
-    --color-blue: rgba(90, 161, 216, 0.4);
-    --height: 3rem;
-    --btn-width: 4rem;
-    --bez: cubic-bezier(0, 0, 0.43, 1.49);
-  }
-  form {
     transition-duration: 0.7s;
     position: absolute;
     top: 50%;
     left: 50%;
+    right: 0;
     transform: translate(-50%, -50%);
     max-width: 90vw;
     background: var(--color-blue);
@@ -244,9 +229,4 @@
       width: 40%;
     }
   }
-  /* ul {
-    width: 90%;
-    max-height: 600px;
-    overflow-y: scroll;
-  } */
 </style>

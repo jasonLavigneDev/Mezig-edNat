@@ -54,12 +54,11 @@
 </div>
 
 <style>
-  .IconAddLink,
-  .sortButton {
+  .IconAddLink {
     cursor: pointer;
   }
   .IconAddLink:hover {
-    color: #011caa;
+    color: var(--color-brand);
   }
   .IconDiv {
     display: flex;

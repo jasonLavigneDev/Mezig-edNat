@@ -93,16 +93,6 @@
 </Dialog>
 
 <style>
-  :root {
-    --rad: 0.7rem;
-    --dur: 0.3s;
-    --color-dark: #2f2f2f;
-    --color-light: #fff;
-    --color-brand: #011caa;
-    --height: 3rem;
-    --btn-width: 4rem;
-    --bez: cubic-bezier(0, 0, 0.43, 1.49);
-  }
   h1 {
     border-bottom: 5px;
     font-size: 1rem;
@@ -120,7 +110,7 @@
     transform: translate(-50%, 0%);
     width: 40rem;
     max-width: 90vw;
-    background: var(--color-light);
+    background: #fff;
     border-radius: var(--rad);
     padding: 15px;
   }

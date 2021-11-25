@@ -85,8 +85,7 @@
     margin-bottom: 2vmin;
     font-size: 4.5vmin;
     margin-top: 1vmin;
-    font-family: 'WorkSansRegular', sans-serif;
-    color: #011caa;
+    color: var(--color-brand);
   }
   h2 {
     text-align: center;
@@ -97,11 +96,11 @@
     margin-top: 1vmin;
   }
   h2 > a {
-    color: #040d3e;
+    color: var(--color-fadeblack);
     text-decoration: none;
   }
   .Biography {
-    color: #040d3e;
+    color: var(--color-fadeblack);
     text-align: center;
     font-size: 2.5vmin;
     margin-bottom: 2vmin;
@@ -111,7 +110,7 @@
     height: 5%;
     justify-content: center;
     font-size: 2.5vmin;
-    color: #040d3e;
+    color: var(--color-fadeblack);
     margin-bottom: 4vmin;
   }
   .TextSkill {
@@ -132,10 +131,10 @@
     left: 50%;
     transform: translate(-50%, -50%);
     font-weight: bold;
-    color: #040d3e;
+    color: var(--color-fadeblack);
   }
   .BlacklistInfo {
-    color: #011caa;
+    color: var(--color-brand);
     text-align: center;
   }
   .shareButton {

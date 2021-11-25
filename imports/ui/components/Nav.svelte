@@ -79,12 +79,19 @@
     if (isOpen === false) {
       menu.setOpen(true);
       isOpen = true;
-    }
-    else {
+    } else {
       menu.setOpen(false);
       isOpen = false;
     }
-  }
+  };
+
+  const handleDisconnection = () => {
+    Meteor.logout(() => {
+      if (window.location.pathname === '/edit') {
+        navigate('/');
+      }
+    });
+  };
 </script>
 
 <nav>
@@ -117,58 +124,49 @@
             <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
           {:then}
             {#if $userMezig}
-            <Group>
-              <button
-                class="userInfo"
-                aria-level="1"
-                aria-label="Menu du profil"
-                tabindex="0"
-                on:click={handleMenu}
-              >
-                <Label id="loginUser">
-                  {($user || { firstName: '' }).firstName}
-                </Label>
-                <img id="ProfilPic" src={$userMezig.profilPic || blankUser} alt="Avatar" />
-                <Icon class="material-icons">expand_more</Icon>
-                <div id="menuAnchor" bind:this={anchor} use:Anchor />
-              </button>
-              <Menu bind:this={menu} anchor={true} bind:anchorElement={anchor} anchorCorner="BOTTOM_RIGHT">
-                <List twoLine>
-                  <Item on:SMUI:action={() => navigate('/profil/' + $userMezig.publicName, { replace: false })}>
-                    <Text class="MenuText">
-                      <PrimaryText>{$_('ui.profil')}</PrimaryText>
-                      <SecondaryText>{$_('ui.profilSub')}</SecondaryText>
-                    </Text>
-                  </Item>
-                  {#if userActive === true}
-                    <Item on:SMUI:action={() => navigate('/edit', { replace: false })}>
+              <Group>
+                <button class="userInfo" aria-level="1" aria-label="Menu du profil" tabindex="0" on:click={handleMenu}>
+                  <Label id="loginUser">
+                    {($user || { firstName: '' }).firstName}
+                  </Label>
+                  <img id="ProfilPic" src={$userMezig.profilPic || blankUser} alt="Avatar" />
+                  <Icon class="material-icons">expand_more</Icon>
+                  <div id="menuAnchor" bind:this={anchor} use:Anchor />
+                </button>
+                <Menu bind:this={menu} anchor={true} bind:anchorElement={anchor} anchorCorner="BOTTOM_RIGHT">
+                  <List twoLine>
+                    <Item on:SMUI:action={() => navigate('/profil/' + $userMezig.publicName, { replace: false })}>
                       <Text class="MenuText">
-                        <PrimaryText>{$_('ui.edit')}</PrimaryText>
-                        <SecondaryText>{$_('ui.editSub')}</SecondaryText>
+                        <PrimaryText>{$_('ui.profil')}</PrimaryText>
+                        <SecondaryText>{$_('ui.profilSub')}</SecondaryText>
                       </Text>
                     </Item>
-                    {#if isAdmin && !laboiteUrl}
-                      <Item on:SMUI:action={() => navigate('/admin', { replace: false })}>
+                    {#if userActive === true}
+                      <Item on:SMUI:action={() => navigate('/edit', { replace: false })}>
                         <Text class="MenuText">
-                          <PrimaryText>{$_('ui.admin')}</PrimaryText>
-                          <SecondaryText>{$_('ui.adminSub')}</SecondaryText>
+                          <PrimaryText>{$_('ui.edit')}</PrimaryText>
+                          <SecondaryText>{$_('ui.editSub')}</SecondaryText>
                         </Text>
                       </Item>
+                      {#if isAdmin && !laboiteUrl}
+                        <Item on:SMUI:action={() => navigate('/admin', { replace: false })}>
+                          <Text class="MenuText">
+                            <PrimaryText>{$_('ui.admin')}</PrimaryText>
+                            <SecondaryText>{$_('ui.adminSub')}</SecondaryText>
+                          </Text>
+                        </Item>
+                      {/if}
                     {/if}
-                  {/if}
-                  <Separator />
-                  <Item on:SMUI:action={() =>{ 
-                    Meteor.logout()
-                    window.location.reload(false);
-                  }}>
-                    <Text class="MenuText">
-                      <PrimaryText>{$_('ui.disconnection')}</PrimaryText>
-                      <SecondaryText>{$_('ui.disconnectionSub')}</SecondaryText>
-                    </Text>
-                  </Item>
-                </List>
-              </Menu>
-            </Group>
+                    <Separator />
+                    <Item on:SMUI:action={handleDisconnection}>
+                      <Text class="MenuText">
+                        <PrimaryText>{$_('ui.disconnection')}</PrimaryText>
+                        <SecondaryText>{$_('ui.disconnectionSub')}</SecondaryText>
+                      </Text>
+                    </Item>
+                  </List>
+                </Menu>
+              </Group>
             {/if}
           {/await}
         </div>

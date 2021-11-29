@@ -82,6 +82,8 @@
     Meteor.logout(() => {
       if (window.location.pathname === '/edit') {
         navigate('/');
+      } else {
+        window.location.reload(false);
       }
     });
   };

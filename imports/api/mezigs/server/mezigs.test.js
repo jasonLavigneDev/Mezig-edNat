@@ -126,59 +126,71 @@ describe('mezig', function () {
       });
     });
     describe('updateMezig', function () {
-      it('does update current user mezig', function () {
+      it('does update current user mezig', async function () {
         mezigId = Factory.create('mezigs', mezigData)._id;
-        updateMezig._execute({ userId }, { mezigId, data: { ...mezigData, publicName: 'toto' } });
+        await updateMezig._execute({ userId }, { mezigId, data: { ...mezigData, publicName: 'toto' } });
         const reqMezig = Mezigs.findOne({ _id: mezigId });
         assert.typeOf(reqMezig, 'object');
         assert.equal(reqMezig.publicName, 'toto');
       });
-      it("does update another user mezig if you're admin", function () {
+      it("does update another user mezig if you're admin", async function () {
         mezigId = Factory.create('mezigs', mezigData)._id;
-        updateMezig._execute({ userId: adminId }, { mezigId, data: { ...mezigData, publicName: 'toto' } });
+        await updateMezig._execute({ userId: adminId }, { mezigId, data: { ...mezigData, publicName: 'toto' } });
         const reqMezig = Mezigs.findOne({ _id: mezigId });
         assert.typeOf(reqMezig, 'object');
         assert.equal(reqMezig.publicName, 'toto');
       });
-      it("does not update a mezig if you're not logged in", function () {
-        assert.throws(
-          () => {
-            mezigId = Factory.create('mezigs', mezigData)._id;
-            updateMezig._execute({}, { mezigId, data: mezigData });
-          },
-          Meteor.Error,
-          /api.mezigs.methods.updateMezig.notLoggedIn/,
-        );
+      it("does not update a mezig if you're not logged in", function (done) {
+        mezigId = Factory.create('mezigs', mezigData)._id;
+        updateMezig._execute({}, { mezigId, data: mezigData }).catch((e) => {
+          try {
+            assert.equal(e.errorType, 'Meteor.Error');
+            assert.equal(e.error, 'api.mezigs.methods.updateMezig.notLoggedIn');
+          } catch (assertionError) {
+            done(assertionError); // this will fail properly the test
+            return; // this prevents from calling twice done()
+          }
+          done();
+        });
       });
-      it("does not update another mezig if you're not admin", function () {
-        assert.throws(
-          () => {
-            const mezigAdminId = Factory.create('mezigs', mezigAdminData)._id;
-            updateMezig._execute({ userId }, { mezigId: mezigAdminId, data: mezigData });
-          },
-          Meteor.Error,
-          /api.mezigs.methods.updateMezig.adminNeeded/,
-        );
+      it("does not update another mezig if you're not admin", function (done) {
+        const mezigAdminId = Factory.create('mezigs', mezigAdminData)._id;
+        updateMezig._execute({ userId }, { mezigId: mezigAdminId, data: mezigData }).catch((e) => {
+          try {
+            assert.equal(e.errorType, 'Meteor.Error');
+            assert.equal(e.error, 'api.mezigs.methods.updateMezig.adminNeeded');
+          } catch (assertionError) {
+            done(assertionError); // this will fail properly the test
+            return; // this prevents from calling twice done()
+          }
+          done();
+        });
       });
-      it('throw error if mezig to update is not found', function () {
-        assert.throws(
-          () => {
-            updateMezig._execute({ userId }, { mezigId: Random.id(), data: mezigData });
-          },
-          Meteor.Error,
-          /api.mezigs.methods.updateMezig.notFound/,
-        );
+      it('throw error if mezig to update is not found', function (done) {
+        updateMezig._execute({ userId }, { mezigId: Random.id(), data: mezigData }).catch((e) => {
+          try {
+            assert.equal(e.errorType, 'Meteor.Error');
+            assert.equal(e.error, 'api.mezigs.methods.updateMezig.notFound');
+          } catch (assertionError) {
+            done(assertionError); // this will fail properly the test
+            return; // this prevents from calling twice done()
+          }
+          done();
+        });
       });
-      it('does not update if mezig to update has an already used publicName', function () {
-        assert.throws(
-          () => {
-            Factory.create('mezigs', { publicName: 'toto' });
-            mezigId = Factory.create('mezigs', mezigData)._id;
-            updateMezig._execute({ userId }, { mezigId, data: { ...mezigData, publicName: 'toto' } });
-          },
-          Meteor.Error,
-          /api.mezigs.methods.updateMezig.duplicatePublicName/,
-        );
+      it('does not update if mezig to update has an already used publicName', async function (done) {
+        Factory.create('mezigs', { publicName: 'toto' });
+        mezigId = Factory.create('mezigs', mezigData)._id;
+        updateMezig._execute({ userId }, { mezigId, data: { ...mezigData, publicName: 'toto' } }).catch((e) => {
+          try {
+            assert.equal(e.errorType, 'Meteor.Error');
+            assert.equal(e.error, 'api.mezigs.methods.updateMezig.duplicatePublicName');
+          } catch (assertionError) {
+            done(assertionError); // this will fail properly the test
+            return; // this prevents from calling twice done()
+          }
+          done();
+        });
       });
     });
     describe('removeMezig', function () {

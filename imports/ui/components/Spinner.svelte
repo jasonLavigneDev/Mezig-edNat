@@ -1,6 +1,6 @@
 <script>
   import SvelteSpinner from 'svelte-spinner';
-  export let color = '#57bd84';
+  export let color = '#011caa';
   export let size = 50;
   export let speed = 750;
   export let thickness = 2;
@@ -19,6 +19,7 @@
     display: 'flex';
     justify-content: 'center';
     align-items: 'center';
+    padding: 50% 50%;
   }
   .spinnerdiv {
     width: '100%';

@@ -9,7 +9,8 @@
   import Button, { Label } from '@smui/button';
   import '@smui/button/bare.css';
 
-  export let simpleDialog = null;
+  export let location = null;
+  let simpleDialog = null;
   let email = '';
   let firstName = '';
   let lastName = '';
@@ -27,7 +28,8 @@
     // Accounts.createUserVerifyingEmail({ username:email, email, password }); ???
     Accounts.createUser({ username: email, email, password, firstName, lastName }, (err) => {
       if (err) {
-        alert(`Error creating account : ${err.reason ? err.reason : err.message}`);
+        error = `${$_('ui.Signup.createError')} : ${err.reason ? err.reason : err.message}`;
+        simpleDialog.setOpen(true);
       } else {
         navigate(`/edit`, { state: `/edit` });
       }
@@ -91,19 +93,7 @@
 </Dialog>
 
 <style>
-  :root {
-    --rad: 0.7rem;
-    --dur: 0.3s;
-    --color-dark: #2f2f2f;
-    --color-light: #fff;
-    --color-brand: #57bd84;
-    --font-fam: 'Lato', sans-serif;
-    --height: 3rem;
-    --btn-width: 4rem;
-    --bez: cubic-bezier(0, 0, 0.43, 1.49);
-  }
   h1 {
-    font-family: var(--font-fam);
     border-bottom: 5px;
     font-size: 1rem;
     font-weight: bold;
@@ -120,7 +110,7 @@
     transform: translate(-50%, 0%);
     width: 40rem;
     max-width: 90vw;
-    background: var(--color-light);
+    background: #fff;
     border-radius: var(--rad);
     padding: 15px;
   }

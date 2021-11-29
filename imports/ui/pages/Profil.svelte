@@ -9,6 +9,7 @@
   import PackageJSON from '../../../package.json';
   let version = PackageJSON.version;
 
+  export let location = null;
   export let publicName = '';
   const blankUser = '/blank_user.svg';
 
@@ -33,7 +34,7 @@
       {/if}
       <div class="ProfilPic">
         <img src={$currentMezig.profilPic || blankUser} alt={$_('ui.avatarTitle')} />
-        <div class="shareButton"><Share {publicName} /></div>
+        <div class="shareButton" role="button"><Share {publicName} /></div>
       </div>
       <h1>{publicName}</h1>
       {#if $currentMezig.email}
@@ -42,7 +43,7 @@
       <p class="Biography">{$currentMezig.biography || ''}</p>
       <div class="Skills">
         <details>
-          <summary>{$_('ui.profileSkills')}</summary>
+          <summary role="list">{$_('ui.profileSkills')}</summary>
           {#if $currentMezig.skills.length > 0}
             {#each $currentMezig.skills as skill}
               <p class="TextSkill">#{skill}</p>
@@ -82,33 +83,34 @@
     display: block;
     margin: 0;
     margin-bottom: 2vmin;
-    font-size: 3vmin;
+    font-size: 4.5vmin;
     margin-top: 1vmin;
-    color: white;
+    color: var(--color-brand);
   }
   h2 {
     text-align: center;
     display: block;
     margin: 0;
     margin-bottom: 2vmin;
-    font-size: 2vmin;
+    font-size: 2.5vmin;
     margin-top: 1vmin;
   }
   h2 > a {
-    color: white;
+    color: var(--color-fadeblack);
     text-decoration: none;
   }
-  .DivRS {
-    display: flex;
-    height: 10vh;
-    justify-content: center;
+  .Biography {
+    color: var(--color-fadeblack);
+    text-align: center;
+    font-size: 2.5vmin;
+    margin-bottom: 2vmin;
   }
   .Skills {
     display: flex;
     height: 5%;
     justify-content: center;
-    font-size: 2vmin;
-    color: white;
+    font-size: 2.5vmin;
+    color: var(--color-fadeblack);
     margin-bottom: 4vmin;
   }
   .TextSkill {
@@ -123,22 +125,16 @@
     user-select: none;
     outline: none;
   }
-  .Biography {
-    color: white;
-    text-align: center;
-    font-size: 2vmin;
-    margin-bottom: 2vmin;
-  }
   .EmptyMsg {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-weight: bold;
-    color: white;
+    color: var(--color-fadeblack);
   }
   .BlacklistInfo {
-    color: red;
+    color: var(--color-brand);
     text-align: center;
   }
   .shareButton {

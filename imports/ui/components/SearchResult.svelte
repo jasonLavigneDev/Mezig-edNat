@@ -35,7 +35,7 @@
     cursor: pointer;
   }
   .Result {
-    background-color: antiquewhite;
+    background-color: rgba(90,161,216,0.2);
     border-radius: 20px;
     display: flex;
     margin-bottom: 15px;

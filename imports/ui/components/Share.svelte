@@ -25,6 +25,6 @@
 <style>
   .shareLink {
     cursor: pointer;
-    color: whitesmoke;
+    color: #040D3E;
   }
 </style>

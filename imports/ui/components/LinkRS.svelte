@@ -8,7 +8,7 @@
 
 <style>
   a {
-    color: white;
+    color: var(--color-brand);
     text-decoration: none;
     margin: 0% 5%;
   }
@@ -16,10 +16,10 @@
     height: 6vh;
   }
   path {
-    fill: white;
+    fill: var(--color-brand);
   }
   .nonPublic {
-    fill: #ff3e00;
+    fill: var(--color-orange);
   }
 </style>
 

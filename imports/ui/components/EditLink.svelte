@@ -57,7 +57,7 @@
     </FormField>
     <div class="switch">
       <FormField>
-        <Switch bind:checked={mezigLink.isPublic} />
+        <Switch color="primary" bind:checked={mezigLink.isPublic} />
         <span slot="label">{$_('ui.editLink.showLink')}</span>
       </FormField>
     </div>
@@ -106,7 +106,6 @@
     margin-right: 0.3em;
     margin-left: -0.2em;
     font-size: 12px;
-    font-family: sans-serif;
     letter-spacing: 2px;
     color: #cccccc;
     text-shadow: 1px 0 1px black;

@@ -13,8 +13,12 @@
   import '@smui/list/bare.css';
   import Mezigs from '../../api/mezigs/mezigs';
   import { link as routerLink, navigate } from 'svelte-routing';
+  import IconButton from '@smui/icon-button';
+  import { Group, Label, Icon } from '@smui/button';
+  import Tooltip from './Tooltip.svelte';
 
   const blankUser = '/blank_user.svg';
+  const logoApps = '/apps-logo-sansfond.svg';
   let menu;
   let anchor;
   let isAdmin = false;
@@ -59,10 +63,45 @@
   onDestroy(() => {
     stopCallback();
   });
+
+  // Give focus on textfield in search page
+  const handleFocusTextfield = () => {
+    const searchField = document.getElementById('search');
+    if (searchField === null) {
+      navigate('/');
+    } else {
+      searchField.focus();
+    }
+  };
+
+  const handleMenu = () => {
+    menu.setOpen(!menu.isOpen());
+  };
+
+  const handleDisconnection = () => {
+    Meteor.logout(() => {
+      if (window.location.pathname === '/edit') {
+        navigate('/');
+      } else {
+        window.location.reload(false);
+      }
+    });
+  };
 </script>
 
 <nav>
-  <a id="linkSearch" href="/" use:routerLink>{$_('ui.search')}</a>
+  <img id="logo" src={logoApps} alt="Logo de l'application" />
+  <Tooltip text="Rechercher" bottom>
+    <IconButton
+      class="material-icons"
+      id="searchButton"
+      role="button"
+      aria-label="Bouton de recherche"
+      on:click={handleFocusTextfield}
+    >
+      search
+    </IconButton>
+  </Tooltip>
   {#if userRedirect === true}
     <div class="loginMsg">
       <p>{$_('ui.loginMsg')}<a href="#" on:click={doLogin}>{$_('ui.loginLink')}</a></p>
@@ -80,75 +119,65 @@
             <h1 id="loginUser">{($user || { firstName: '' }).firstName}</h1>
           {:then}
             {#if $userMezig}
-              <div class="userInfo" on:click={() => menu.setOpen(true)}>
-                <h1 id="loginUser">
-                  {($user || { firstName: '' }).firstName}
-                </h1>
-                <img id="ProfilPic" src={$userMezig.profilPic || blankUser} alt="Avatar" />
-                <div id="menuAnchor" bind:this={anchor} use:Anchor />
-              </div>
-              <Menu bind:this={menu} anchor={true} bind:anchorElement={anchor} anchorCorner="BOTTOM_RIGHT">
-                <List twoLine>
-                  <Item on:SMUI:action={() => navigate('/profil/' + $userMezig.publicName, { replace: false })}>
-                    <Text class="MenuText">
-                      <PrimaryText>{$_('ui.profil')}</PrimaryText>
-                      <SecondaryText>{$_('ui.profilSub')}</SecondaryText>
-                    </Text>
-                  </Item>
-                  {#if userActive === true}
-                    <Item on:SMUI:action={() => navigate('/edit', { replace: false })}>
+              <Group>
+                <button class="userInfo" aria-level="1" aria-label="Menu du profil" tabindex="0" on:click={handleMenu}>
+                  <Label id="loginUser">
+                    {($user || { firstName: '' }).firstName}
+                  </Label>
+                  <img id="ProfilPic" src={$userMezig.profilPic || blankUser} alt="Avatar" />
+                  <Icon class="material-icons">expand_more</Icon>
+                  <div id="menuAnchor" bind:this={anchor} use:Anchor />
+                </button>
+                <Menu bind:this={menu} anchor={true} bind:anchorElement={anchor} anchorCorner="BOTTOM_RIGHT">
+                  <List twoLine>
+                    <Item on:SMUI:action={() => navigate('/profil/' + $userMezig.publicName, { replace: false })}>
                       <Text class="MenuText">
-                        <PrimaryText>{$_('ui.edit')}</PrimaryText>
-                        <SecondaryText>{$_('ui.editSub')}</SecondaryText>
+                        <PrimaryText>{$_('ui.profil')}</PrimaryText>
+                        <SecondaryText>{$_('ui.profilSub')}</SecondaryText>
                       </Text>
                     </Item>
-                    {#if isAdmin && !laboiteUrl}
-                      <Item on:SMUI:action={() => navigate('/admin', { replace: false })}>
+                    {#if userActive === true}
+                      <Item on:SMUI:action={() => navigate('/edit', { replace: false })}>
                         <Text class="MenuText">
-                          <PrimaryText>{$_('ui.admin')}</PrimaryText>
-                          <SecondaryText>{$_('ui.adminSub')}</SecondaryText>
+                          <PrimaryText>{$_('ui.edit')}</PrimaryText>
+                          <SecondaryText>{$_('ui.editSub')}</SecondaryText>
                         </Text>
                       </Item>
+                      {#if isAdmin && !laboiteUrl}
+                        <Item on:SMUI:action={() => navigate('/admin', { replace: false })}>
+                          <Text class="MenuText">
+                            <PrimaryText>{$_('ui.admin')}</PrimaryText>
+                            <SecondaryText>{$_('ui.adminSub')}</SecondaryText>
+                          </Text>
+                        </Item>
+                      {/if}
                     {/if}
-                  {/if}
-                  <Separator />
-                  <Item on:SMUI:action={() => Meteor.logout()}>
-                    <Text class="MenuText">
-                      <PrimaryText>{$_('ui.disconnection')}</PrimaryText>
-                      <SecondaryText>{$_('ui.disconnectionSub')}</SecondaryText>
-                    </Text>
-                  </Item>
-                </List>
-              </Menu>
+                    <Separator />
+                    <Item on:SMUI:action={handleDisconnection}>
+                      <Text class="MenuText">
+                        <PrimaryText>{$_('ui.disconnection')}</PrimaryText>
+                        <SecondaryText>{$_('ui.disconnectionSub')}</SecondaryText>
+                      </Text>
+                    </Item>
+                  </List>
+                </Menu>
+              </Group>
             {/if}
           {/await}
         </div>
       {/if}
     </div>
   {/if}
-  <span />
-  <!-- Separator -->
 </nav>
 
 <style>
-  :root {
-    --rad: 0.7rem;
-    --dur: 0.3s;
-    --color-dark: #2f2f2f;
-    --color-light: #fff;
-    --color-brand: #57bd84;
-    --font-fam: 'Lato', sans-serif;
-    --height: 3rem;
-    --btn-width: 4rem;
-    --bez: cubic-bezier(0, 0, 0.43, 1.49);
-  }
   button {
     height: var(--height);
-    font-family: var(--font-fam);
     border: 0;
-    color: var(--color-dark);
-    font-size: 1rem;
-    font-weight: bold;
+    padding: 10px;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: normal;
     background: var(--color-brand);
     border-radius: 10px;
   }
@@ -165,13 +194,21 @@
     cursor: pointer;
     justify-content: flex-end;
     height: inherit;
+    background: unset;
+    color: unset;
   }
   #loginUser {
     display: flex;
-    font-weight: bold;
     margin: 0;
     margin-right: 10%;
     color: var(--color-brand);
+  }
+  #buttonConnect {
+    color: var(--color-brand);
+    background-color: white;
+    font-weight: normal;
+    text-transform: uppercase;
+    font-size: 0.875rem;
   }
   #menuAnchor {
     display: flex;
@@ -185,26 +222,25 @@
     align-items: center;
   }
   nav {
-    width: 80vw;
-    height: 8%;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+      0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+    background-color: white;
+    width: 100%;
+    height: 48px;
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
   }
-  span {
-    width: 100%;
-    position: absolute;
-    top: 100%;
-    border: solid whitesmoke 0.5px;
-  }
   #ProfilPic {
     display: flex;
     width: auto;
-    max-height: 75%;
+    min-height: 25%;
+    max-height: 80%;
     border-radius: 50%;
-    margin-right: 20%;
+    margin-left: 20%;
+    margin-right: 10%;
   }
   nav > div {
     display: flex;
@@ -215,19 +251,10 @@
   div {
     display: contents;
   }
-  #linkSearch {
-    font-family: var(--font-fam);
-    color: var(--color-light);
-    font-size: 2vmin;
-    text-decoration: none;
-  }
-  @media screen and (max-width: 1000px) {
-    #linkSearch {
-      font-size: 4vmin;
-    }
-    button {
-      font-size: 2rem;
-      height: 60%;
-    }
+  #logo {
+    max-height: 30px;
+    height: 30px;
+    outline: none;
+    padding-left: 16px;
   }
 </style>

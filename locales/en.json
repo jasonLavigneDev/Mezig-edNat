@@ -42,6 +42,7 @@
   "ui": {
     "yes": "Yes",
     "no": "No",
+    "ok": "Ok",
     "delLink": "Do you really want to delete this link ?",
     "delLinkTitle": "Delete this link",
     "appName": "Mezig",
@@ -123,6 +124,11 @@
       "lastName": "lastName",
       "createError": "Account creation failed"
     },
-    "share": "Copy profile link"
+    "share": "Copy profile link",
+    "nclocator": {
+      "shareNClocator": "Copy Nextcloud ID",
+      "missing": "Missing federation ID",
+      "contentDialog": "This user does not have federation ID for Nextcloud."
+    }
   }
 }

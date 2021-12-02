@@ -7,7 +7,14 @@
   import Spinner from '../components/Spinner.svelte';
   import Share from '../components/Share.svelte';
   import PackageJSON from '../../../package.json';
+  import Tooltip from '../components/Tooltip.svelte';
+  import IconButton from '@smui/icon-button';
+
+  import Dialog, { Title, Content, Actions } from '@smui/dialog';
+  import Button, { Label } from '@smui/button';
+
   let version = PackageJSON.version;
+  let noNclocatorDialog = '';
 
   export let location = null;
   export let publicName = '';
@@ -15,6 +22,17 @@
 
   $: currentUser = useTracker(() => Meteor.user());
   $: currentMezig = useTracker(() => Mezigs.findOne({ publicName }));
+  
+  // Create and copy the ferederation ID for Nextcloud
+  const handleCopy = () => {
+    Meteor.call('mezigs.getFedId',{publicName} , function(error, result) {
+      if(!error && result != '') {
+        navigator.clipboard.writeText(result);
+      } else {
+        noNclocatorDialog.setOpen(true);
+      } 
+    });
+  }
 </script>
 
 <svelte:head>
@@ -34,7 +52,16 @@
       {/if}
       <div class="ProfilPic">
         <img src={$currentMezig.profilPic || blankUser} alt={$_('ui.avatarTitle')} />
-        <div class="shareButton" role="button"><Share {publicName} /></div>
+        <div class="shareButton" role="button">
+          <Share {publicName} />
+        </div>
+        {#if $currentUser && $currentUser.isActive}
+          <div class="nextcloudButton" role="button">
+            <Tooltip text={$_('ui.nclocator.shareNClocator')} bottom>
+              <IconButton class="material-icons" on:click={handleCopy}>filter_drama</IconButton>
+            </Tooltip>
+          </div>
+        {/if}
       </div>
       <h1>{publicName}</h1>
       {#if $currentMezig.email}
@@ -60,6 +87,18 @@
   {:else}
     <div class="EmptyMsg">{$_('ui.unknownUser')}</div>
   {/if}
+
+  <Dialog bind:this={noNclocatorDialog} aria-labelledby="noNclocator-title" aria-describedby="noNclocator-content">
+    <Title id="noNclocator-title">{$_('ui.nclocator.missing')}</Title>
+      <Content id="noNclocator-content">
+        {$_('ui.nclocator.contentDialog')}
+      </Content>
+    <Actions>
+      <Button>
+        <Label>{$_('ui.ok')}</Label>
+      </Button>
+    </Actions>
+  </Dialog>
 {/await}
 
 <style>
@@ -140,6 +179,12 @@
   .shareButton {
     position: absolute;
     top: 12%;
+    left: 68%;
+    width: min-content;
+  }
+  .nextcloudButton {
+    position: absolute;
+    top: 30%;
     left: 68%;
     width: min-content;
   }

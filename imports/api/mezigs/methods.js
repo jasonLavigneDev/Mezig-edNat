@@ -14,6 +14,27 @@ Meteor.methods({
   },
 });
 
+// Create a federation ID for the user if it's possible else make it undefined
+export const getFedId = new ValidatedMethod({
+  name: 'mezigs.getFedId',
+  validate: new SimpleSchema({
+    publicName: { type: String },
+  }).validator({ clean: true }),
+  run({ publicName }) {
+    if (Mezigs.findOne({ publicName }).profileChecked !== false) {
+      const user = Meteor.users.findOne({ mezigName: publicName });
+      let fedId = '';
+      if (user.nclocator !== '' && user.username !== '') {
+        fedId = `${user.username}@${user.nclocator}`;
+      } else {
+        fedId = '';
+      }
+      return fedId;
+    }
+    return '';
+  },
+});
+
 export const createMezig = new ValidatedMethod({
   name: 'mezigs.createMezig',
   validate: new SimpleSchema({

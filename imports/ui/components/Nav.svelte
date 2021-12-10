@@ -237,8 +237,8 @@
   #ProfilPic {
     display: flex;
     width: auto;
-    min-height: 25%;
-    max-height: 80%;
+    min-height: 40px;
+    max-height: 40px;
     border-radius: 50%;
     margin-left: 20%;
     margin-right: 10%;

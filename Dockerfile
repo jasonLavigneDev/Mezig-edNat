@@ -20,6 +20,7 @@ ENV APP_BUNDLE_FOLDER /opt/bundle
 ENV SCRIPTS_FOLDER /docker
 
 # Install OS build dependencies, which stay with this intermediate image but don’t become part of the final published image
+RUN apk update; apk upgrade
 RUN apk --no-cache add \
 	bash \
 	g++ \
@@ -43,6 +44,7 @@ ENV APP_BUNDLE_FOLDER /opt/bundle
 ENV SCRIPTS_FOLDER /docker
 
 # Install OS runtime dependencies
+RUN apk update; apk upgrade
 RUN apk --no-cache add \
 	bash \
 	ca-certificates

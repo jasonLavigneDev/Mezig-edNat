@@ -16,6 +16,7 @@
   import IconButton from '@smui/icon-button';
   import { Group, Label, Icon } from '@smui/button';
   import Tooltip from './Tooltip.svelte';
+  import AppVersion from './AppNameVersion.svelte';
 
   const blankUser = '/blank_user.svg';
   const logoApps = '/apps-logo-sansfond.svg';
@@ -159,6 +160,10 @@
                         <PrimaryText>{$_('ui.disconnection')}</PrimaryText>
                         <SecondaryText>{$_('ui.disconnectionSub')}</SecondaryText>
                       </Text>
+                    </Item>
+                    <Separator />
+                    <Item disabled> 
+                      <AppVersion />
                     </Item>
                   </List>
                 </Menu>

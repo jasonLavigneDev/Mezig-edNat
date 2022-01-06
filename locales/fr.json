@@ -128,7 +128,7 @@
     },
     "share": "Copier le lien du profil",
     "nclocator": {
-      "shareNClocator": "Copier l'adresse Nextcloud",
+      "shareNClocator": "Copier le fédération ID Nextcloud",
       "missing": "Identifiant de fédération manquant",
       "contentDialog": "Cet utilisateur n'a pas d'identifiant de fédération pour Nextcloud."
     }

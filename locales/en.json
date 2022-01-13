@@ -126,7 +126,7 @@
     },
     "share": "Copy profile link",
     "nclocator": {
-      "shareNClocator": "Copy Nextcloud ID",
+      "shareNClocator": "Copy Nextcloud federation ID",
       "missing": "Missing federation ID",
       "contentDialog": "This user does not have federation ID for Nextcloud."
     }

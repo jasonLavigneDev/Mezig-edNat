@@ -82,7 +82,7 @@
 </script>
 
 <svelte:head>
-  <title>Acceuil | {$_('ui.appName')} {version}</title>
+  <title>Accueil | {$_('ui.appName')} {version}</title>
 </svelte:head>
 
 <form on:submit|preventDefault role="search" style={usersScroll.length > 0 ? 'top: 15%;' : ''}>

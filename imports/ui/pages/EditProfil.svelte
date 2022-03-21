@@ -116,7 +116,7 @@
     Meteor.call('mezigs.removeMezig', { mezigId: $currentMezig._id }, (err) => {
       if (err) {
         error = err.message;
-        simpleDialogSuppr.open();
+        errorDialog.setOpen(true);
       } else {
         // set loading to true to permit reload from api
         Meteor.logout();
@@ -244,7 +244,7 @@
         <div class="center">
           <Button
             on:click={() => {
-              simpleDialogSuppr.open();
+              simpleDialogSuppr.setOpen(true);
             }}
             style="margin: 3%; font-size: 1.2rem; background-color: #E48231; color:white; font-weight:bold"
             variant="raised"

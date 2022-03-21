@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.4.0...release/1.4.1) (2022-03-21)
+
+
+### Bug Fixes
+
+* **profile:** allow to open error/confirm dialog ([1cf390f](https://gitlab.mim-libre.fr/alphabet/mezig/commit/1cf390f74a8ec4cc426a18f867764db9ad048fc8))
+
 # [1.4.0](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.3.1...release/1.4.0) (2022-01-13)
 
 

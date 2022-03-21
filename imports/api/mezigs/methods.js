@@ -150,9 +150,6 @@ export const removeMezig = new ValidatedMethod({
     if (!this.userId) {
       throw new Meteor.Error('api.mezigs.methods.removeMezig.notLoggedIn', i18n.__('api.notLoggedIn'));
     }
-    if (!Roles.userIsInRole(this.userId, 'admin')) {
-      throw new Meteor.Error('api.mezigs.methods.removeMezig.adminNeeded', i18n.__('api.adminNeeded'));
-    }
     // check mezig existence
     const myzig = Mezigs.findOne({ _id: mezigId });
     if (myzig === undefined) {

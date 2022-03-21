@@ -210,15 +210,6 @@ describe('mezig', function () {
           /api.mezigs.methods.removeMezig.notLoggedIn/,
         );
       });
-      it('throw error if not admin', function () {
-        assert.throws(
-          () => {
-            removeMezig._execute({ userId }, { mezigId: Random.id() });
-          },
-          Meteor.Error,
-          /api.mezigs.methods.removeMezig.adminNeeded/,
-        );
-      });
       it('throw error if mezig to remove is not found', function () {
         assert.throws(
           () => {

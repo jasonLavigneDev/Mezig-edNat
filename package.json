@@ -12,7 +12,7 @@
     "visualize": "meteor --production --extra-packages bundle-visualizer"
   },
   "dependencies": {
-    "@babel/runtime": "^7.15.4",
+    "@babel/runtime": "^7.17.8",
     "@smui/button": "^4.2.0",
     "@smui/chips": "^4.2.0",
     "@smui/common": "^4.2.0",
@@ -29,18 +29,18 @@
     "@smui/textfield": "^4.2.0",
     "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
-    "chai": "^4.3.4",
+    "chai": "^4.3.6",
     "dom-parser": "^0.1.6",
     "jquery": "^3.5.1",
-    "meteor-node-stubs": "^1.1.0",
+    "meteor-node-stubs": "^1.2.1",
     "simpl-schema": "^1.10.2",
-    "sortablejs": "^1.13.0",
-    "svelte": "^3.38.3",
+    "sortablejs": "^1.15.0",
+    "svelte": "^3.46.4",
     "svelte-i18n": "^3.3.13",
     "svelte-infinite-scroll": "^1.5.2",
     "svelte-material-icons": "^1.0.3",
     "svelte-routing": "^1.6.0",
-    "svelte-simple-datatables": "^0.1.25",
+    "svelte-simple-datatables": "^0.1.27",
     "svelte-spinner": "^2.0.2"
   },
   "meteor": {
@@ -61,16 +61,16 @@
     "eslint-config-standard": "^14.1.1",
     "eslint-import-resolver-meteor": "^0.4.0",
     "eslint-plugin-i18n": "^2.0.0",
-    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx": "^0.1.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-meteor": "^7.2.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.4.1",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.26.1",
-    "eslint-plugin-react-hooks": "^4.1.2",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-standard": "^4.0.1",
-    "prettier": "^2.4.1"
+    "prettier": "^2.6.1"
   }
 }

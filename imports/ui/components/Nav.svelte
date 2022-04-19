@@ -19,7 +19,7 @@
   import AppVersion from './AppNameVersion.svelte';
 
   const blankUser = '/blank_user.svg';
-  const logoApps = '/apps-logo-sansfond.svg';
+  const logoApps = '/Mezig.png';
   let menu;
   let anchor;
   let isAdmin = false;
@@ -258,8 +258,8 @@
     display: contents;
   }
   #logo {
-    max-height: 30px;
-    height: 30px;
+    max-height: 40px;
+    height: 40px;
     outline: none;
     padding-left: 16px;
   }

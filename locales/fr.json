@@ -6,7 +6,8 @@
     "mezigs": {
       "notFound": "Mezig inconnu.",
       "alreadyExists": "Cet identifiant/nom public existe déjà dans la base.",
-      "nameTooShort": "Nom public trop court (3 caractères au minimum)."
+      "nameTooShort": "Nom public trop court (3 caractères au minimum).",
+      "maintenance": "Le site est en maintenance"
     },
     "users": {
       "unknownUser": "Utilisateur inconnu",

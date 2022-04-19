@@ -6,7 +6,8 @@
     "mezigs": {
       "notFound": "Mezig not found.",
       "alreadyExists": "a Mezig entry already exists for this username/publicname.",
-      "nameTooShort": "PublicName is too short (minimum is 3 characters)."
+      "nameTooShort": "PublicName is too short (minimum is 3 characters).",
+      "maintenance": "The site is under maintenance"
     },
     "users": {
       "unknownUser": "Unknown user",

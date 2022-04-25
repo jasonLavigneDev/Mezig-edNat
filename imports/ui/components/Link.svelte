@@ -1,5 +1,6 @@
 <script>
   import Tooltip from './Tooltip.svelte';
+  import { _ } from 'svelte-i18n';
   export let link;
   let nonPublic = !link.isPublic;
 </script>
@@ -8,8 +9,8 @@
   <li class:nonPublic>
     {#if nonPublic === true}
       <div class="iconPosition">
-        <Tooltip text="Lien privé" bottomRight>
-          <span class="material-icons" id="iconNonPublic" aria-label="Lien privé">disabled_visible</span>
+        <Tooltip text={$_('ui.privateLink')} bottomRight>
+          <span class="material-icons" id="iconNonPublic" aria-label={$_('ui.privateLink')}>disabled_visible</span>
         </Tooltip>
       </div>
     {/if}

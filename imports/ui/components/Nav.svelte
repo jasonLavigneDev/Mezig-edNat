@@ -94,7 +94,7 @@
 
 <nav>
   <img id="logo" src={logoApps} alt="Logo de l'application" />
-  <Tooltip text="Rechercher" bottom>
+  <Tooltip text={$_('ui.search')} bottom>
     <IconButton
       class="material-icons"
       id="searchButton"

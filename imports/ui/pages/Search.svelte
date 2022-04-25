@@ -100,9 +100,9 @@
   {#if totalFoundMezigs !== 0}
     <p id="infos" class:end={usersScroll.length === totalFoundMezigs}>
       {usersScroll.length}
-      affichés sur
+      {$_('ui.searchResult.displayed')}
       {totalFoundMezigs}
-      au total
+      {$_('ui.searchResult.total')}
     </p>
   {/if}
 </form>

@@ -72,6 +72,7 @@
     "profileSkills": "Skills",
     "profileSkillsNone": "No skills provided",
     "activationNeeded": "Your account is awaiting validation",
+    "privateLink": "Private link",
     "editProfil": {
       "title": "My profile",
       "showProfile": "Show my profile",
@@ -130,6 +131,10 @@
       "shareNClocator": "Copy Nextcloud federation ID",
       "missing": "Missing federation ID",
       "contentDialog": "This user does not have federation ID for Nextcloud."
+    },
+    "searchResult": {
+      "displayed": "displayed out of",
+      "total": "in total"
     }
   }
 }

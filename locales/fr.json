@@ -72,6 +72,7 @@
     "profileSkills": "Compétences",
     "profileSkillsNone": "Compétences non renseignées",
     "activationNeeded": "Votre compte est en attente de validation",
+    "privateLink": "Lien privé",
     "editProfil": {
       "title": "Mon profil",
       "showProfile": "Publier mon profil",
@@ -132,6 +133,10 @@
       "shareNClocator": "Copier le fédération ID Nextcloud",
       "missing": "Identifiant de fédération manquant",
       "contentDialog": "Cet utilisateur n'a pas d'identifiant de fédération pour Nextcloud."
+    },
+    "searchResult": {
+      "displayed": "affichés sur",
+      "total": "au total"
     }
   }
 }

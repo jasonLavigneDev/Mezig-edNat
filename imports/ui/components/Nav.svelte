@@ -17,6 +17,7 @@
   import { Group, Label, Icon } from '@smui/button';
   import Tooltip from './Tooltip.svelte';
   import AppVersion from './AppNameVersion.svelte';
+  import LanguageSwitcher from './LanguageSwitcher.svelte';
 
   const blankUser = '/blank_user.svg';
   const logoApps = '/Mezig.png';
@@ -174,6 +175,7 @@
       {/if}
     </div>
   {/if}
+  <LanguageSwitcher />
 </nav>
 
 <style>

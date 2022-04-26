@@ -93,8 +93,10 @@
 </script>
 
 <nav>
-  <img id="logo" src={logoApps} alt="Logo de l'application" />
-  <Tooltip text={$_('ui.search')} bottom>
+  <a class="navbar-item" href="/" rel="prefetch">
+    <img id="logo" src={logoApps} alt="Logo de l'application" />
+  </a>
+  <Tooltip text="Rechercher" bottom>
     <IconButton
       class="material-icons"
       id="searchButton"

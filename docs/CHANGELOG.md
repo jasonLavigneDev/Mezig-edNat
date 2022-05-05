@@ -1,5 +1,27 @@
 # Changelog
 
+# [1.5.0](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.4.1...release/1.5.0) (2022-05-05)
+
+
+### Bug Fixes
+
+* **audit:** update Dockerfile and CI ([fcdd95f](https://gitlab.mim-libre.fr/alphabet/mezig/commit/fcdd95f8054f03366e55bb35e2fad201584cee9b))
+* **audit:** update meteor and libraries ([847a3af](https://gitlab.mim-libre.fr/alphabet/mezig/commit/847a3af29f545bef3f9048642d83ee6a3c9472a7))
+* **audit:** update to meteor 2.7.1 ([978ac0e](https://gitlab.mim-libre.fr/alphabet/mezig/commit/978ac0eecb7eb983417addc4a4cda5fd8e538c3a))
+* **ui:** add i18n missing ([db53b11](https://gitlab.mim-libre.fr/alphabet/mezig/commit/db53b11f8e073b1ad2c3ee947ce9747799b5d25e))
+
+
+### Code Refactoring
+
+* **ui:** change logo and favicon ([c6e1de7](https://gitlab.mim-libre.fr/alphabet/mezig/commit/c6e1de7d26b6e86efd774a512905160af19fb42c))
+
+
+### Features
+
+* **ui:** add language picker in nav bar ([c7c5d22](https://gitlab.mim-libre.fr/alphabet/mezig/commit/c7c5d226cbd8bb18deca22fb159399a9e3fe921d))
+* **ui:** add maintenance mode ([b550e04](https://gitlab.mim-libre.fr/alphabet/mezig/commit/b550e043ad9fdad216e9fb07a4508e099c7913d5))
+* **ui:** redirect home with app icon ([dda7643](https://gitlab.mim-libre.fr/alphabet/mezig/commit/dda764308454e8aa314a4425f00f71295d906dff))
+
 ## [1.4.1](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.4.0...release/1.4.1) (2022-03-21)
 
 

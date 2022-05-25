@@ -1,7 +1,5 @@
-<script>
-  export let id = null;
-
-  // Text in the tooltip
+<script lang="ts">
+// Text in the badge
   export let text = '';
 
   // Position compared to cursor
@@ -17,12 +15,12 @@
 </script>
 
 {#if text}
-  <div class="tooltip-container">
-    <span class="tooltip-slot">
+  <div class="badge-container">
+    <span class="badge-slot">
       <slot />
     </span>
     <div
-      class="tooltip"
+      class="badge"
       class:top
       class:bottom
       class:left
@@ -39,78 +37,70 @@
 {/if}
 
 <style>
-  .tooltip-container {
-    z-index: 5 !important;
+  .badge-container {
     position: relative;
     display: inline-block;
+    z-index: 5;
   }
 
-  .tooltip {
+  .badge {
     position: absolute;
     font-family: inherit;
     display: inherit;
     white-space: nowrap;
+    font-size: xx-small;
 
     color: white;
-    background-color: black;
-    box-shadow: 0 0 0.5em black;
-    border-radius: 0.5em;
-    opacity: 0;
-
-    visibility: hidden;
-
-    padding: 10px;
+    background-color: coral;
+    border-radius: 100em;
+    padding: 2px;
   }
 
-  .tooltip.top {
+  .badge.top {
     left: 50%;
     transform: translate(-50%, -100%);
     margin-top: -8px;
   }
 
-  .tooltip.bottom {
+  .badge.bottom {
     left: 50%;
     bottom: 0;
     transform: translate(-50%, 100%);
     margin-bottom: -8px;
   }
 
-  .tooltip.left {
+  .badge.left {
     left: 0;
     transform: translateX(-100%);
     margin-left: -8px;
   }
 
-  .tooltip.right {
+  .badge.right {
     right: 0;
     transform: translateX(100%);
     margin-right: -8px;
   }
 
-  .tooltip.topRight {
+  .badge.topRight {
     right: 0;
-    transform: translate(80%, -100%);
+    top: 0;
+    margin-top: -10px;
   }
 
-  .tooltip.topLeft {
+  .badge.topLeft {
     left: 0;
     transform: translate(-80%, -100%);
   }
 
-  .tooltip.bottomRight {
+  .badge.bottomRight {
     right: 0;
-    transform: translate(80%, 100%);
-    margin-top: -12px;
+    bottom: 0;
+    margin-top: 50px;
   }
 
-  .tooltip.bottomLeft {
+  .badge.bottomLeft {
     left: 0;
     transform: translate(-80%, 100%);
     margin-top: -12px;
-  }
-
-  .tooltip-slot:hover + .tooltip {
-    visibility: visible;
-    opacity: 1;
   }
 </style>

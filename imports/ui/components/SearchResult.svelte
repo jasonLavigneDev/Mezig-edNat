@@ -1,20 +1,14 @@
 <script>
-  import { fly, fade } from 'svelte/transition';
+  import { fly } from 'svelte/transition';
   import { navigate } from 'svelte-routing';
-  import { createEventDispatcher } from 'svelte';
 
-  const dispatch = createEventDispatcher();
+  import Tag from '../components/Tag.svelte';
+
   const blankUser = '/blank_user.svg';
   export let user;
 
   const handleGoProfile = () => {
     navigate(`/profil/${user.publicName}`, { state: `/profil/${user.publicName}` });
-  };
-
-  const clickSkills = (skill) => {
-    dispatch('clickSkills', {
-      text: skill,
-    });
   };
 </script>
 
@@ -24,18 +18,15 @@
     <h3>{user.publicName}</h3>
     <div class="skillsResult">
       {#each user.skills as skill}
-        <p on:click|stopPropagation={clickSkills(skill)}>#{skill}</p>
+        <Tag skill={`#${skill}`} on:clickSkills />
       {/each}
     </div>
   </div>
 </div>
 
 <style>
-  p {
-    cursor: pointer;
-  }
   .Result {
-    background-color: rgba(90,161,216,0.2);
+    background-color: rgba(90, 161, 216, 0.2);
     border-radius: 20px;
     display: flex;
     margin-bottom: 15px;
@@ -60,16 +51,6 @@
     line-height: normal;
     line-break: auto;
     flex-wrap: wrap;
-  }
-  .skillsResult > p {
-    margin: 0;
-    margin-right: 5px;
-  }
-  .skillsResult > p:first-child {
-    margin-left: 30px;
-  }
-  .skillsResult > p:hover {
-    opacity: 0.6;
   }
   .textResult {
     max-width: 80%;

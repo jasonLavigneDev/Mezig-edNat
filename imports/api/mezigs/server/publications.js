@@ -65,3 +65,7 @@ FindFromPublication.publish('mezigs.all', function publishAll() {
   }
   return this.ready();
 });
+
+FindFromPublication.publish('mezigs.table.all', function publishAllTable() {
+  return Mezigs.find({});
+});

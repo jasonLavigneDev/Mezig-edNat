@@ -5,9 +5,6 @@
   import SvelteInfiniteScroll from 'svelte-infinite-scroll';
   import { useTracker } from 'meteor/rdb:svelte-meteor-data';
 
-  import { Icon } from '@smui/button';
-
-  import ListAllTags from '../components/ListAllTags.svelte';
   import SearchResult from '../components/SearchResult.svelte';
   import Mezigs from '../../api/mezigs/mezigs';
   import { searchingStore } from '../../stores/stores';
@@ -28,7 +25,6 @@
   let totalFoundMezigs = 0;
   let timeout;
   let ulMezigs = {};
-  let expend = false;
 
   $: allMezigs = useTracker(() => {
     const sub = Meteor.subscribe('mezigs.table.all');
@@ -189,21 +185,7 @@
 <p class="noResult">{noResult}</p>
 
 <div style="margin-top:130%; width: 140%;margin-left: -20%; text-align:center">
-  {#if expend}
-    <ListAllTags {skillsTab} on:clickSkills={handleClickSkill} />
-  {:else}
-    <TagGroup {skillsTab} on:clickSkills={handleClickSkill} />
-  {/if}
-  <button on:click={() => (expend = !expend)} class="iconButtonStyle">
-    <Icon class="material-icons" style="font-size:xx-large; border: 1px solid orange; border-radius: 20px">
-      {#if expend}
-        expand_less
-      {:else}
-        expand_more
-      {/if}
-    </Icon>
-  </button>
-  <div style="border-bottom: 1px solid orange; width: 100%; margin-top: -40px" />
+  <TagGroup {skillsTab} on:clickSkills={handleClickSkill} />
 </div>
 
 <style>
@@ -245,15 +227,6 @@
     height: 1px;
     width: 1px;
     overflow: hidden;
-  }
-  .iconButtonStyle {
-    border-radius: 10px;
-    width: auto;
-    border: none;
-    background-color: #eceef8;
-    cursor: pointer;
-    margin-top: 5px;
-    margin-bottom: 20px;
   }
   .SearchResultDiv {
     position: absolute;

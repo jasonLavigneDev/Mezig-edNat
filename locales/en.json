@@ -11,6 +11,7 @@
     },
     "users": {
       "unknownUser": "Unknown user",
+      "number": "Active users on Mezig",
       "labels": {
         "id": "User Id",
         "username": "User Name",
@@ -135,6 +136,9 @@
     "searchResult": {
       "displayed": "displayed out of",
       "total": "in total"
+    },
+    "tags": {
+      "useNumber": "Number of use"
     }
   }
 }

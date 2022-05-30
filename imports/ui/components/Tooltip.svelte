@@ -40,9 +40,9 @@
 
 <style>
   .tooltip-container {
+    z-index: 5 !important;
     position: relative;
     display: inline-block;
-    z-index: 5;
   }
 
   .tooltip {

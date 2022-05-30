@@ -11,6 +11,7 @@
     },
     "users": {
       "unknownUser": "Utilisateur inconnu",
+      "number": "Utilisateurs actifs sur Mezig",
       "labels": {
         "id": "Id Utilisateur",
         "username": "Pseudonyme",
@@ -137,6 +138,9 @@
     "searchResult": {
       "displayed": "affichés sur",
       "total": "au total"
+    },
+    "tags": {
+      "useNumber": "Nombre d'utilisation"
     }
   }
 }

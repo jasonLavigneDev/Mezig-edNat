@@ -3,12 +3,18 @@
   import { onMount } from 'svelte';
   import { _ } from 'svelte-i18n';
   import SvelteInfiniteScroll from 'svelte-infinite-scroll';
+  import { useTracker } from 'meteor/rdb:svelte-meteor-data';
+
   import SearchResult from '../components/SearchResult.svelte';
+  import Mezigs from '../../api/mezigs/mezigs';
   import { searchingStore } from '../../stores/stores';
   import PackageJSON from '../../../package.json';
+  import TagGroup from '../components/TagGroup.svelte';
+
   let version = PackageJSON.version;
 
   export let location = null;
+
   let searching = '';
   let previousSearch = '';
   let noResult = '';
@@ -18,7 +24,66 @@
   let newLoadedMezigs = [];
   let totalFoundMezigs = 0;
   let timeout;
-  let ulMezigs;
+  let ulMezigs = {};
+
+  $: allMezigs = useTracker(() => {
+    const sub = Meteor.subscribe('mezigs.table.all');
+    if (sub.ready()) {
+      return Mezigs.findFromPublication('mezigs.table.all', {}).fetch();
+    }
+    return [];
+  });
+
+  $: skillsTab = getSkillTab($allMezigs);
+
+  function getSkillTab(mezigs) {
+    let allSkills = {};
+    let skills = [];
+    mezigs.forEach(function (u) {
+      u.skills.forEach(function (s) {
+        if (s in allSkills) {
+          allSkills[s] += 1;
+        } else {
+          allSkills[s] = 1;
+        }
+      });
+    });
+    Object.keys(allSkills).forEach((s) => {
+      skills.push([s, allSkills[s]]);
+    });
+
+    skills.sort(function (a, b) {
+      return b[1] - a[1];
+    });
+    return skills;
+  }
+
+  function getRandomSkills(sTab) {
+    if (sTab) {
+      let i = 0;
+      let min = 10;
+      let max = sTab.length;
+      let temp;
+      let res = [];
+      if (max <= 10) {
+        return res;
+      } else {
+        if (max < 20) {
+          res = sTab.slice(10, max);
+        } else {
+          while (i < 10) {
+            temp = sTab[Math.floor(Math.random() * (max - min) + min)];
+            if (!res.includes(temp)) {
+              res.push(temp);
+              i++;
+            }
+          }
+        }
+        return res;
+      }
+    }
+    return [];
+  }
 
   onMount(async () => {
     searching = previousSearch;
@@ -28,8 +93,8 @@
   $: previousSearch = $searchingStore;
   $: usersScroll = [...usersScroll, ...newLoadedMezigs];
 
-  function handleClickSkill(event) {
-    searching += ` #${event.detail.text}`; // Add skill to existing search string
+  function handleClickSkill() {
+    searching = $searchingStore;
     ActuSearch();
   }
 
@@ -85,6 +150,7 @@
   <title>Accueil | {$_('ui.appName')} {version}</title>
 </svelte:head>
 
+<h1 class="numberUsers">{$allMezigs.length} {$_('api.users.number')}</h1>
 <form on:submit|preventDefault role="search" style={usersScroll.length > 0 ? 'top: 15%;' : ''}>
   <label for="search">{$_('ui.searchLabel')}</label>
   <input
@@ -106,7 +172,6 @@
     </p>
   {/if}
 </form>
-
 <ul id="results" class="SearchResultDiv" role="tablist" bind:this={ulMezigs}>
   {#each usersScroll as user}
     <SearchResult {user} on:clickSkills={handleClickSkill} />
@@ -118,6 +183,10 @@
   />
 </ul>
 <p class="noResult">{noResult}</p>
+
+<div style="margin-top:130%; width: 140%;margin-left: -20%; text-align:center">
+  <TagGroup {skillsTab} on:clickSkills={handleClickSkill} />
+</div>
 
 <style>
   form {
@@ -176,6 +245,12 @@
     top: 30%;
     left: 50%;
     transform: translate(-50%);
+  }
+  .numberUsers {
+    margin-top: 11%;
+    width: 100%;
+    text-align: center;
+    color: #372f84;
   }
   #infos {
     margin-left: 1.6rem;

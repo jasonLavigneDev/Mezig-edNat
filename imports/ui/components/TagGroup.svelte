@@ -32,7 +32,7 @@
     {/if}
   </Icon>
 </button>
-<div style="border-bottom: 1px solid orange; width: 100%; margin-top: -40px" />
+<div class="dividerStyle" />
 
 <style>
   .divContainer {
@@ -49,5 +49,10 @@
     cursor: pointer;
     margin-top: 5px;
     margin-bottom: 20px;
+  }
+  .dividerStyle {
+    border-bottom: 1px solid orange;
+    width: 100%;
+    margin-top: -40px;
   }
 </style>

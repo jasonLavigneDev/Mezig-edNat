@@ -138,9 +138,6 @@
       "total": "in total"
     },
     "tags": {
-      "topTagsTitle": "Most used tags",
-      "randomTagsTitle": "Tags Suggestions",
-      "allTagsTitle": "All tags",
       "useNumber": "Number of use"
     }
   }

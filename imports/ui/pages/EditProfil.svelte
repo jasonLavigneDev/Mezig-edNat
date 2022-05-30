@@ -133,7 +133,7 @@
   };
 
   const addSkill = () => {
-    skills.push(newSkill.replaceAll(' ', '_'));
+    skills.push(newSkill.replaceAll(' ', '_').replaceAll('#', ''));
     // svelte does not seem to react to push
     skills = skills;
     newSkill = '';

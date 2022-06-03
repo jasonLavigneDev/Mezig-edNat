@@ -165,7 +165,8 @@ const queryAllMezigs = ({ search }) => {
   const query = { $and: [{ blacklist: false }] };
   for (let i = 0; i < search.split(' ').length; i += 1) {
     if (regexSkills.test(search.split(' ')[i])) {
-      query.$and.push({ skills: search.split(' ')[i].split('#')[1] });
+      const regex = new RegExp(search.toLowerCase().split(' ')[i].split('#')[1], 'i');
+      query.$and.push({ skills: regex });
     } else {
       const nameRegExp = search.split(' ')[i];
       query.$and.push({

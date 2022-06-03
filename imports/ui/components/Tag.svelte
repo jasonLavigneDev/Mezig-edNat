@@ -7,7 +7,7 @@
   export let textTooltip = '';
   const dispatch = createEventDispatcher();
 
-  $: inSearch = $searchingStore.split(' ').includes(skill);
+  $: inSearch = $searchingStore.toLowerCase().split(' ').includes(skill.toLowerCase());
 
   function addSelectedTag(tag) {
     searchingStore.set(`${$searchingStore} ${tag}`);
@@ -17,7 +17,7 @@
     searchingStore.set(
       $searchingStore
         .split(' ')
-        .filter((v) => v !== tag)
+        .filter((v) => v.toLowerCase() !== tag.toLowerCase())
         .join(' '),
     );
   }

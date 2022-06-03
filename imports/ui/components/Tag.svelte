@@ -17,7 +17,7 @@
     searchingStore.set(
       $searchingStore
         .split(' ')
-        .filter((v) => v !== tag)
+        .filter((v) => v.toLowerCase() !== tag.toLowerCase())
         .join(' '),
     );
   }

@@ -7,7 +7,7 @@
   export let textTooltip = '';
   const dispatch = createEventDispatcher();
 
-  $: inSearch = $searchingStore.split(' ').includes(skill);
+  $: inSearch = $searchingStore.toLowerCase().split(' ').includes(skill.toLowerCase());
 
   function addSelectedTag(tag) {
     searchingStore.set(`${$searchingStore} ${tag}`);

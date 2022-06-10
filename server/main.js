@@ -5,6 +5,7 @@ import '../imports/api/users/users';
 import '../imports/api/users/methods';
 import '../imports/api/users/server/publications';
 import '../imports/api/mezigs/server/publications';
+import '../imports/api/mezigs/server/methods';
 import '../imports/api/mezigs/methods';
 import '../imports/api/importFakeData';
 import '../imports/api/appsettings/appsettings';

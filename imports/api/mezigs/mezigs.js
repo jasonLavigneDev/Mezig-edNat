@@ -144,6 +144,9 @@ if (Meteor.isServer) {
       if (details.user.services.keycloak.preferred_username) {
         mez.username = details.user.services.keycloak.preferred_username;
       }
+      if (details.user.emails && details.user.emails.length > 0) {
+        mez.email = details.user.emails[0].address;
+      }
     } else {
       // local accounts
       if (details.user.firstName) {

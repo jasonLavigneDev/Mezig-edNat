@@ -155,6 +155,9 @@ if (Meteor.isServer) {
       if (details.user.username) {
         mez.username = details.user.username;
       }
+      if (details.user.emails && details.user.emails.length > 0) {
+        mez.email = details.user.emails[0].address;
+      }
     }
     // always update profilPic to laboite avatar
     mez.profilPic = details.user.avatar || '';

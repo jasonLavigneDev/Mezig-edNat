@@ -165,16 +165,17 @@
   };
 
   // Add skills with pressing Enter key
-  const handleEnter = (event) => {
+  const handleKeydown = (event) => {
     if (event.key === 'Enter') {
       // Delete other Enter event
-      console.log(hiLitedTags);
       event.preventDefault();
       if (newSkill != '') {
         if (hiLitedTags !== undefined) {
           setInputVal(filteredTags[hiLiteIndex]);
         } else {
-          addSkill();
+          if (skills.indexOf(newSkill) === -1) {
+            addSkill();
+          }
         }
       }
     }
@@ -185,6 +186,11 @@
     } else {
       return;
     }
+  };
+
+  const handleKeyUp = () => {
+    newSkill = newSkill.replace(' ', '_');
+    filterTags();
   };
 
   // TODO meteor call instead of countries
@@ -268,7 +274,8 @@
                 bind:value={newSkill}
                 label={$_('ui.editProfil.newSkill')}
                 input$maxlength={maxSkillsCar}
-                on:keydown={handleEnter}
+                on:keydown={handleKeydown}
+                on:keyup={handleKeyUp}
                 on:input={filterTags}
               >
                 <span slot="helper"><CharacterCounter>0 / {maxSkillsCar}</CharacterCounter></span>

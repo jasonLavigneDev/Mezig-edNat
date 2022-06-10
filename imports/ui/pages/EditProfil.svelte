@@ -7,6 +7,7 @@
 
   import Spinner from '../components/Spinner.svelte';
   import EditTableLinks from '../components/EditTableLinks.svelte';
+  import AutocompleteTag from '../components/AutocompleteTag.svelte';
 
   import Dialog, { Title, Content, Actions } from '@smui/dialog';
   import '@smui/dialog/bare.css';
@@ -38,12 +39,23 @@
   let profilPic = '';
   let links = [];
   let sortedLinks = [];
-  let sortableDiv;  
+  let sortableDiv;
   let skills = [];
-  const maxSkillsCar = 32;
   let newSkill = '';
   let error = '';
   let email = '';
+  let filteredTags = [];
+  let listTag = [];
+  let hiLiteIndex = null;
+  let searchInput;
+
+  $: Meteor.call('mezigs.getAllSkills', (err, res) => {
+    if (!err) {
+      listTag = res;
+    }
+  });
+
+  const maxSkillsCar = 32;
 
   const validateForm = (publicName, links) => {
     publicNameOK = publicName !== '';
@@ -137,18 +149,68 @@
     // svelte does not seem to react to push
     skills = skills;
     newSkill = '';
+    resetListTag();
+  };
+
+  const makeMatchBold = (str) => {
+    // replace part of (country name === inputValue) with strong tags
+    let matched = str.substring(0, newSkill.length);
+    let makeBold = `<strong>${matched}</strong>`;
+    let boldedMatch = str.replace(matched, makeBold);
+    return boldedMatch;
+  };
+
+  const removeBold = (str) => {
+    return str.replace(/<(.)*?>/g, '');
   };
 
   // Add skills with pressing Enter key
   const handleEnter = (event) => {
     if (event.key === 'Enter') {
       // Delete other Enter event
+      console.log(hiLitedTags);
       event.preventDefault();
       if (newSkill != '') {
-        addSkill();
+        if (hiLitedTags !== undefined) {
+          setInputVal(filteredTags[hiLiteIndex]);
+        } else {
+          addSkill();
+        }
       }
     }
+    if (event.key === 'ArrowDown' && hiLiteIndex <= filteredTags.length - 1) {
+      hiLiteIndex === null ? (hiLiteIndex = 0) : (hiLiteIndex += 1);
+    } else if (event.key === 'ArrowUp' && hiLiteIndex !== null) {
+      hiLiteIndex === 0 ? (hiLiteIndex = filteredTags.length - 1) : (hiLiteIndex -= 1);
+    } else {
+      return;
+    }
   };
+
+  // TODO meteor call instead of countries
+  const filterTags = () => {
+    let storageArr = [];
+    if (newSkill) {
+      listTag.forEach((tag) => {
+        if (tag.toLowerCase().startsWith(newSkill.toLowerCase())) {
+          storageArr = [...storageArr, makeMatchBold(tag)];
+        }
+      });
+    }
+    filteredTags = storageArr;
+  };
+
+  const setInputVal = (tag) => {
+    newSkill = removeBold(tag);
+    resetListTag();
+  };
+
+  function resetListTag() {
+    filteredTags = [];
+    hiLiteIndex = null;
+  }
+
+  $: hiLitedTags = filteredTags[hiLiteIndex];
 </script>
 
 <svelte:head>
@@ -198,13 +260,16 @@
               <TrailingAction id="cancel" icon$class="material-icons">cancel</TrailingAction>
             </Chip>
           </Set>
-          <div class="MezigField center">
+          <div class="MezigField center autocomplete">
             <FormField>
               <Textfield
+                id="tag-input"
+                bind:this={searchInput}
                 bind:value={newSkill}
                 label={$_('ui.editProfil.newSkill')}
                 input$maxlength={maxSkillsCar}
                 on:keydown={handleEnter}
+                on:input={filterTags}
               >
                 <span slot="helper"><CharacterCounter>0 / {maxSkillsCar}</CharacterCounter></span>
               </Textfield>
@@ -220,6 +285,13 @@
               </div>
             </FormField>
           </div>
+          {#if filteredTags.length > 0}
+            <ul id="autocomplete-items-list">
+              {#each filteredTags as tag, i}
+                <AutocompleteTag itemLabel={tag} highlighted={i === hiLiteIndex} on:click={() => setInputVal(tag)} />
+              {/each}
+            </ul>
+          {/if}
         </div>
         <div class="part">
           <p class="partTitle" style="margin-bottom: 0">{$_('ui.editProfil.links')}</p>
@@ -344,5 +416,9 @@
   }
   .center {
     text-align: center;
+  }
+  #autocomplete-items-list {
+    padding: 10;
+    border: 1px solid #ddd;
   }
 </style>

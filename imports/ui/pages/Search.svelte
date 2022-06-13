@@ -118,9 +118,8 @@
     page = 1;
     ulMezigs.scrollTop = 0;
     if (searching.length >= 3) {
-      try {
-        new RegExp(searching);
-        res = Meteor.call('mezigs.getMezigs', { search: searching, itemPerPage }, (err, res) => {
+      res = Meteor.call('mezigs.getMezigs', { search: searching, itemPerPage }, (err, res) => {
+        if (!err){
           newLoadedMezigs = res.data;
           totalFoundMezigs = res.total;
           if (totalFoundMezigs == 0) {
@@ -128,10 +127,10 @@
           } else {
             noResult = '';
           }
-        });
-      } catch (e) {
-        noResult = $_('ui.noSearchResult') + searching + '...';
-      }
+        }else{
+          noResult = $_(err.reason);
+        }
+      });
     } else {
       noResult = '';
     }

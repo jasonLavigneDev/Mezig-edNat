@@ -159,26 +159,37 @@ export const removeMezig = new ValidatedMethod({
   },
 });
 
+const specials = ['-', '/', '*', '+', '?', '.', '\\', '^', '$', '|'];
+const regex = RegExp(`[${specials.join('\\')}]`, 'g');
+
 // build query for all searched mezigs
-const regexSkills = /#/;
 const queryAllMezigs = ({ search }) => {
   const query = { $and: [{ blacklist: false }] };
-  for (let i = 0; i < search.split(' ').length; i += 1) {
-    if (regexSkills.test(search.split(' ')[i])) {
-      const regex = new RegExp(search.toLowerCase().split(' ')[i].split('#')[1], 'i');
-      query.$and.push({ skills: regex });
+  const searchTab = search.split(' ');
+  searchTab.forEach((searchWord) => {
+    if (searchWord.startsWith('#')) {
+      try {
+        const skill = new RegExp(searchWord.split('#')[1].replace(regex, '\\$&'), 'i');
+        query.$and.push({ skills: skill });
+      } catch (error) {
+        throw new Meteor.Error('api.mezigs.methods.getMezigs.NotRegExp', 'api.mezigs.invalidSearch');
+      }
     } else {
-      const nameRegExp = search.split(' ')[i];
-      query.$and.push({
-        $or: [
-          { publicName: { $regex: nameRegExp, $options: 'i' } },
-          { firstName: { $regex: nameRegExp, $options: 'i' } },
-          { lastName: { $regex: nameRegExp, $options: 'i' } },
-          { email: { $regex: nameRegExp, $options: 'i' } },
-        ],
-      });
+      try {
+        const reSearchWord = new RegExp(searchWord.replace(regex, '\\$&'));
+        query.$and.push({
+          $or: [
+            { publicName: { $regex: reSearchWord, $options: 'i' } },
+            { firstName: { $regex: reSearchWord, $options: 'i' } },
+            { lastName: { $regex: reSearchWord, $options: 'i' } },
+            { email: { $regex: reSearchWord, $options: 'i' } },
+          ],
+        });
+      } catch (error) {
+        throw new Meteor.Error('api.mezigs.methods.getMezigs.NotRegExp', 'api.mezigs.invalidSearch');
+      }
     }
-  }
+  });
   return query;
 };
 

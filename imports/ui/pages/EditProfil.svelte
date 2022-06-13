@@ -47,6 +47,7 @@
   let filteredTags = [];
   let listTag = [];
   let hiLiteIndex = null;
+  let newSkillsTab = [];
   let searchInput;
 
   $: Meteor.call('mezigs.getAllSkills', (err, res) => {
@@ -146,6 +147,7 @@
 
   const addSkill = () => {
     skills.push(newSkill.replaceAll(' ', '_').replaceAll('#', ''));
+    newSkillsTab.push(newSkill.replaceAll(' ', '_').replaceAll('#', ''));
     // svelte does not seem to react to push
     skills = skills;
     newSkill = '';
@@ -188,7 +190,8 @@
     }
   };
 
-  const handleKeyUp = () => {
+  const handleKeyUp = (event) => {
+    event.preventDefault();
     newSkill = newSkill.replace(' ', '_');
     filterTags();
   };
@@ -217,6 +220,13 @@
   }
 
   $: hiLitedTags = filteredTags[hiLiteIndex];
+
+  function isNewSkill(skill) {
+    if (newSkillsTab.includes(skill)) {
+      return true;
+    }
+    return false;
+  }
 </script>
 
 <svelte:head>
@@ -261,9 +271,11 @@
         <div class="part">
           <p class="partTitle">{$_('ui.editProfil.skills')}</p>
           <Set chips={skills} let:chip>
-            <Chip {chip}>
+            <Chip {chip} style={isNewSkill(chip) ? 'background-color: #6200ee; color: white' : ''}>
               <Text>{chip}</Text>
-              <TrailingAction id="cancel" icon$class="material-icons">cancel</TrailingAction>
+              <TrailingAction id="cancel" icon$class="material-icons" style={isNewSkill(chip) ? 'color: white' : ''}
+                >cancel</TrailingAction
+              >
             </Chip>
           </Set>
           <div class="MezigField center autocomplete">

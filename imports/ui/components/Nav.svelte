@@ -93,7 +93,7 @@
 </script>
 
 <nav>
-  <a class="navbar-item" href="/" rel="prefetch">
+  <a class="navbar-item" href="/">
     <img id="logo" src={logoApps} alt="Logo de l'application" />
   </a>
   <Tooltip text="Rechercher" bottom>
@@ -165,7 +165,7 @@
                       </Text>
                     </Item>
                     <Separator />
-                    <Item disabled> 
+                    <Item disabled>
                       <AppVersion />
                     </Item>
                   </List>

@@ -8,7 +8,7 @@ Meteor.startup(() => {
 
   init({
     fallbackLocale: 'fr',
-    initialLocale: getLocaleFromNavigator(),
+    initialLocale: localStorage.getItem('mezig.language') || getLocaleFromNavigator(),
   });
 
   const app = new App({

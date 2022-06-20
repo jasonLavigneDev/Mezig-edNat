@@ -22,10 +22,9 @@
   $: settings = useTracker(() => {
     const sub = Meteor.subscribe('appsettings.all');
     if (sub.ready()) {
-      return AppSettings.findOne({ _id: 'settings'}) 
+      return AppSettings.findOne({ _id: 'settings' });
     }
-    return {maintenance: true, textMaintenance: ''}
- 
+    return { maintenance: true, textMaintenance: '' };
   });
 </script>
 
@@ -35,40 +34,36 @@
 
 {#if $isLoading}
   <Spinner />
-{:else}
-  {#if userRedirect === false}
-    <Nav bind:userRedirect bind:profileOk bind:userActive />
-    <Router {url}>
-      <div class="container">
-        {#if $settings.maintenance}
-          <Maintenance />
-        {:else}
-          {#if profileOk === false && userActive === true}
-            <div>
-              <Route>
-                <EditProfil bind:profileOk />
-              </Route>
-            </div>
-          {:else}
-            <div>
-              <Route path="/profil/:publicName" component={Profil} />
-              {#if !enableKeycloak}
-                <Route path="/signin" component={Signin} />
-              {/if}
-              {#if !laboiteUrl && !enableKeycloak}
-                <Route path="/signup" component={Signup} />
-              {/if}
-              {#if userActive === true}
-                <Route path="/edit" component={EditProfil} />
-                {#if !laboiteUrl}
-                  <Route path="/admin" component={Admin} />
-                {/if}
-              {/if}
-              <Route component={Search} />
-            </div>
+{:else if userRedirect === false}
+  <Nav bind:userRedirect bind:profileOk bind:userActive />
+  <Router {url}>
+    <div class="container">
+      {#if $settings.maintenance}
+        <Maintenance />
+      {:else if profileOk === false && userActive === true}
+        <div>
+          <Route>
+            <EditProfil bind:profileOk />
+          </Route>
+        </div>
+      {:else}
+        <div>
+          <Route path="/profil/:publicName" component={Profil} />
+          {#if !enableKeycloak}
+            <Route path="/signin" component={Signin} />
           {/if}
-        {/if}
-      </div>
-    </Router>
-  {/if}
+          {#if !laboiteUrl && !enableKeycloak}
+            <Route path="/signup" component={Signup} />
+          {/if}
+          {#if userActive === true}
+            <Route path="/edit" component={EditProfil} />
+            {#if !laboiteUrl}
+              <Route path="/admin" component={Admin} />
+            {/if}
+          {/if}
+          <Route component={Search} />
+        </div>
+      {/if}
+    </div>
+  </Router>
 {/if}

@@ -1,10 +1,9 @@
 <script>
-  import { fly } from "svelte/transition";
-  import moment from "moment";
-  import "moment/locale/fr";
+  import { fly } from 'svelte/transition';
+  import moment from 'moment';
+  import 'moment/locale/fr';
 
-  import { locales, locale } from "svelte-i18n";
-  import { language } from "../../stores/stores";
+  import { locales, locale } from 'svelte-i18n';
 
   export let mobile = false;
   let opened = false;
@@ -12,7 +11,7 @@
 
   const selectLocale = (l) => {
     locale.set(l);
-    language.set(l);
+    localStorage.setItem('mezig.language', l);
     moment.locale(l);
     toggle();
   };
@@ -20,20 +19,10 @@
 
 {#if mobile}
   {#each $locales as l}
-    <img
-      class:active={$locale.split("-")[0] === l}
-      alt={l}
-      src="/i18n/{l}.png"
-      on:click={() => selectLocale(l)}
-    />
+    <img class:active={$locale.split('-')[0] === l} alt={l} src="/i18n/{l}.png" on:click={() => selectLocale(l)} />
   {/each}
 {:else}
-  <img
-    class="current"
-    alt={$locale}
-    src="/i18n/{$locale.split('-')[0]}.png"
-    on:click={toggle}
-  />
+  <img class="current" alt={$locale} src="/i18n/{$locale.split('-')[0]}.png" on:click={toggle} />
 
   {#if opened}
     <div class="box" transition:fly={{ x: 200 }}>

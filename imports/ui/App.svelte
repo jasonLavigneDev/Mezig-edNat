@@ -3,6 +3,7 @@
   import { isLoading } from 'svelte-i18n';
   import { Meteor } from 'meteor/meteor';
   import { useTracker } from 'meteor/rdb:svelte-meteor-data';
+  import { _ } from 'svelte-i18n';
   import Search from './pages/Search.svelte';
   import Profil from './pages/Profil.svelte';
   import Nav from './components/Nav.svelte';
@@ -12,6 +13,7 @@
   import Signup from './pages/Signup.svelte';
   import Admin from './pages/Admin.svelte';
   import Maintenance from './pages/Maintenance.svelte';
+  import NoAccount from './pages/NoAccount.svelte';
   import AppSettings from './../api/appsettings/appsettings';
 
   export let url = '';
@@ -33,12 +35,12 @@
 {:else if userRedirect === false}
   <Nav bind:userRedirect bind:profileOk bind:userActive />
   <Router {url}>
-    <div class="container">
-      {#if $settings.maintenance}
-        <Maintenance />
-      {:else if profileOk === false && userActive === true}
-        <div>
-          <Route>
+  <div class="container">
+    {#if $settings.maintenance}
+    <Maintenance />
+    {:else if profileOk === false && userActive === true}
+    <div>
+      <Route>
             <EditProfil bind:profileOk />
           </Route>
         </div>
@@ -62,4 +64,7 @@
       {/if}
     </div>
   </Router>
+  {:else}
+  <!-- Occurs when the connected user hasn't an existing laboite account -->
+  <NoAccount />
 {/if}

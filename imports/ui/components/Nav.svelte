@@ -63,7 +63,7 @@
   });
 
   onDestroy(() => {
-    stopCallback();
+    if (typeof stopCallback.stop == 'function') stopCallback.stop();
   });
 
   // Give focus on textfield in search page
@@ -107,14 +107,7 @@
       search
     </IconButton>
   </Tooltip>
-  {#if userRedirect === true}
-    <div class="loginMsg">
-      <p>{$_('ui.loginMsg')}<a href="#" on:click={doLogin}>{$_('ui.loginLink')}</a></p>
-      <button id="redirectButton" on:click={() => window.open(`${laboiteUrl}/signin`, '_blank')}
-        >{$_('ui.loginLaboite')}
-      </button>
-    </div>
-  {:else}
+  {#if userRedirect !== true}
     <div class="loginMenu">
       {#if $userId === null}
         <button id="buttonConnect" on:click={doLogin}>{$_('ui.connection')}</button>
@@ -190,14 +183,6 @@
     font-weight: normal;
     background: var(--color-brand);
     border-radius: 10px;
-  }
-  .loginMsg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-weight: bold;
-    color: var(--color-brand);
   }
   .userInfo {
     display: flex;

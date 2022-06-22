@@ -21,15 +21,15 @@ export const getFedId = new ValidatedMethod({
     publicName: { type: String },
   }).validator({ clean: true }),
   run({ publicName }) {
-    if (Mezigs.findOne({ publicName }).profileChecked !== false) {
+    if (Mezigs.findOne({ publicName }).profileChecked) {
       const user = Meteor.users.findOne({ mezigName: publicName });
-      let fedId = '';
-      if (user.nclocator !== '' && user.username !== '') {
-        fedId = `${user.username}@${user.nclocator}`;
-      } else {
-        fedId = '';
+      if (user) {
+        let fedId = '';
+        if (user?.nclocator !== '' && user?.username !== '') {
+          fedId = `${user.username}@${user.nclocator}`;
+        }
+        return fedId;
       }
-      return fedId;
     }
     return '';
   },

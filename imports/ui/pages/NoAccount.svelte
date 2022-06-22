@@ -1,6 +1,6 @@
 <script>
   import { _ } from 'svelte-i18n';
-  
+
   const { enableKeycloak, laboiteUrl } = Meteor.settings.public;
 
   const doLogin = () => {
@@ -10,29 +10,32 @@
       navigate('/signin', { replace: false });
     }
   };
-
 </script>
+
+<svelte:head>
+  <title>No account</title>
+</svelte:head>
 
 <div class="NoAccount">
   <div class="loginMsg">
     <p>{$_('ui.loginMsg')}<a href="#" on:click={doLogin}>{$_('ui.loginLink')}</a></p>
-    <button id="redirectButton" on:click={() => window.open(`${laboiteUrl}/signin`, '_blank')}
+    <button id="redirectButton" on:click={() => window.open(`${laboiteUrl}/signin`, '_blank')} class="laboiteButton"
       >{$_('ui.loginLaboite')}
     </button>
   </div>
 </div>
 
 <style>
-.NoAccount {
+  .NoAccount {
     display: flex;
     justify-content: center;
+    align-content: center;
   }
 
-.loginMsg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  .loginMsg {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15%;
     font-weight: bold;
     color: var(--color-brand);
   }
@@ -46,5 +49,6 @@
     font-weight: normal;
     background: var(--color-brand);
     border-radius: 10px;
+    cursor: pointer;
   }
 </style>

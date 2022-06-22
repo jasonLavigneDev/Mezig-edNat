@@ -53,7 +53,7 @@
     "connection": "Log in",
     "disconnection": "Logout",
     "loginLaboite": "login to LaBoite",
-    "loginMsg": "Your user ha no LaBoite account, please click on the button to create it, then follow ",
+    "loginMsg": "Your user doesn't have LaBoite account, please click on the button to create it, then follow ",
     "loginLink": "this link",
     "unknownUser": "Unknown user",
     "avatarTitle": "User avatar",

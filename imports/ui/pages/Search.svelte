@@ -117,7 +117,7 @@
     totalFoundMezigs = 0;
     page = 1;
     ulMezigs.scrollTop = 0;
-    if (searching.length >= 3) {
+    if (searching.length >= 2) {
       res = Meteor.call('mezigs.getMezigs', { search: searching, itemPerPage }, (err, res) => {
         if (!err) {
           newLoadedMezigs = res.data;

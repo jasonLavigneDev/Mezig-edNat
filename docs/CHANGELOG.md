@@ -1,5 +1,39 @@
 # Changelog
 
+# [1.6.0](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.5.0...release/1.6.0) (2022-07-04)
+
+
+### Bug Fixes
+
+* **email:** fix email autocomplete in keycloak mode ([d3ac871](https://gitlab.mim-libre.fr/alphabet/mezig/commit/d3ac8717264b14e606dcc4df4e615e5575ff4326))
+* **federationId:** no more server error on federationId calculation ([8ec641c](https://gitlab.mim-libre.fr/alphabet/mezig/commit/8ec641c97f65c2c6c9340e2bf4c2bb50ffcbbf17))
+* **noaccount:** better display when no laboite account ([e125226](https://gitlab.mim-libre.fr/alphabet/mezig/commit/e12522635f1495fe94836696da04e81ad6e102f2))
+* **search:** escaping regexp chars on search string ([b9788b6](https://gitlab.mim-libre.fr/alphabet/mezig/commit/b9788b67d1e2088eca20500413c05c893edab168))
+* **skills:** escape # char in skills ([d259b9a](https://gitlab.mim-libre.fr/alphabet/mezig/commit/d259b9a9c9d7e911c2d20a9ddcc984774b90a91b))
+* **skills:** fix tag autocomplete with spaces ([5c39511](https://gitlab.mim-libre.fr/alphabet/mezig/commit/5c395113f128809d7f13da47db4bfc5836261aa6))
+* **tag:** fix remove tag from search ([67017c6](https://gitlab.mim-libre.fr/alphabet/mezig/commit/67017c6262597213836d035ca72370a91c19ddea))
+* **tag:** search tag become case-insensitive ([2402bba](https://gitlab.mim-libre.fr/alphabet/mezig/commit/2402bba42c7197308fd579e5eb3840f774071b0f))
+* **ui:** count of active users ([31358f7](https://gitlab.mim-libre.fr/alphabet/mezig/commit/31358f769de6cf1025a72487e754e9d77c211fa3))
+* **ui:** modify css ans i18n in no account page ([1e0f02a](https://gitlab.mim-libre.fr/alphabet/mezig/commit/1e0f02ad03ba10c2870cb0d82347dc0fc0c6a076))
+* **ui:** repair language picker when returning to home ([b068373](https://gitlab.mim-libre.fr/alphabet/mezig/commit/b068373a47ff94cf04fdc2c87117702e2cf26bbc))
+* **ui:** use local font for material icon ([effb24b](https://gitlab.mim-libre.fr/alphabet/mezig/commit/effb24bca0572404e38a7def4721d7630c5a804a))
+
+
+### Build System
+
+* **meteor:** update meteor 2.7.2 ([bbfeb90](https://gitlab.mim-libre.fr/alphabet/mezig/commit/bbfeb902892932e520e16f895c2f44ffbe2a9f75))
+
+
+### Features
+
+* **profile:** fetch laboite email at profile creation ([8a57714](https://gitlab.mim-libre.fr/alphabet/mezig/commit/8a5771417032461d99728115e25f6ddc00dabed8))
+* **skills:** add autocomplete list for skill input in profile ([79ac319](https://gitlab.mim-libre.fr/alphabet/mezig/commit/79ac3196b341d6f449e61c7d583b4931653fcf1d))
+* **skills:** add backend method to get all skills ([3191b17](https://gitlab.mim-libre.fr/alphabet/mezig/commit/3191b17501b326c129e2e9199feca32a7107c6cc))
+* **skills:** change color for new skills in profile ([6f8d80c](https://gitlab.mim-libre.fr/alphabet/mezig/commit/6f8d80c91fa15425bae6c90e6fdbe99406c3daba))
+* **ui:** add tags display and selection ([ba5d74b](https://gitlab.mim-libre.fr/alphabet/mezig/commit/ba5d74b4e375a0b9f5b7b7e8a19cb71df993a1ff))
+* **ui:** simplify implementation ([8761fc1](https://gitlab.mim-libre.fr/alphabet/mezig/commit/8761fc157e1c441a2f877865ba098d1fa7d18cf9))
+* **ui:** simplify tags component ([7754aa9](https://gitlab.mim-libre.fr/alphabet/mezig/commit/7754aa9b4b4e089573990e9c517c0ae113cff717))
+
 # [1.5.0](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.4.1...release/1.5.0) (2022-05-05)
 
 

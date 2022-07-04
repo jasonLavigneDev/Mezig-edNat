@@ -1,7 +1,7 @@
 {
   "name": "mezig",
   "private": true,
-  "version": "1.5.0",
+  "version": "1.6.0",
   "scripts": {
     "start": "MONGO_URL='mongodb://127.0.0.1:3001/meteor' meteor --port 3002 --exclude-archs 'web.browser.legacy, web.cordova' --settings config/settings.development.json",
     "start-local": "meteor --port 3002 --exclude-archs 'web.browser.legacy, web.cordova' --settings config/settings.development.json",

@@ -119,7 +119,7 @@
     ulMezigs.scrollTop = 0;
     if (searching.length >= 3) {
       res = Meteor.call('mezigs.getMezigs', { search: searching, itemPerPage }, (err, res) => {
-        if (!err){
+        if (!err) {
           newLoadedMezigs = res.data;
           totalFoundMezigs = res.total;
           if (totalFoundMezigs == 0) {
@@ -127,7 +127,7 @@
           } else {
             noResult = '';
           }
-        }else{
+        } else {
           noResult = $_(err.reason);
         }
       });
@@ -183,7 +183,7 @@
 </ul>
 <p class="noResult">{noResult}</p>
 
-<div style="margin-top:130%; width: 140%;margin-left: -20%; text-align:center">
+<div style="margin-top:79vh; width: 140%;margin-left: -20%; text-align:center">
   <TagGroup {skillsTab} on:clickSkills={handleClickSkill} />
 </div>
 

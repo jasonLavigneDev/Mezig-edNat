@@ -12,7 +12,7 @@
     },
     "users": {
       "unknownUser": "Utilisateur inconnu",
-      "number": "Utilisateurs actifs sur Mezig",
+      "number": "Profils publics sur Mezig",
       "labels": {
         "id": "Id Utilisateur",
         "username": "Pseudonyme",

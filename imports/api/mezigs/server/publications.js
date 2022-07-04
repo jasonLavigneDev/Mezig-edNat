@@ -67,5 +67,5 @@ FindFromPublication.publish('mezigs.all', function publishAll() {
 });
 
 FindFromPublication.publish('mezigs.table.all', function publishAllTable() {
-  return Mezigs.find({});
+  return Mezigs.find({ blacklist: false });
 });

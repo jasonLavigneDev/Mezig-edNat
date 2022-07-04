@@ -12,7 +12,7 @@
     },
     "users": {
       "unknownUser": "Unknown user",
-      "number": "Active users on Mezig",
+      "number": "Public profiles on Mezig",
       "labels": {
         "id": "User Id",
         "username": "User Name",

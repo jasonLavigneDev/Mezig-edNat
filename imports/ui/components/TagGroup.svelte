@@ -8,6 +8,7 @@
   let maxSkill;
 
   let expend = false;
+  let tab = [];
 
   $: {
     if (expend) {
@@ -16,11 +17,28 @@
       maxSkill = 10;
     }
   }
+
+  function calcFontSize(skillUseNumber) {
+    if (expend) {
+      tab.push(skillUseNumber);
+      let fontSize = (skillUseNumber / Math.max(...tab)) * 3;
+      fontSize = fontSize.toFixed(2);
+      if (fontSize <= 1) fontSize = 1;
+      return `${fontSize}em`;
+    } else {
+      return '1.5em';
+    }
+  }
 </script>
 
 <div class="divContainer">
   {#each skillsTab.slice(0, maxSkill) as skill}
-    <Tag skill={`#${skill[0]}`} on:clickSkills textTooltip={`${$_('ui.tags.useNumber')} : ${skill[1]}`} />
+    <Tag
+      skill={`#${skill[0]}`}
+      on:clickSkills
+      textTooltip={`${$_('ui.tags.useNumber')} : ${skill[1]}`}
+      fontSizeProperty={calcFontSize(skill[1])}
+    />
   {/each}
 </div>
 <button on:click={() => (expend = !expend)} class="iconButtonStyle">

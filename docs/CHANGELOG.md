@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.1](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.6.0...release/1.6.1) (2022-07-07)
+
+
+### Bug Fixes
+
+* **skill:** fix # input for skill in edit profile ([d5c8240](https://gitlab.mim-libre.fr/alphabet/mezig/commit/d5c82409d34eefdec7aec53659abb8f99e59f88f))
+* **skills:** search on skills is now exact ([bd01d2c](https://gitlab.mim-libre.fr/alphabet/mezig/commit/bd01d2c2feb9e504e5516fac446f186f7685b6e9))
+
 # [1.6.0](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.5.0...release/1.6.0) (2022-07-04)
 
 

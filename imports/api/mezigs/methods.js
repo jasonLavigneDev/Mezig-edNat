@@ -159,7 +159,7 @@ export const removeMezig = new ValidatedMethod({
   },
 });
 
-const specials = ['-', '/', '*', '+', '?', '.', '\\', '^', '$', '|'];
+const specials = ['-', '/', '*', '+', '?', '.', '\\', '^', '$', '|', '(', ')'];
 const regex = RegExp(`[${specials.join('\\')}]`, 'g');
 
 // build query for all searched mezigs

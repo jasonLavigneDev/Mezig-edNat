@@ -146,12 +146,15 @@
   };
 
   const addSkill = () => {
-    skills.push(newSkill.replaceAll(' ', '_').replaceAll('#', ''));
-    newSkillsTab.push(newSkill.replaceAll(' ', '_').replaceAll('#', ''));
-    // svelte does not seem to react to push
-    skills = skills;
-    newSkill = '';
-    resetListTag();
+    newSkillReplaced = newSkill.replaceAll(' ', '_').replaceAll('#', '');
+    if (newSkillReplaced.length !== 0) {
+      skills.push(newSkillReplaced);
+      newSkillsTab.push(newSkillReplaced);
+      // svelte does not seem to react to push
+      skills = skills;
+      newSkill = '';
+      resetListTag();
+    }
   };
 
   const makeMatchBold = (str) => {

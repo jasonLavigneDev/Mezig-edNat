@@ -169,7 +169,10 @@ const queryAllMezigs = ({ search }) => {
   searchTab.forEach((searchWord) => {
     if (searchWord.startsWith('#')) {
       try {
-        const skill = new RegExp(searchWord.split('#')[1].replace(regex, '\\$&'), 'i');
+        const skill = new RegExp(
+          searchWord.split('#')[1].replace(regex, '\\$&').replace(/^/, '^').replace(/$/, '$'),
+          'i',
+        );
         query.$and.push({ skills: skill });
       } catch (error) {
         throw new Meteor.Error('api.mezigs.methods.getMezigs.NotRegExp', 'api.mezigs.invalidSearch');

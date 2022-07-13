@@ -18,4 +18,4 @@ cd mezig
 npm run start
 ```
 
-## Ensuite, rendez-vous sur http://localhost:3002.
+## Ensuite, rendez-vous sur http://localhost:3020.

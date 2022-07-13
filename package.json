@@ -2,6 +2,9 @@
   "name": "mezig",
   "private": true,
   "version": "1.6.1",
+  "license": "EUPL-1.2",
+  "description": "Online biography",
+  "author": "EOLE/PCLL <team@eole.education> - DINUM",
   "scripts": {
     "start": "MONGO_URL='mongodb://127.0.0.1:3001/meteor' meteor --port 3020 --exclude-archs 'web.browser.legacy, web.cordova' --settings config/settings.development.json",
     "start-local": "meteor --port 3020 --exclude-archs 'web.browser.legacy, web.cordova' --settings config/settings.development.json",

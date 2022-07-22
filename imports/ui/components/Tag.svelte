@@ -5,6 +5,7 @@
 
   export let skill;
   export let textTooltip = '';
+  export let fontSizeProperty = '1.5em';
   const dispatch = createEventDispatcher();
 
   $: inSearch = $searchingStore.toLowerCase().split(' ').includes(skill.toLowerCase());
@@ -36,7 +37,7 @@
   on:click|stopPropagation={clickSkills}
   title={textTooltip}
   class="buttonTagsStyle"
-  style={inSearch ? 'color: #f4a711;' : 'color: #212f74;'}
+  style={inSearch ? `color: #f4a711;font-size: ${fontSizeProperty};` : `color: #212f74;font-size: ${fontSizeProperty};`}
 >
   {skill}
 </button>

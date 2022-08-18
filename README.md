@@ -1,108 +1,34 @@
-# The DEV environment **Mezig** application :
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-- [Install](#install)
-  - [Application : Laboite](#application-laboite)
-  - [Application : Mezig](#application-mezig)
-  - [Parameters](#parameters)
-- [Run project](#run-project)
-  - [In a terminal **laboite**](#in-a-terminal-laboite)
-  - [Run an other terminal **mezig**](#run-an-other-terminal-mezig)
-  - [Add groups to your user](#add-groups-to-your-user)
-    - [In user interface **localhost:3000**](#in-user-interface-localhost3000)
+## Getting Started
 
----
+First, run the development server:
 
-## Install
-
-### Application : Laboite
-
-Install process :
-
-```
-git clone https://gitlab.mim-libre.fr/alphabet/laboite.git
-cd laboite
-cp config/settings.development.json.sample config/settings.development.json
-cd app
-meteor npm install
+```bash
+npm run dev
+# or
+yarn dev
 ```
 
-### Application : Mezig
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Install process :
+You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-```
-git clone https://gitlab.mim-libre.fr/alphabet/mezig.git
-cd mezig
-cp config/settings.development.json.sample config/settings.development.json
-meteor npm install
-```
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
-### Parameters
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-To run **Mezig** locally, you need to configure a **LaBoite**' local instance with authentication on a Keycloak server. Add at least one API key in the private:apiKeys variable. See [configuration document for more informations](config/README.md).
+## Learn More
 
-## Run project
+To learn more about Next.js, take a look at the following resources:
 
-### In a terminal **laboite**
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-```
-cd laboite/app
-meteor npm start
-```
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-It is possible to check the operation of the box by typing the following line from an web browser
+## Deploy on Vercel
 
-```
-http://localhost:3000
-```
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-### Run an other terminal **mezig**
-
-```
-cd mezig
-meteor npm start
-```
-
-From the browser, type this :
-
-```
-http://localhost:3020
-```
-
-### Add groups to your user
-
-#### In user interface **localhost:3000**
-
-From the `LaBoite` app that you access from the browser
-
-```
-http://localhost:3000
-```
-
-Go to the config file in LaBoite ./config/settings.development.json
-
-Change the attribute : "whiteDomains" according to your mail provider.
-
-Exemple :
-
-For mailUser = 'toto@gmail.com', you must add "^gmail.com"
-
-which would give :
-
-    "whiteDomains": [
-      "^ac-[a-z-]\\.fr",
-      "^[a-z-]\\.gouv.fr",
-      "^gmail.com"
-    ]
-
-Re run la boite
-
-Go on `http://localhost:3000` (create your user in keycloak by following the link on the authentication page).
-
-By going to the "Groups" tab, you can "Join Group" automatically for all groups in blue.
-
-Refresh the page **Mezig** of browser
-
-```
-http://localhost:3020
-```
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

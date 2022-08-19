@@ -1,5 +1,5 @@
 import dbConnect from '../../../db/connectDb';
-import Mezigs from "../../../models/Mezigs"
+import Mezigs from '../../../models/Mezigs.js';
 
 export default async function handler(req, res) {
   const { method } = req;

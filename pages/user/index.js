@@ -3,9 +3,8 @@ import axios from 'axios';
 const Index = ({ mezigs }) => (
   <>
     {/* Create a card for each pet */}
-    {mezigs.map((mezigs) => (
-      console.log('mezigs', mezigs)
-      // <p>{mezigs.firstName}</p>
+    {mezigs.data.map((mezigs) => (
+      <p key={mezigs.firstName}>{mezigs.firstName}</p>
     ))}
   </>
 );

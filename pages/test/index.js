@@ -4,7 +4,8 @@ const Index = ({ mezigs }) => (
   <>
     {/* Create a card for each pet */}
     {mezigs.map((mezigs) => (
-      <p>{mezigs.firstName}</p>
+      console.log('mezigs', mezigs)
+      // <p>{mezigs.firstName}</p>
     ))}
   </>
 );

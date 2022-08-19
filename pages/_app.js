@@ -1,29 +1,12 @@
-import Head from 'next/head';
+import Layout from '../components/Layout';
 import '../styles/globals.css';
-import styles from '../styles/Home.module.css';
 
-function App({ Component, pageProps }) {
+function MezigApp({ Component, pageProps }) {
   return (
-    <>
-      <Head>
-        <title>Mezig</title>
-        <meta name="description" content="Online portfolio" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <div className={styles.container}>
-        <main className={styles.main}>
-          <Component {...pageProps} />
-        </main>
-      </div>
-
-      <footer className={styles.footer}>
-        <a href="https://nextjs.org/docs/getting-started" target="_blank" rel="noopener noreferrer">
-          Powered by{' Vincent '}
-        </a>
-      </footer>
-    </>
+    <Layout>
+      <Component {...pageProps} />
+    </Layout>
   );
 }
 
-export default App;
+export default MezigApp;

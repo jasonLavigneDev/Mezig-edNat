@@ -1,32 +1,30 @@
-import dbConnect from '../../../db/connectDb'
-import Mezigzs from '../../../models/mezigs'
+import dbConnect from '../../../db/connectDb';
+import mezigs from '../../../models/mezigs';
 
 export default async function handler(req, res) {
-  const { method } = req
+  const { method } = req;
 
-  await dbConnect()
+  await dbConnect();
 
   switch (method) {
     case 'GET':
       try {
-        const mezigzs = await Mezigzs.find({}) /* find all the data in our database */
-        res.status(200).json({ success: true, data: mezigzs })
+        const mezigs = await mezigs.find({}); /* find all the data in our database */
+        res.status(200).json({ success: true, data: mezigs });
       } catch (error) {
-        res.status(400).json({ success: false })
+        res.status(400).json({ success: false });
       }
-      break
+      break;
     case 'POST':
       try {
-        const mezigz = await Mezigzs.create(
-          req.body
-        ) /* create a new model in the database */
-        res.status(201).json({ success: true, data: mezigz })
+        const mezigs = await mezigs.create(req.body); /* create a new model in the database */
+        res.status(201).json({ success: true, data: mezigs });
       } catch (error) {
-        res.status(400).json({ success: false })
+        res.status(400).json({ success: false });
       }
-      break
+      break;
     default:
-      res.status(400).json({ success: false })
-      break
+      res.status(400).json({ success: false });
+      break;
   }
 }

@@ -1,21 +1,21 @@
 import axios from 'axios';
 
-const Index = ({ mezigzs }) => (
+const Index = ({ mezigs }) => (
   <>
     {/* Create a card for each pet */}
-    {mezigzs.map((mezigz) => (
-      <p>{mezigz.firstName}</p>
+    {mezigs.map((mezigs) => (
+      <p>{mezigs.firstName}</p>
     ))}
   </>
 );
 
 /* Retrieves pet(s) data from mongodb database */
 export async function getServerSideProps() {
-  const res = await axios.get('http://localhost:3020/api/mezigzs/');
+  const res = await axios.get('http://localhost:3020/api/mezigs/');
 
   return {
     props: {
-      mezigzs: res.data,
+      mezigs: res.data,
     },
   };
 }

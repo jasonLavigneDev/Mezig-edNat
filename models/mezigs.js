@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const MezigzsSchema = new mongoose.Schema(
+const mezigschema = new mongoose.Schema(
   {
     blacklist: {
       type: Boolean,
@@ -48,4 +48,4 @@ const MezigzsSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-export default mongoose.models.Mezigzs || mongoose.model('Mezigzs', MezigzsSchema);
+export default mongoose.models.Mezigs || mongoose.model('Mezigs', mezigschema);

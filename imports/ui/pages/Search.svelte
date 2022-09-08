@@ -183,7 +183,7 @@
 </ul>
 <p class="noResult">{noResult}</p>
 
-<div style="margin-top:79vh; width: 140%;margin-left: -20%; text-align:center">
+<div style="margin-top:75vh; width: 140%;margin-left: -20%; text-align:center">
   <TagGroup {skillsTab} on:clickSkills={handleClickSkill} />
 </div>
 
@@ -233,7 +233,7 @@
     transform: translate(-50%, 0);
     top: 25%;
     width: 100%;
-    max-height: 600px;
+    max-height: 540px;
     overflow-y: scroll;
   }
   .noResult {

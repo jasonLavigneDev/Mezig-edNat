@@ -1,7 +1,7 @@
 {
   "name": "mezig",
   "private": true,
-  "version": "1.6.1",
+  "version": "1.7.0-testing.1",
   "license": "EUPL-1.2",
   "description": "Online biography",
   "author": "EOLE/PCLL <team@eole.education> - DINUM",

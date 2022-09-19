@@ -1,5 +1,39 @@
 # Changelog
 
+## [1.7.0](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.6.1...release/1.7.0) (2022-09-19)
+
+
+### Features
+
+* **tags:** add tag cloud fontsize change ([68be5b1](https://gitlab.mim-libre.fr/alphabet/mezig/commit/68be5b18ad245873604a8d539483d19d5cb8ccca))
+
+
+### Bug Fixes
+
+* **skills:** skills with parenthesis are now found ([d753e35](https://gitlab.mim-libre.fr/alphabet/mezig/commit/d753e35cace98b92935f74c886f5178b1eb94253))
+* **ui:** fix scroll in search page ([767e9ba](https://gitlab.mim-libre.fr/alphabet/mezig/commit/767e9bae2459e4516ad76dcb5b0425f26ee7aeca))
+
+
+### Build System
+
+* **meteor:** update meteor 2.7.3  and node version 14.19.3 ([4a6d000](https://gitlab.mim-libre.fr/alphabet/mezig/commit/4a6d000d59cff4c7681f01c37f62e637a6faa58a))
+* **npm:** change port to 3020 ([6432603](https://gitlab.mim-libre.fr/alphabet/mezig/commit/64326034c5a3773c01d2d91b3de5451d9077d956))
+
+
+### Documentation
+
+* **readme:** update and translate readme ([89f6531](https://gitlab.mim-libre.fr/alphabet/mezig/commit/89f6531013a00be34d29b447bba285bd2ad3f540))
+
+
+### Continuous Integration
+
+* **build-docker:** run for `testing` prerelease ([41cc34a](https://gitlab.mim-libre.fr/alphabet/mezig/commit/41cc34ab4c364cabdcfc682b59aa63f78fcc086a))
+* **commitlint:** use new standard job `.git:commitlint` ([a2a76d1](https://gitlab.mim-libre.fr/alphabet/mezig/commit/a2a76d19f4c23dc9414bad68f139ef867824bb81))
+* **merge-to-dev:** use new standard jobs `.git:merge-to` ([f10276a](https://gitlab.mim-libre.fr/alphabet/mezig/commit/f10276a60f664c86f6f15f2d72b127e32e6bdb08))
+* **meteor:** test before generating a new release ([a3001cd](https://gitlab.mim-libre.fr/alphabet/mezig/commit/a3001cdee8bab561b3acbcb544f45224f4bfa2d6))
+* **semantic-release:** create `testing` prerelease ([244842e](https://gitlab.mim-libre.fr/alphabet/mezig/commit/244842e9d017f74e7c0e3dca91abc5a540e20b50))
+* **tag docker:** tag `testing` prerelease image ([1fe3124](https://gitlab.mim-libre.fr/alphabet/mezig/commit/1fe31246156cacab4b730d6b37623dc340595141))
+
 ## [1.6.1](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.6.0...release/1.6.1) (2022-07-07)
 
 

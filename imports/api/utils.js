@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import i18n from 'meteor/universe:i18n';
 import SimpleSchema from 'simpl-schema';
+import Mezigs from './mezigs/mezigs';
+import Skills from './skills/skills';
 
 export function isActive(userId) {
   if (!userId) return false;
@@ -89,4 +91,23 @@ export function genRandomPassword(pwdlen = 16) {
   }
 
   return password;
+}
+
+export function updateSkillsCollection() {
+  const skills = Skills.find({}).fetch();
+  if (skills.length === 0) {
+    console.log('updating skills...');
+    const mezigs = Mezigs.find({}).fetch();
+    mezigs.forEach((u) => {
+      u.skills.forEach((s) => {
+        const skill = Skills.findOne({ name: s });
+        if (skill) {
+          Skills.update({ name: s }, { $inc: { count: 1 } });
+        } else {
+          Skills.insert({ name: s, count: 1 });
+        }
+      });
+    });
+    console.log(`...end updating ${Skills.find({}).count()} skills.`);
+  }
 }

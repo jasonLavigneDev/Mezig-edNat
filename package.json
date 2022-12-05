@@ -15,6 +15,7 @@
     "visualize": "meteor --production --extra-packages bundle-visualizer"
   },
   "dependencies": {
+    "@babel/core": "^7.20.5",
     "@babel/runtime": "^7.20.6",
     "@smui/button": "^6.1.4",
     "@smui/chips": "^6.1.4",
@@ -60,7 +61,7 @@
   },
   "devDependencies": {
     "@meteorjs/eslint-config-meteor": "^1.0.5",
-    "babel-eslint": "^10.1.0",
+    "@babel/eslint-parser": "^7.5.4",
     "eslint": "^8.29.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.5.0",

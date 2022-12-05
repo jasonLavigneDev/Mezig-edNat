@@ -5,14 +5,16 @@ import '../imports/api/users/users';
 import '../imports/api/users/methods';
 import '../imports/api/users/server/publications';
 import '../imports/api/mezigs/server/publications';
-import '../imports/api/mezigs/server/methods';
 import '../imports/api/mezigs/methods';
 import '../imports/api/importFakeData';
 import '../imports/api/appsettings/appsettings';
 import '../imports/api/appsettings/server/publications';
+import '../imports/api/skills/server/publications';
+import '../imports/api/skills/methods';
 
 import { ServiceConfiguration } from 'meteor/service-configuration';
 import SimpleSchema from 'simpl-schema';
+import { updateSkillsCollection } from '../imports/api/utils';
 
 SimpleSchema.defineValidationErrorTransform((error) => {
   const ddpError = new Meteor.Error(error.message);
@@ -76,5 +78,7 @@ Meteor.startup(() => {
       // and keycloak authentication is disabled
       Accounts.config({ forbidClientAccountCreation: false });
     }
+
+    updateSkillsCollection();
   }
 });

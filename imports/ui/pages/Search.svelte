@@ -6,7 +6,7 @@
   import { useTracker } from 'meteor/rdb:svelte-meteor-data';
 
   import SearchResult from '../components/SearchResult.svelte';
-  import Mezigs from '../../api/mezigs/mezigs';
+  import Skills from '../../api/skills/skills';
   import { searchingStore } from '../../stores/stores';
   import PackageJSON from '../../../package.json';
   import TagGroup from '../components/TagGroup.svelte';
@@ -25,65 +25,23 @@
   let totalFoundMezigs = 0;
   let timeout;
   let ulMezigs = {};
+  let allMezigsCount;
 
-  $: allMezigs = useTracker(() => {
-    const sub = Meteor.subscribe('mezigs.table.all');
+  $: Meteor.call('mezigs.publicProfileCount', {}, (err, res) => {
+    if (err) {
+      console.log(err);
+    } else {
+      allMezigsCount = res;
+    }
+  });
+
+  $: skillsTab = useTracker(() => {
+    const sub = Meteor.subscribe('skills.table.all');
     if (sub.ready()) {
-      return Mezigs.findFromPublication('mezigs.table.all', {}).fetch();
+      return Skills.findFromPublication('skills.table.all', {}).fetch();
     }
     return [];
   });
-
-  $: skillsTab = getSkillTab($allMezigs);
-
-  function getSkillTab(mezigs) {
-    let allSkills = {};
-    let skills = [];
-    mezigs.forEach(function (u) {
-      u.skills.forEach(function (s) {
-        if (s in allSkills) {
-          allSkills[s] += 1;
-        } else {
-          allSkills[s] = 1;
-        }
-      });
-    });
-    Object.keys(allSkills).forEach((s) => {
-      skills.push([s, allSkills[s]]);
-    });
-
-    skills.sort(function (a, b) {
-      return b[1] - a[1];
-    });
-    return skills;
-  }
-
-  function getRandomSkills(sTab) {
-    if (sTab) {
-      let i = 0;
-      let min = 10;
-      let max = sTab.length;
-      let temp;
-      let res = [];
-      if (max <= 10) {
-        return res;
-      } else {
-        if (max < 20) {
-          res = sTab.slice(10, max);
-        } else {
-          while (i < 10) {
-            temp = sTab[Math.floor(Math.random() * (max - min) + min)];
-            if (!res.includes(temp)) {
-              res.push(temp);
-              i++;
-            }
-          }
-        }
-        return res;
-      }
-    }
-    return [];
-  }
 
   onMount(async () => {
     searching = previousSearch;
@@ -149,7 +107,7 @@
   <title>Accueil | {$_('ui.appName')} {version}</title>
 </svelte:head>
 
-<h1 class="numberUsers">{$allMezigs.length} {$_('api.users.number')}</h1>
+<h1 class="numberUsers">{allMezigsCount} {$_('api.users.number')}</h1>
 <form on:submit|preventDefault role="search" style={usersScroll.length > 0 ? 'top: 15%;' : ''}>
   <label for="search">{$_('ui.searchLabel')}</label>
   <input

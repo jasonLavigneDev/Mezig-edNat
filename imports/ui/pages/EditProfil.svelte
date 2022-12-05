@@ -4,6 +4,7 @@
   import { link as routerLink, navigate } from 'svelte-routing';
   import { _ } from 'svelte-i18n';
   import Mezigs from '../../api/mezigs/mezigs';
+  import Skills from "../../api/skills/skills"
 
   import Spinner from '../components/Spinner.svelte';
   import EditTableLinks from '../components/EditTableLinks.svelte';
@@ -50,10 +51,12 @@
   let newSkillsTab = [];
   let searchInput;
 
-  $: Meteor.call('mezigs.getAllSkills', (err, res) => {
-    if (!err) {
-      listTag = res;
+  $: allSkillsName = useTracker(() => {
+    const sub = Meteor.subscribe('skills.all');
+    if (sub.ready()) {
+      return Skills.find({}).fetch();
     }
+   return []
   });
 
   const maxSkillsCar = 32;
@@ -106,6 +109,7 @@
       email: email || null,
       profileChecked: true,
     };
+    
     Meteor.call('mezigs.updateMezig', { mezigId: $currentMezig._id, data: userData }, (err) => {
       if (err) {
         error = err.message;
@@ -159,9 +163,9 @@
 
   const makeMatchBold = (str) => {
     // replace part of (country name === inputValue) with strong tags
-    let matched = str.substring(0, newSkill.length);
+    let matched = str.name.substring(0, newSkill.length);
     let makeBold = `<strong>${matched}</strong>`;
-    let boldedMatch = str.replace(matched, makeBold);
+    let boldedMatch = str.name.replace(matched, makeBold);
     return boldedMatch;
   };
 
@@ -200,11 +204,11 @@
   };
 
   // TODO meteor call instead of countries
-  const filterTags = () => {
+  $: filterTags = () => {
     let storageArr = [];
     if (newSkill) {
-      listTag.forEach((tag) => {
-        if (tag.toLowerCase().startsWith(newSkill.toLowerCase())) {
+      $allSkillsName.forEach((tag) => {
+        if (tag.name.toLowerCase().startsWith(newSkill.toLowerCase())) {
           storageArr = [...storageArr, makeMatchBold(tag)];
         }
       });

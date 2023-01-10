@@ -10,6 +10,7 @@ import { Factory } from 'meteor/dburles:factory';
 import Mezigs from '../mezigs';
 import './publications';
 import { createMezig, updateMezig, removeMezig, getMezigs } from '../methods';
+import Skills from '../../skills/skills';
 
 describe('mezig', function () {
   describe('mutators', function () {
@@ -219,6 +220,35 @@ describe('mezig', function () {
           /api.mezigs.methods.removeMezig.notFound/,
         );
       });
+      it('does update skills when remove a mezig', function () {
+        Factory.create('skills', { name: 'tata', count: 3 });
+        Factory.create('skills', { name: 'titi', count: 2 });
+        Factory.create('skills', { name: 'toto', count: 1 });
+        let allSkills = Skills.find().fetch();
+        mezigId = Factory.create('mezigs', { ...mezigData, skills: ['tata', 'titi', 'toto'] })._id;
+        const mez = Mezigs.findOne({ _id: mezigId });
+        assert.isObject(mez);
+        assert.isArray(mez.skills);
+        assert.lengthOf(mez.skills, 3);
+        assert.lengthOf(allSkills, 3);
+        removeMezig._execute({ userId: adminId }, { mezigId });
+        assert.equal(Mezigs.findOne({ _id: mezigId }), undefined);
+        allSkills = Skills.find().fetch();
+        assert.lengthOf(allSkills, 2);
+        assert.equal(Skills.findOne({ name: 'tata' }).count, 2);
+        assert.equal(Skills.findOne({ name: 'titi' }).count, 1);
+        assert.isNotObject(Skills.findOne({ name: 'toto' }));
+      });
+      it('throw error if mezig to remove has unknown skill', function () {
+        assert.throws(
+          () => {
+            mezigId = Factory.create('mezigs', { ...mezigData, skills: ['toto'] })._id;
+            removeMezig._execute({ userId: adminId }, { mezigId });
+          },
+          Meteor.Error,
+          /api.skills.methods.updateSkills/,
+        );
+      });
     });
     describe('mezigs.getMezigs', function () {
       beforeEach(function () {
@@ -269,6 +299,16 @@ describe('mezig', function () {
         const res = getMezigs._execute({}, { page: 1, itemPerPage: 20, search: 'noresults' });
         assert.equal(res.total, 0);
         assert.equal(res.data.length, 0);
+      });
+    });
+    describe('mezigs.publicProfileCount', function () {
+      it('does count not blacklist mezigs', function () {
+        _.times(4, () => {
+          Factory.create('mezigs');
+        });
+        Factory.create('mezigs', { blacklist: true });
+        const nbMezigs = Meteor.call('mezigs.publicProfileCount');
+        assert.equal(nbMezigs, 4);
       });
     });
   });

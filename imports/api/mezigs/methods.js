@@ -97,6 +97,27 @@ export const updateMezig = new ValidatedMethod({
       throw new Meteor.Error('api.mezigs.methods.updateMezig.adminNeeded', i18n.__('api.adminNeeded'));
     }
 
+    // update skills collection
+    const { skills } = data;
+    const mezig = Mezigs.findOne({ _id: mezigId }, { fields: { skills: 1 } });
+    const oldSkills = mezig.skills;
+    const skillsToAdd = [];
+    const skillsToDelete = [];
+
+    skills.forEach((skill) => {
+      if (!oldSkills.includes(skill)) {
+        skillsToAdd.push(skill);
+      }
+    });
+
+    oldSkills.forEach((skill) => {
+      if (!skills.includes(skill)) {
+        skillsToDelete.push(skill);
+      }
+    });
+
+    Meteor.call('skills.updateSkills', { skillsToAdd, skillsToDelete });
+
     // get favicon for links
     // https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
     const links = await Promise.all(
@@ -155,6 +176,7 @@ export const removeMezig = new ValidatedMethod({
     if (myzig === undefined) {
       throw new Meteor.Error('api.mezigs.methods.removeMezig.notFound', i18n.__('api.mezigs.notFound'));
     }
+    Meteor.call('skills.updateSkills', { skillsToDelete: myzig.skills });
     return Mezigs.remove({ _id: mezigId });
   },
 });
@@ -213,6 +235,13 @@ export const getMezigs = new ValidatedMethod({
       sort: { publicName: 1 },
     }).fetch();
     return { total, data };
+  },
+});
+
+Meteor.methods({
+  'mezigs.publicProfileCount': function getAllMezigsCount() {
+    const count = Mezigs.find({ blacklist: false }).count();
+    return count;
   },
 });
 

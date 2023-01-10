@@ -5,23 +5,21 @@
   import Tag from './Tag.svelte';
 
   export let skillsTab;
-  let maxSkill;
 
   let expend = false;
-  let tab = [];
+  let tabSkill;
 
   $: {
     if (expend) {
-      maxSkill = skillsTab.length;
+      tabSkill = $skillsTab;
     } else {
-      maxSkill = 10;
+      tabSkill = $skillsTab.slice(0, 10);
     }
   }
-
   function calcFontSize(skillUseNumber) {
     if (expend) {
-      tab.push(skillUseNumber);
-      let fontSize = (skillUseNumber / Math.max(...tab)) * 3;
+      const max = tabSkill[0].count;
+      let fontSize = (skillUseNumber / max) * 2;
       fontSize = fontSize.toFixed(2);
       if (fontSize <= 1) fontSize = 1;
       return `${fontSize}em`;
@@ -32,12 +30,12 @@
 </script>
 
 <div class="divContainer">
-  {#each skillsTab.slice(0, maxSkill) as skill}
+  {#each tabSkill as skill}
     <Tag
-      skill={`#${skill[0]}`}
+      skill={`#${skill.name}`}
       on:clickSkills
-      textTooltip={`${$_('ui.tags.useNumber')} : ${skill[1]}`}
-      fontSizeProperty={calcFontSize(skill[1])}
+      textTooltip={`${$_('ui.tags.useNumber')} : ${skill.count}`}
+      fontSizeProperty={calcFontSize(skill.count)}
     />
   {/each}
 </div>

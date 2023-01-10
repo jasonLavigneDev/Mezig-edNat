@@ -2,6 +2,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import Mezigs from './mezigs/mezigs';
+import Skills from './skills/skills';
+import { updateSkillsCollection } from './utils';
 
 if (Meteor.settings.private.fillWithFakeData) {
   let nbMezigsAdded = 0;
@@ -15,23 +17,29 @@ if (Meteor.settings.private.fillWithFakeData) {
     }
   };
 
-  const allSkills = [
-    'python',
-    'react',
-    'svelte',
-    'html',
-    'javascript',
-    'css',
-    'java',
-    'C++',
-    'rust',
-    'go',
-    'cobol',
-    'SQL',
-    'docker',
-    'git',
-    'markdown',
-  ];
+  const allSkills = Skills.find({}).fetch();
+  let allSkillsNames = [];
+  if (allSkills.length !== 0) {
+    allSkillsNames = allSkills.map((s) => s.name);
+  } else {
+    allSkillsNames = [
+      'python',
+      'react',
+      'svelte',
+      'html',
+      'javascript',
+      'css',
+      'java',
+      'C++',
+      'rust',
+      'go',
+      'cobol',
+      'SQL',
+      'docker',
+      'git',
+      'markdown',
+    ];
+  }
 
   const allLinks = [
     {
@@ -105,11 +113,16 @@ if (Meteor.settings.private.fillWithFakeData) {
         blacklist: Random.fraction() * 100 >= 90, // génère 10% de blacklist = true
         skills: [
           ...new Set([
-            Random.choice(allSkills),
-            Random.choice(allSkills),
-            Random.choice(allSkills),
-            Random.choice(allSkills),
-            Random.choice(allSkills),
+            Random.choice(allSkillsNames),
+            Random.choice(allSkillsNames),
+            Random.choice(allSkillsNames),
+            Random.choice(allSkillsNames),
+            Random.choice(allSkillsNames),
+            Random.choice(allSkillsNames),
+            Random.choice(allSkillsNames),
+            Random.choice(allSkillsNames),
+            Random.choice(allSkillsNames),
+            Random.choice(allSkillsNames),
           ]),
         ],
         links: [
@@ -121,10 +134,12 @@ if (Meteor.settings.private.fillWithFakeData) {
             Random.choice(allLinks),
           ]),
         ],
-        isActive: Random.choice(Boolean),
+        profileChecked: true,
       };
       createMezig(mez);
     });
     console.log(`${nbMezigsAdded} Mezigs added`);
+    Skills.remove({}); // force un recalcul global des skills
+    updateSkillsCollection();
   }
 }

@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.7.1](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.7.0...release/1.7.1) (2023-01-30)
+
+
+### Performance Improvements
+
+* **skills:** create collection for skills ([6a53fbb](https://gitlab.mim-libre.fr/alphabet/mezig/commit/6a53fbbe07398760723a53b2eefa46ad07e6c2be))
+
 ## [1.7.0](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.6.1...release/1.7.0) (2022-09-19)
 
 

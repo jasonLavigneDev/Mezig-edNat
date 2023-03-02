@@ -39,6 +39,7 @@
     "jquery": "^3.6.3",
     "meteor-node-stubs": "^1.2.5",
     "moment": "^2.29.4",
+    "sanitize-html": "^2.10.0",
     "simpl-schema": "^1.13.1",
     "sortablejs": "^1.15.0",
     "svelte": "^3.55.0",

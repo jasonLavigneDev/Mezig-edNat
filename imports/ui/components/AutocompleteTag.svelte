@@ -1,9 +1,11 @@
 <script>
+  import sanitizeHtml from 'sanitize-html';
+
   export let itemLabel;
   export let highlighted;
 </script>
 
-<li class="autocomplete-items" class:autocomplete-active={highlighted} on:click>{@html itemLabel}</li>
+<li class="autocomplete-items" class:autocomplete-active={highlighted} on:click>{@html sanitizeHtml(itemLabel)}</li>
 
 <style>
   li.autocomplete-items {

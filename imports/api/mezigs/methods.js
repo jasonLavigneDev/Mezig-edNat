@@ -5,6 +5,7 @@ import { Roles } from 'meteor/alanning:roles';
 import i18n from 'meteor/universe:i18n';
 import Mezigs from './mezigs';
 import getFavicon from '../getFavicon';
+import updateSkills from '../skills/server/methods';
 
 Meteor.methods({
   'mezigs.checkProfile': function checkProfile() {
@@ -116,7 +117,7 @@ export const updateMezig = new ValidatedMethod({
       }
     });
 
-    Meteor.call('skills.updateSkills', { skillsToAdd, skillsToDelete });
+    updateSkills({ skillsToAdd, skillsToDelete });
 
     // get favicon for links
     // https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
@@ -176,7 +177,7 @@ export const removeMezig = new ValidatedMethod({
     if (myzig === undefined) {
       throw new Meteor.Error('api.mezigs.methods.removeMezig.notFound', i18n.__('api.mezigs.notFound'));
     }
-    Meteor.call('skills.updateSkills', { skillsToDelete: myzig.skills });
+    updateSkills({ skillsToDelete: myzig.skills });
     return Mezigs.remove({ _id: mezigId });
   },
 });

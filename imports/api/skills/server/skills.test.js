@@ -5,7 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import { Factory } from 'meteor/dburles:factory';
 import Skills from '../skills';
 import './publications';
-import '../methods';
+import updateSkills from './methods';
 
 describe('skills', function () {
   describe('mutators', function () {
@@ -26,7 +26,7 @@ describe('skills', function () {
       const skillsToAdd = ['test1', 'test4'];
       const skillsToDelete = ['test2', 'test3'];
 
-      Meteor.call('skills.updateSkills', { skillsToAdd, skillsToDelete });
+      updateSkills({ skillsToAdd, skillsToDelete });
       const skill1Find = Skills.findOne({ name: 'test1' });
       const skill2Find = Skills.findOne({ name: 'test2' });
       const skill3Find = Skills.findOne({ name: 'test3' });
@@ -51,7 +51,7 @@ describe('skills', function () {
         () => {
           const skillsToAdd = [];
           const skillsToDelete = ['test1'];
-          Meteor.call('skills.updateSkills', { skillsToAdd, skillsToDelete });
+          updateSkills({ skillsToAdd, skillsToDelete });
         },
         Meteor.Error,
         'api.skills.methods.updateSkills',

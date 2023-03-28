@@ -10,7 +10,6 @@ import '../imports/api/importFakeData';
 import '../imports/api/appsettings/appsettings';
 import '../imports/api/appsettings/server/publications';
 import '../imports/api/skills/server/publications';
-import '../imports/api/skills/methods';
 
 import { ServiceConfiguration } from 'meteor/service-configuration';
 import SimpleSchema from 'simpl-schema';

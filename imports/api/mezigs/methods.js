@@ -5,6 +5,8 @@ import { Roles } from 'meteor/alanning:roles';
 import i18n from 'meteor/universe:i18n';
 import Mezigs from './mezigs';
 import getFavicon from '../getFavicon';
+import updateSkills from '../skills/server/methods';
+import { validateString } from '../utils';
 
 Meteor.methods({
   'mezigs.checkProfile': function checkProfile() {
@@ -35,6 +37,26 @@ export const getFedId = new ValidatedMethod({
   },
 });
 
+const validateMezig = (data) => {
+  validateString(data.publicName);
+  if (data.firstName) validateString(data.firstName);
+  if (data.lastName) validateString(data.lastName);
+  if (data.email) validateString(data.email);
+  if (data.username) validateString(data.username);
+  if (data.profilPic) validateString(data.profilPic);
+  if (data.biography) validateString(data.biography);
+  if (data.skills) {
+    data.skills.forEach((skill) => validateString(skill));
+  }
+  if (data.links) {
+    data.links.forEach((link) => {
+      validateString(link.label);
+      validateString(link.URL);
+      if (link.favicon) validateString(link.favicon);
+    });
+  }
+};
+
 export const createMezig = new ValidatedMethod({
   name: 'mezigs.createMezig',
   validate: new SimpleSchema({
@@ -46,6 +68,7 @@ export const createMezig = new ValidatedMethod({
       throw new Meteor.Error('api.mezigs.methods.createMezig.notLoggedIn', i18n.__('api.notLoggedIn'));
     }
     try {
+      validateMezig(data);
       Mezigs.insert(data);
     } catch (error) {
       if (error.code === 11000) {
@@ -116,8 +139,6 @@ export const updateMezig = new ValidatedMethod({
       }
     });
 
-    Meteor.call('skills.updateSkills', { skillsToAdd, skillsToDelete });
-
     // get favicon for links
     // https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
     const links = await Promise.all(
@@ -132,6 +153,9 @@ export const updateMezig = new ValidatedMethod({
       }),
     );
     const finalData = { ...data, links };
+
+    validateMezig(finalData);
+    updateSkills({ skillsToAdd, skillsToDelete });
 
     let mezigData = null;
     try {
@@ -176,7 +200,7 @@ export const removeMezig = new ValidatedMethod({
     if (myzig === undefined) {
       throw new Meteor.Error('api.mezigs.methods.removeMezig.notFound', i18n.__('api.mezigs.notFound'));
     }
-    Meteor.call('skills.updateSkills', { skillsToDelete: myzig.skills });
+    updateSkills({ skillsToDelete: myzig.skills });
     return Mezigs.remove({ _id: mezigId });
   },
 });

@@ -77,7 +77,7 @@ Meteor.startup(() => {
       // and keycloak authentication is disabled
       Accounts.config({ forbidClientAccountCreation: false });
     }
-
-    updateSkillsCollection();
+    console.log('yooo update skills');
+    updateSkillsCollection(true);
   }
 });

@@ -93,9 +93,9 @@ export function genRandomPassword(pwdlen = 16) {
   return password;
 }
 
-export function updateSkillsCollection() {
+export function updateSkillsCollection(force = false) {
   const skills = Skills.find({}).fetch();
-  if (skills.length === 0) {
+  if (skills.length === 0 || force) {
     console.log('updating skills...');
     const mezigs = Mezigs.find({}).fetch();
     mezigs.forEach((u) => {

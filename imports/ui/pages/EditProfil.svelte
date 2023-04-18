@@ -4,7 +4,7 @@
   import { link as routerLink, navigate } from 'svelte-routing';
   import { _ } from 'svelte-i18n';
   import Mezigs from '../../api/mezigs/mezigs';
-  import Skills from "../../api/skills/skills"
+  import Skills from '../../api/skills/skills';
 
   import Spinner from '../components/Spinner.svelte';
   import EditTableLinks from '../components/EditTableLinks.svelte';
@@ -56,7 +56,7 @@
     if (sub.ready()) {
       return Skills.find({}).fetch();
     }
-   return []
+    return [];
   });
 
   const maxSkillsCar = 32;
@@ -109,10 +109,10 @@
       email: email || null,
       profileChecked: true,
     };
-    
+
     Meteor.call('mezigs.updateMezig', { mezigId: $currentMezig._id, data: userData }, (err) => {
       if (err) {
-        error = err.message;
+        error = err.reason ? $_(err.reason) : err.message;
         errorDialog.setOpen(true);
       } else {
         // set loading to true to permit reload from api

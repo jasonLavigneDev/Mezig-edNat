@@ -40,6 +40,11 @@
         "ncloud": "Nextcloud URL",
         "advancedPersonalPage": "Advanced personal page"
       }
+    },
+    "utils": {
+      "scriptDetected": "Forbidden content has been detected",
+      "badCharsDetected": "Following characters are Forbidden: < > & ' \"",
+      "stringTooLong": "String is too long (max 50k)"
     }
   },
   "ui": {

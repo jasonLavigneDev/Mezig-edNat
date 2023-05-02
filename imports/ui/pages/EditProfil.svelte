@@ -149,8 +149,12 @@
     links = links;
   };
 
+  const normalizeSkill = (skill) => {
+    return skill.startsWith('#') ? skill.slice(1) : skill;
+  };
+
   const addSkill = () => {
-    newSkillReplaced = newSkill.replaceAll(' ', '_').replaceAll('#', '');
+    newSkillReplaced = normalizeSkill(newSkill.replaceAll(' ', '_'));
     if (newSkillReplaced.length !== 0) {
       skills.push(newSkillReplaced);
       newSkillsTab.push(newSkillReplaced);
@@ -182,7 +186,7 @@
         if (hiLitedTags !== undefined) {
           setInputVal(filteredTags[hiLiteIndex]);
         } else {
-          if (skills.indexOf(newSkill) === -1) {
+          if (skills.indexOf(normalizeSkill(newSkill)) === -1) {
             addSkill();
           }
         }
@@ -208,7 +212,7 @@
     let storageArr = [];
     if (newSkill) {
       $allSkillsName.forEach((tag) => {
-        if (tag.name.toLowerCase().startsWith(newSkill.toLowerCase())) {
+        if (tag.name.toLowerCase().startsWith(normalizeSkill(newSkill).toLowerCase())) {
           storageArr = [...storageArr, makeMatchBold(tag)];
         }
       });
@@ -304,7 +308,7 @@
                   class="spaceAround"
                   variant="raised"
                   on:click={addSkill}
-                  disabled={newSkill === '' || skills.indexOf(newSkill) !== -1}
+                  disabled={newSkill === '' || skills.indexOf(normalizeSkill(newSkill)) !== -1}
                 >
                   <Label>{$_('ui.editProfil.addSkills')}</Label>
                 </Button>

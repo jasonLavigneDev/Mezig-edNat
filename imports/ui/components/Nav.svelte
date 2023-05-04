@@ -24,7 +24,7 @@
   let menu;
   let anchor;
   let isAdmin = false;
-  const { enableKeycloak, laboiteUrl } = Meteor.settings.public;
+  const { enableKeycloak = true, laboiteUrl } = Meteor.settings.public;
 
   export let userRedirect = false;
   export let profileOk = true;

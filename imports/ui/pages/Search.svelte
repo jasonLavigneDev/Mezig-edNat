@@ -10,6 +10,8 @@
   import { searchingStore } from '../../stores/stores';
   import PackageJSON from '../../../package.json';
   import TagGroup from '../components/TagGroup.svelte';
+  import Structures from '../../api/structures/structures';
+  import Mezigs from '../../api/mezigs/mezigs';
 
   let version = PackageJSON.version;
 
@@ -41,6 +43,20 @@
       return Skills.findFromPublication('skills.table.all', {}).fetch();
     }
     return [];
+  });
+
+  $: structures = useTracker(() => {
+    const sub = Meteor.subscribe('structures.all');
+    const mezig = Meteor.subscribe('mezigs.allPublish');
+    if(sub.ready() && mezig.ready()){
+      const allStructures = Mezigs.find(
+        { $and: [{ structure: { $ne: '' } }, { structure: { $ne: undefined } }] },
+        { fields: { structure: 1 } },
+      ).fetch().map((struc) => struc.structure);
+
+      const uniqueStructures = allStructures.filter((struc, i) => allStructures.indexOf(struc) === i);
+      return Structures.find({ _id: { $in: uniqueStructures } }).fetch();
+    }
   });
 
   onMount(async () => {
@@ -120,6 +136,13 @@
     on:input={debounceFunc(ActuSearch, 400)}
     required
   />
+  <select>
+    {#if $structures}
+      {#each $structures as struc}
+        <option>{struc.name}</option>
+      {/each}
+    {/if}
+  </select>
   {#if totalFoundMezigs !== 0}
     <p id="infos" class:end={usersScroll.length === totalFoundMezigs}>
       {usersScroll.length}

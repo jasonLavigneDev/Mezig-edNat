@@ -96,7 +96,7 @@ export const updateMezig = new ValidatedMethod({
   name: 'mezigs.updateMezig',
   validate: new SimpleSchema({
     mezigId: { type: String, regEx: SimpleSchema.RegEx.Id },
-    data: Mezigs.schema.omit('username', 'firstName', 'lastName'),
+    data: Mezigs.schema.omit('username', 'firstName', 'lastName', 'structure'),
   }).validator({ clean: true }),
   async run({ mezigId, data }) {
     // check if logged in

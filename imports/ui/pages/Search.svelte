@@ -21,6 +21,7 @@
   let previousSearch = '';
   let noResult = '';
   let page = 1;
+  let selectStructure = undefined;
   let itemPerPage = 20;
   let usersScroll = [];
   let newLoadedMezigs = [];
@@ -72,6 +73,12 @@
     ActuSearch();
   }
 
+  function handleStructureChange(event) {
+    console.log(event.target.value);
+    selectStructure = event.target.value;
+    ActuSearch();
+  }
+
   const debounceFunc = (func, wait) => {
     return (...args) => {
       const later = () => {
@@ -92,7 +99,7 @@
     page = 1;
     ulMezigs.scrollTop = 0;
     if (searching.length >= 3) {
-      res = Meteor.call('mezigs.getMezigs', { search: searching, itemPerPage }, (err, res) => {
+      res = Meteor.call('mezigs.getMezigs', { selectStructure, search: searching, itemPerPage }, (err, res) => {
         if (!err) {
           newLoadedMezigs = res.data;
           totalFoundMezigs = res.total;
@@ -136,10 +143,11 @@
     on:input={debounceFunc(ActuSearch, 400)}
     required
   />
-  <select>
+  <select on:change={(e) => handleStructureChange(e)}>
+    <option value={undefined}> </option>
     {#if $structures}
       {#each $structures as struc}
-        <option>{struc.name}</option>
+        <option value={struc._id}>{struc.name}</option>
       {/each}
     {/if}
   </select>

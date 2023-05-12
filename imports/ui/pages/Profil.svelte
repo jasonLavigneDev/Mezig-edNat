@@ -2,7 +2,9 @@
   import { Meteor } from 'meteor/meteor';
   import { useTracker } from 'meteor/rdb:svelte-meteor-data';
   import { _ } from 'svelte-i18n';
+  import Chip, { Set, TrailingAction, Text } from '@smui/chips';
   import Mezigs from '../../api/mezigs/mezigs';
+  import Structures from '../../api/structures/structures';
   import Links from '../components/Links.svelte';
   import Spinner from '../components/Spinner.svelte';
   import Share from '../components/Share.svelte';
@@ -22,6 +24,7 @@
 
   $: currentUser = useTracker(() => Meteor.user());
   $: currentMezig = useTracker(() => Mezigs.findOne({ publicName }));
+  $: currentStructure = useTracker(() => Structures.findOne({_id: Meteor.user().structure}));
   
   // Create and copy the ferederation ID for Nextcloud
   const handleCopy = () => {
@@ -33,6 +36,7 @@
       } 
     });
   }
+
 </script>
 
 <svelte:head>
@@ -40,6 +44,9 @@
 </svelte:head>
 
 {#await Meteor.subscribe('mezigs.profile', { publicName })}
+  <Spinner />
+{/await}
+{#await Meteor.subscribe('structures.one', { _id: $currentUser.structure })}
   <Spinner />
 {:then}
   {#if $currentMezig}
@@ -66,6 +73,11 @@
       <h1>{publicName}</h1>
       {#if $currentMezig.email}
         <h2><a href={`mailto:${$currentMezig.email}`}>{$currentMezig.email}</a></h2>
+      {/if}
+      {#if $currentStructure}
+        <Chip chip={$currentStructure.name} style={'background-color: #6200ee; color: white; display:flex; justify-content:center;'}>
+          <Text>{$currentStructure.name}</Text>
+        </Chip>
       {/if}
       <p class="Biography">{$currentMezig.biography || ''}</p>
       <div class="Skills">

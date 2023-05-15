@@ -209,10 +209,13 @@ const specials = ['-', '/', '*', '+', '?', '.', '\\', '^', '$', '|', '(', ')'];
 const regex = RegExp(`[${specials.join('\\')}]`, 'g');
 
 // build query for all searched mezigs
-const queryAllMezigs = ({ search, selectStructure = undefined }) => {
-  const query = selectStructure
-    ? { $and: [{ blacklist: false }, { structure: selectStructure }] }
-    : { $and: [{ blacklist: false }] };
+const queryAllMezigs = ({ search, selectStructure }) => {
+  let query;
+  if (selectStructure === 'undefined') {
+    query = { $and: [{ blacklist: false }] };
+  } else {
+    query = { $and: [{ blacklist: false }, { structure: selectStructure }] };
+  }
 
   const searchTab = search.split(' ');
   searchTab.forEach((searchWord) => {
@@ -248,10 +251,9 @@ export const getMezigs = new ValidatedMethod({
     page: { type: SimpleSchema.Integer, defaultValue: 1 },
     itemPerPage: { type: SimpleSchema.Integer, defaultValue: 10 },
     search: { type: String, defaultValue: '' },
-    selectStructure: { type: String, defaultValue: undefined },
+    selectStructure: { type: String, defaultValue: 'undefined' },
   }).validator({ clean: true }),
   run({ page, itemPerPage, search, selectStructure }) {
-    console.log(selectStructure);
     const query = queryAllMezigs({ search, selectStructure });
     const total = Mezigs.find(query).count();
     const data = Mezigs.find(query, {

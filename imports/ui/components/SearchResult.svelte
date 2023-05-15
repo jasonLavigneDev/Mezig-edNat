@@ -10,7 +10,6 @@
 
   const blankUser = '/blank_user.svg';
   export let user;
-  console.log(user);
 
   $: currentStructure = useTracker(() => Structures.findOne({_id: user.structure}));
 

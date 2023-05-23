@@ -80,6 +80,7 @@
     "profileSkillsNone": "Compétences non renseignées",
     "activationNeeded": "Votre compte est en attente de validation",
     "privateLink": "Lien privé",
+    "searchFilter": "Filtrer par structure",
     "editProfil": {
       "title": "Mon profil",
       "showProfile": "Publier mon profil",

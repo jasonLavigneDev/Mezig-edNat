@@ -118,7 +118,7 @@
 
   function loadmore() {
     page++;
-    res = Meteor.call('mezigs.getMezigs', { search: searching, page, itemPerPage }, (err, res) => {
+    res = Meteor.call('mezigs.getMezigs', { selectStructure, search: searching, page, itemPerPage }, (err, res) => {
       newLoadedMezigs = res.data;
       totalFoundMezigs = res.total;
     });

@@ -2,7 +2,7 @@
   import { Meteor } from 'meteor/meteor';
   import { useTracker } from 'meteor/rdb:svelte-meteor-data';
   import { _ } from 'svelte-i18n';
-  import Chip, { Set, TrailingAction, Text } from '@smui/chips';
+  import Chip, { Text } from '@smui/chips';
   import Mezigs from '../../api/mezigs/mezigs';
   import Structures from '../../api/structures/structures';
   import Links from '../components/Links.svelte';
@@ -24,7 +24,7 @@
 
   $: currentUser = useTracker(() => Meteor.user());
   $: currentMezig = useTracker(() => Mezigs.findOne({ publicName }));
-  $: currentStructure = useTracker(() => Structures.findOne({_id: Meteor.user().structure}));
+  $: currentStructure = useTracker(() => $currentMezig ? Structures.findOne({_id: $currentMezig.structure}) : undefined);
   
   // Create and copy the ferederation ID for Nextcloud
   const handleCopy = () => {
@@ -45,11 +45,12 @@
 
 {#await Meteor.subscribe('mezigs.profile', { publicName })}
   <Spinner />
-{/await}
-{#await Meteor.subscribe('structures.one', { _id: $currentUser.structure })}
-  <Spinner />
 {:then}
   {#if $currentMezig}
+    {console.log($currentMezig)}
+    {#await Meteor.subscribe('structures.one', { _id: $currentMezig.structure })}
+      <Spinner />
+    {:then}
     <div class="Profil">
       {#if $currentUser && $currentUser.isActive === false}
         <h3 class="BlacklistInfo">{$_('ui.activationNeeded')}</h3>
@@ -96,6 +97,7 @@
         <Links {currentMezig} />
       {/if}
     </div>
+    {/await}
   {:else}
     <div class="EmptyMsg">{$_('ui.unknownUser')}</div>
   {/if}

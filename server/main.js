@@ -16,7 +16,7 @@ import '../imports/api/structures/server/publications';
 
 import { ServiceConfiguration } from 'meteor/service-configuration';
 import SimpleSchema from 'simpl-schema';
-import { updateSkillsCollection } from '../imports/api/utils';
+import { updateSkillsCollection, updateAllStructures } from '../imports/api/utils';
 
 SimpleSchema.defineValidationErrorTransform((error) => {
   const ddpError = new Meteor.Error(error.message);
@@ -82,5 +82,6 @@ Meteor.startup(() => {
     }
 
     updateSkillsCollection();
+    updateAllStructures();
   }
 });

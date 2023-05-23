@@ -4,12 +4,15 @@
   import { _ } from 'svelte-i18n';
   import SvelteInfiniteScroll from 'svelte-infinite-scroll';
   import { useTracker } from 'meteor/rdb:svelte-meteor-data';
+  import Select, { Option } from '@smui/select';
 
   import SearchResult from '../components/SearchResult.svelte';
   import Skills from '../../api/skills/skills';
   import { searchingStore } from '../../stores/stores';
   import PackageJSON from '../../../package.json';
   import TagGroup from '../components/TagGroup.svelte';
+  import Structures from '../../api/structures/structures';
+  import Mezigs from '../../api/mezigs/mezigs';
 
   let version = PackageJSON.version;
 
@@ -19,6 +22,7 @@
   let previousSearch = '';
   let noResult = '';
   let page = 1;
+  let selectStructure = undefined;
   let itemPerPage = 20;
   let usersScroll = [];
   let newLoadedMezigs = [];
@@ -26,6 +30,8 @@
   let timeout;
   let ulMezigs = {};
   let allMezigsCount;
+
+  $: selectStructure && ActuSearch();
 
   $: Meteor.call('mezigs.publicProfileCount', {}, (err, res) => {
     if (err) {
@@ -41,6 +47,22 @@
       return Skills.findFromPublication('skills.table.all', {}).fetch();
     }
     return [];
+  });
+
+  $: structures = useTracker(() => {
+    const sub = Meteor.subscribe('structures.all');
+    const mezig = Meteor.subscribe('mezigs.allPublish');
+    if (sub.ready() && mezig.ready()) {
+      const allStructures = Mezigs.find(
+        { $and: [{ structure: { $ne: '' } }, { structure: { $ne: undefined } }] },
+        { fields: { structure: 1 } },
+      )
+        .fetch()
+        .map((struc) => struc.structure);
+
+      const uniqueStructures = allStructures.filter((struc, i) => allStructures.indexOf(struc) === i);
+      return Structures.find({ _id: { $in: uniqueStructures } }).fetch();
+    }
   });
 
   onMount(async () => {
@@ -76,7 +98,7 @@
     page = 1;
     ulMezigs.scrollTop = 0;
     if (searching.length >= 3) {
-      res = Meteor.call('mezigs.getMezigs', { search: searching, itemPerPage }, (err, res) => {
+      res = Meteor.call('mezigs.getMezigs', { selectStructure, search: searching, itemPerPage }, (err, res) => {
         if (!err) {
           newLoadedMezigs = res.data;
           totalFoundMezigs = res.total;
@@ -96,7 +118,7 @@
 
   function loadmore() {
     page++;
-    res = Meteor.call('mezigs.getMezigs', { search: searching, page, itemPerPage }, (err, res) => {
+    res = Meteor.call('mezigs.getMezigs', { selectStructure, search: searching, page, itemPerPage }, (err, res) => {
       newLoadedMezigs = res.data;
       totalFoundMezigs = res.total;
     });
@@ -110,24 +132,34 @@
 <h1 class="numberUsers">{allMezigsCount} {$_('api.users.number')}</h1>
 <form on:submit|preventDefault role="search" style={usersScroll.length > 0 ? 'top: 15%;' : ''}>
   <label for="search">{$_('ui.searchLabel')}</label>
-  <input
-    id="search"
-    autocomplete="off"
-    autofocus
-    type="search"
-    placeholder={$_('ui.searchTooltip')}
-    bind:value={searching}
-    on:input={debounceFunc(ActuSearch, 400)}
-    required
-  />
-  {#if totalFoundMezigs !== 0}
-    <p id="infos" class:end={usersScroll.length === totalFoundMezigs}>
-      {usersScroll.length}
-      {$_('ui.searchResult.displayed')}
-      {totalFoundMezigs}
-      {$_('ui.searchResult.total')}
-    </p>
-  {/if}
+  <div style="display: flex; flex-direction: column; width: 100%">
+    <input
+      id="search"
+      autocomplete="off"
+      autofocus
+      type="search"
+      placeholder={$_('ui.searchTooltip')}
+      bind:value={searching}
+      on:input={debounceFunc(ActuSearch, 400)}
+      required
+    />
+    {#if totalFoundMezigs !== 0}
+      <p id="infos" class:end={usersScroll.length === totalFoundMezigs}>
+        {usersScroll.length}
+        {$_('ui.searchResult.displayed')}
+        {totalFoundMezigs}
+        {$_('ui.searchResult.total')}
+      </p>
+    {/if}
+  </div>
+  <Select bind:value={selectStructure} label={$_('ui.searchFilter')} style="width:20%">
+    <Option value={undefined} />
+    {#if $structures}
+      {#each $structures as struc}
+        <Option value={struc._id}>{struc.name}</Option>
+      {/each}
+    {/if}
+  </Select>
 </form>
 <ul id="results" class="SearchResultDiv" role="tablist" bind:this={ulMezigs}>
   {#each usersScroll as user}
@@ -147,13 +179,14 @@
 
 <style>
   form {
+    display: flex;
     transition-duration: 0.7s;
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 40%;
+    left: 55%;
     right: 0;
     transform: translate(-50%, -50%);
-    max-width: 90vw;
+    width: 75vw;
     background: var(--color-blue);
     border-radius: var(--rad);
   }
@@ -165,7 +198,7 @@
   }
   input[type='search'] {
     outline: 0;
-    width: 100%;
+    width: 98%;
     background: #fff;
     padding: 0 1.6rem;
     border-radius: var(--rad);

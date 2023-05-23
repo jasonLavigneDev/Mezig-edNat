@@ -80,6 +80,7 @@
     "profileSkillsNone": "No skills provided",
     "activationNeeded": "Your account is awaiting validation",
     "privateLink": "Private link",
+    "searchFilter": "Filter by structure",
     "editProfil": {
       "title": "My profile",
       "showProfile": "Show my profile",

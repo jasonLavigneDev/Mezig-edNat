@@ -113,10 +113,10 @@ export function updateSkillsCollection() {
 }
 
 export function updateAllStructures() {
-  const allMezigs = Mezigs.find({ $or: [{ structure: { $exists: false } }, { structure: '' }] }).fetch();
-  if (allMezigs && allMezigs.length > 0) {
-    console.log(`updating structure of ${allMezigs.length} mezigs...`);
-    allMezigs.forEach((mez) => {
+  const mezigsWithoutStructures = Mezigs.find({ $or: [{ structure: { $exists: false } }, { structure: '' }] }).fetch();
+  if (mezigsWithoutStructures && mezigsWithoutStructures.length > 0) {
+    console.log(`updating structure of ${mezigsWithoutStructures.length} mezigs...`);
+    mezigsWithoutStructures.forEach((mez) => {
       const user = Meteor.users.findOne({ username: mez.username });
       if (user.structure) {
         Mezigs.update({ _id: mez._id }, { $set: { ...mez, structure: user.structure } });

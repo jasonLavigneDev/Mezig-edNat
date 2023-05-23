@@ -112,6 +112,20 @@ export function updateSkillsCollection() {
   }
 }
 
+export function updateAllStructures() {
+  const allMezigs = Mezigs.find({ $or: [{ structure: { $exists: false } }, { structure: '' }] }).fetch();
+  if (allMezigs && allMezigs.length > 0) {
+    console.log(`updating structure of ${allMezigs.length} mezigs...`);
+    allMezigs.forEach((mez) => {
+      const user = Meteor.users.findOne({ username: mez.username });
+      if (user.structure) {
+        Mezigs.update({ _id: mez._id }, { $set: { ...mez, structure: user.structure } });
+      }
+    });
+    console.log(`...end updating structures.`);
+  }
+}
+
 const regValidateStrict = /[<>"'&]/g;
 const regValidate = /((<|%3C|&lt;)script)|(('|"|%22|%27) *on[a-z_]+ *(=|%3D))/gi;
 

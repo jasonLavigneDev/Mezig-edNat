@@ -31,7 +31,7 @@
   let ulMezigs = {};
   let allMezigsCount;
 
-  $: selectStructure && ActuSearch();
+  $: selectStructure !== undefined && ActuSearch();
 
   $: Meteor.call('mezigs.publicProfileCount', {}, (err, res) => {
     if (err) {

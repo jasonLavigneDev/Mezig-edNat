@@ -200,7 +200,6 @@ if (Meteor.isServer) {
         skills: [],
         links: [],
         profileChecked: false,
-        structure: '',
       };
       Mezigs.insert(mez);
     }

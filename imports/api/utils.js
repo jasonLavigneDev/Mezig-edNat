@@ -118,7 +118,7 @@ export function updateAllStructures() {
     console.log(`updating structure of ${mezigsWithoutStructures.length} mezigs...`);
     mezigsWithoutStructures.forEach((mez) => {
       const user = Meteor.users.findOne({ username: mez.username });
-      if (user.structure) {
+      if (user?.structure) {
         Mezigs.update({ _id: mez._id }, { $set: { ...mez, structure: user.structure } });
       }
     });

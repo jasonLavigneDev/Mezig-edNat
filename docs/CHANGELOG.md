@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.8.0](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.7.1...release/1.8.0) (2023-04-18)
+
+
+### Features
+
+* **input validation:** check content of string inputs ([90b6c45](https://gitlab.mim-libre.fr/alphabet/mezig/commit/90b6c45c48fbb418c63ce3de566d7dfe7868e538))
+
+
+### Bug Fixes
+
+* **audit:** sanitize html content before display ([ff22521](https://gitlab.mim-libre.fr/alphabet/mezig/commit/ff22521245eca45298133ff2496f77be1a7ed40e))
+* **skills:** refactor updateSkills method into an internal function ([ca35a26](https://gitlab.mim-libre.fr/alphabet/mezig/commit/ca35a26d9ad4549b2fa3f676d04868cfcb4d0779))
+
+
+### Continuous Integration
+
+* **eslint:** rename import for prettier lib ([173801c](https://gitlab.mim-libre.fr/alphabet/mezig/commit/173801c02b3380857ed92b90ee9fd219ccf70b88))
+
 ### [1.7.1](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.7.0...release/1.7.1) (2023-01-30)
 
 

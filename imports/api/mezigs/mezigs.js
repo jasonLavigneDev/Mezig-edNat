@@ -95,6 +95,10 @@ Mezigs.schema = new SimpleSchema(
       type: Boolean,
       defaultValue: false,
     },
+    structure: {
+      type: String,
+      defaultValue: '',
+    },
   },
   { tracker: Tracker },
 );
@@ -107,6 +111,7 @@ Mezigs.searchFields = {
   publicName: 1,
   profilPic: 1,
   skills: 1,
+  structure: 1,
 };
 
 Mezigs.publicFields = {
@@ -147,6 +152,9 @@ if (Meteor.isServer) {
       if (details.user.emails && details.user.emails.length > 0) {
         mez.email = details.user.emails[0].address;
       }
+      if (details.user.structure && details.user.structure.length > 0) {
+        mez.structure = details.user.structure;
+      }
     } else {
       // local accounts
       if (details.user.firstName) {
@@ -161,6 +169,9 @@ if (Meteor.isServer) {
       if (details.user.emails && details.user.emails.length > 0) {
         mez.email = details.user.emails[0].address;
       }
+      if (details.user.structure && details.user.structure.length > 0) {
+        mez.structure = details.user.structure;
+      }
     }
     // always update profilPic to laboite avatar
     mez.profilPic = details.user.avatar || '';
@@ -172,7 +183,8 @@ if (Meteor.isServer) {
         currentMezig.username !== mez.username ||
         currentMezig.firstName !== mez.firstName ||
         currentMezig.lastName !== mez.lastName ||
-        currentMezig.profilPic !== mez.profilPic
+        currentMezig.profilPic !== mez.profilPic ||
+        currentMezig.structure !== mez.structure
       ) {
         Mezigs.update({ _id: currentMezig._id }, { $set: mez });
       }

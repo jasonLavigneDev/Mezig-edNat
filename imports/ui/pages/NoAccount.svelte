@@ -1,7 +1,7 @@
 <script>
   import { _ } from 'svelte-i18n';
 
-  const { enableKeycloak, laboiteUrl } = Meteor.settings.public;
+  const { enableKeycloak = true, laboiteUrl } = Meteor.settings.public;
 
   const doLogin = () => {
     if (enableKeycloak === true) {

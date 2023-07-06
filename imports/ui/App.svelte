@@ -20,7 +20,7 @@
   let userRedirect = false;
   let profileOk = true;
   let userActive = false;
-  const { laboiteUrl, enableKeycloak } = Meteor.settings.public;
+  const { laboiteUrl, enableKeycloak = true } = Meteor.settings.public;
   $: settings = useTracker(() => {
     const sub = Meteor.subscribe('appsettings.all');
     if (sub.ready()) {
@@ -35,12 +35,12 @@
 {:else if userRedirect === false}
   <Nav bind:userRedirect bind:profileOk bind:userActive />
   <Router {url}>
-  <div class="container">
-    {#if $settings.maintenance}
-    <Maintenance />
-    {:else if profileOk === false && userActive === true}
-    <div>
-      <Route>
+    <div class="container">
+      {#if $settings.maintenance}
+        <Maintenance />
+      {:else if profileOk === false && userActive === true}
+        <div>
+          <Route>
             <EditProfil bind:profileOk />
           </Route>
         </div>
@@ -64,7 +64,7 @@
       {/if}
     </div>
   </Router>
-  {:else}
+{:else}
   <!-- Occurs when the connected user hasn't an existing laboite account -->
   <NoAccount />
 {/if}

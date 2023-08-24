@@ -96,7 +96,7 @@ export const updateMezig = new ValidatedMethod({
   name: 'mezigs.updateMezig',
   validate: new SimpleSchema({
     mezigId: { type: String, regEx: SimpleSchema.RegEx.Id },
-    data: Mezigs.schema.omit('username', 'firstName', 'lastName'),
+    data: Mezigs.schema.omit('username', 'firstName', 'lastName', 'structure'),
   }).validator({ clean: true }),
   async run({ mezigId, data }) {
     // check if logged in
@@ -209,16 +209,19 @@ const specials = ['-', '/', '*', '+', '?', '.', '\\', '^', '$', '|', '(', ')'];
 const regex = RegExp(`[${specials.join('\\')}]`, 'g');
 
 // build query for all searched mezigs
-const queryAllMezigs = ({ search }) => {
-  const query = { $and: [{ blacklist: false }] };
+const queryAllMezigs = ({ search, selectStructure }) => {
+  let query;
+  if (selectStructure === 'undefined') {
+    query = { $and: [{ blacklist: false }] };
+  } else {
+    query = { $and: [{ blacklist: false }, { structure: selectStructure }] };
+  }
+
   const searchTab = search.split(' ');
   searchTab.forEach((searchWord) => {
     if (searchWord.startsWith('#')) {
       try {
-        const skill = new RegExp(
-          searchWord.split('#')[1].replace(regex, '\\$&').replace(/^/, '^').replace(/$/, '$'),
-          'i',
-        );
+        const skill = new RegExp(searchWord.slice(1).replace(regex, '\\$&').replace(/^/, '^').replace(/$/, '$'), 'i');
         query.$and.push({ skills: skill });
       } catch (error) {
         throw new Meteor.Error('api.mezigs.methods.getMezigs.NotRegExp', 'api.mezigs.invalidSearch');
@@ -248,9 +251,10 @@ export const getMezigs = new ValidatedMethod({
     page: { type: SimpleSchema.Integer, defaultValue: 1 },
     itemPerPage: { type: SimpleSchema.Integer, defaultValue: 10 },
     search: { type: String, defaultValue: '' },
+    selectStructure: { type: String, defaultValue: 'undefined' },
   }).validator({ clean: true }),
-  run({ page, itemPerPage, search }) {
-    const query = queryAllMezigs({ search });
+  run({ page, itemPerPage, search, selectStructure }) {
+    const query = queryAllMezigs({ search, selectStructure });
     const total = Mezigs.find(query).count();
     const data = Mezigs.find(query, {
       fields: Mezigs.searchFields,

@@ -37,3 +37,7 @@ Meteor.publish('users.admin', function publishAdmins() {
   }
   return Meteor.users.find({}, { fields: Meteor.users.adminFields });
 });
+
+Meteor.publish('users.one', function publishUser({ username }) {
+  return Meteor.users.find({ username });
+});

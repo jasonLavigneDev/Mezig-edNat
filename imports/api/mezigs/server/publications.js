@@ -58,6 +58,9 @@ Meteor.publish('mezigs.profile', function publishOneUser({ publicName }) {
   });
   return self.ready();
 });
+Meteor.publish('mezigs.allPublish', function publishAllForSearch() {
+  return Mezigs.find();
+});
 
 FindFromPublication.publish('mezigs.all', function publishAll() {
   if (this.userId !== null) {

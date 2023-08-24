@@ -1,28 +1,44 @@
 <script>
+  import { Meteor } from 'meteor/meteor';
   import { fly } from 'svelte/transition';
   import { navigate } from 'svelte-routing';
-
+  import Chip, { Text } from '@smui/chips';
+  import { useTracker } from 'meteor/rdb:svelte-meteor-data';
   import Tag from '../components/Tag.svelte';
+  import Spinner from '../components/Spinner.svelte';
+  import Structures from '../../api/structures/structures';
 
   const blankUser = '/blank_user.svg';
   export let user;
+
+  $: currentStructure = useTracker(() => Structures.findOne({_id: user.structure}));
 
   const handleGoProfile = () => {
     navigate(`/profil/${user.publicName}`, { state: `/profil/${user.publicName}` });
   };
 </script>
 
-<div on:click={handleGoProfile} in:fly={{ y: 100, duration: 500, delay: 200 }} class="Result">
-  <img src={user.profilPic || blankUser} alt="Avatar de l'utilisateur" />
-  <div class="textResult">
-    <h3>{user.publicName}</h3>
-    <div class="skillsResult">
-      {#each user.skills as skill}
-        <Tag skill={`#${skill}`} on:clickSkills />
-      {/each}
+{#await Meteor.subscribe('structures.one', { _id: user.structure })}
+<Spinner />
+{:then}
+  <div on:click={handleGoProfile} in:fly={{ y: 100, duration: 500, delay: 200 }} class="Result">
+    <img src={user.profilPic || blankUser} alt="Avatar de l'utilisateur" />
+    <div class="textResult">
+      <h3>{user.publicName}</h3>
+      {#if $currentStructure}
+        <Chip chip={$currentStructure.name} style={'background-color: #6200ee; color: white; font-size: 12px'}>
+          <Text>{$currentStructure.name}</Text>
+        </Chip>
+      {/if}
+      <div class="skillsResult">
+        {#each user.skills as skill}
+          <Tag skill={`#${skill}`} on:clickSkills />
+        {/each}
+      </div>
     </div>
   </div>
-</div>
+{/await}
+
 
 <style>
   .Result {

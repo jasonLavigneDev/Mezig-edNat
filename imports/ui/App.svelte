@@ -4,6 +4,7 @@
   import { Meteor } from 'meteor/meteor';
   import { useTracker } from 'meteor/rdb:svelte-meteor-data';
   import { _ } from 'svelte-i18n';
+  import Matomo, { matomo } from '@dexlib/svelte-matomo';
   import Search from './pages/Search.svelte';
   import Profil from './pages/Profil.svelte';
   import Nav from './components/Nav.svelte';
@@ -15,18 +16,26 @@
   import Maintenance from './pages/Maintenance.svelte';
   import NoAccount from './pages/NoAccount.svelte';
   import AppSettings from './../api/appsettings/appsettings';
+  import { onMount } from 'svelte';
 
   export let url = '';
   let userRedirect = false;
   let profileOk = true;
   let userActive = false;
   const { laboiteUrl, enableKeycloak = true } = Meteor.settings.public;
+  const { matomo: matomoSettings } = Meteor.settings.public;
   $: settings = useTracker(() => {
     const sub = Meteor.subscribe('appsettings.all');
     if (sub.ready()) {
       return AppSettings.findOne({ _id: 'settings' });
     }
     return { maintenance: true, textMaintenance: '' };
+  });
+
+  onMount(() => {
+    if (matomoSettings?.urlBase) {
+      matomo.trackPageView();
+    }
   });
 </script>
 
@@ -45,6 +54,9 @@
           </Route>
         </div>
       {:else}
+        {#if matomoSettings?.urlBase}
+          <Matomo url={matomoSettings.urlBase} siteId={matomoSettings.siteIdMezig} />
+        {/if}
         <div>
           <Route path="/profil/:publicName" component={Profil} />
           {#if !enableKeycloak}

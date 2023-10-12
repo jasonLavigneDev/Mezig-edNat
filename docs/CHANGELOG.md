@@ -1,5 +1,36 @@
 # Changelog
 
+## [1.9.0](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.8.0...release/1.9.0) (2023-08-24)
+
+
+### Features
+
+* **meteor:** change meteor base version ([4baa128](https://gitlab.mim-libre.fr/alphabet/mezig/commit/4baa128653d0fed784b36079c9996a0501909755))
+* **search:** add search by structure ([5a4157a](https://gitlab.mim-libre.fr/alphabet/mezig/commit/5a4157a228f55946f6df31ed34c868de78dc4e1a))
+* **search:** add search by structure on backend ([24da129](https://gitlab.mim-libre.fr/alphabet/mezig/commit/24da12913bd5227b997bd04d81707c08df71c879))
+* **search:** add style for select structure filter ([a3bbb73](https://gitlab.mim-libre.fr/alphabet/mezig/commit/a3bbb7301fc1be936e034f83f894f0214d295c44))
+* **structure:** add all used structure in search ([07cbd7a](https://gitlab.mim-libre.fr/alphabet/mezig/commit/07cbd7ad920d688b3d5dcac9cb599ddd2169316c))
+* **structure:** add structure to profil ([368c519](https://gitlab.mim-libre.fr/alphabet/mezig/commit/368c519753bc1fb5f1c0763fa29e6d67078bcf51))
+* **update:** auto update structures on startup ([bc31f41](https://gitlab.mim-libre.fr/alphabet/mezig/commit/bc31f4166254867e7a30e5f7071e3ad248faddab))
+
+
+### Bug Fixes
+
+* no structure in user ([79e2e22](https://gitlab.mim-libre.fr/alphabet/mezig/commit/79e2e22d7db76452192532888dfe48a7b6d138f6))
+* **routing:** update svelte-routing library to latest version ([142c312](https://gitlab.mim-libre.fr/alphabet/mezig/commit/142c312e0605f48c0b8cd769169b6a9082669cf2))
+* **search:** fix search on load more than 20 profils ([d6e895f](https://gitlab.mim-libre.fr/alphabet/mezig/commit/d6e895fc6a951f872b4e4ce49cb85c503c5f51d1))
+* **search:** remove console log ([928e9ea](https://gitlab.mim-libre.fr/alphabet/mezig/commit/928e9eafce6410be8d1a517d2d08a1891204cdec))
+* **settings:** enableKeycloak is true by default ([653ac58](https://gitlab.mim-libre.fr/alphabet/mezig/commit/653ac5804e16fb75fbff9a9aed41f442af3bf9ed))
+* **skills:** better behavior when adding skill with # at start ([76a8e3b](https://gitlab.mim-libre.fr/alphabet/mezig/commit/76a8e3b5fa9b0651911caf0881dbb19d32f7e249))
+* **structure:** set structure at account creation ([9fa1e6a](https://gitlab.mim-libre.fr/alphabet/mezig/commit/9fa1e6a2570861ef01cdcd1e70e100c9c1ad0286))
+* **structures:** update search when selecting no structure ([9e10655](https://gitlab.mim-libre.fr/alphabet/mezig/commit/9e1065500338b70500a7319a69c24b32512dd790))
+* **update:** rename variable ([0d7bc85](https://gitlab.mim-libre.fr/alphabet/mezig/commit/0d7bc858a462e1de72467823d041129a212a9cbe))
+
+
+### Build System
+
+* **meteor:** update meteor to 2.12 and meteor packages ([19288c0](https://gitlab.mim-libre.fr/alphabet/mezig/commit/19288c04934c47bf6794f0e515a600e87e133f27))
+
 ## [1.8.0](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.7.1...release/1.8.0) (2023-04-18)
 
 

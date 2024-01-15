@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.10.0](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.9.0...release/1.10.0) (2023-11-07)
+
+
+### Features
+
+* **libs:** update libs to wanted version ([d9b9f48](https://gitlab.mim-libre.fr/alphabet/mezig/commit/d9b9f48014ffda0148f51607d29a89c539b6df5d))
+* **libs:** update node docker image ([cdf1799](https://gitlab.mim-libre.fr/alphabet/mezig/commit/cdf179983c5c4529875891ce322b52432a88d53b))
+* **libs:** update version number of meteor base ([5b4a8ef](https://gitlab.mim-libre.fr/alphabet/mezig/commit/5b4a8efa811ce4bf73184d760571667743a3d6db))
+* **matomo:** integrate Matomo client ([2c338e3](https://gitlab.mim-libre.fr/alphabet/mezig/commit/2c338e37e78ca9c6ca1116510d6d0926996029a4))
+* **node:** change node version to previous version ([90f1a8e](https://gitlab.mim-libre.fr/alphabet/mezig/commit/90f1a8e54f7bcd4537c4fa1ef11e14d18899f91d))
+
+
+### Bug Fixes
+
+* **langpicker:** fix missing css attribut ([57182a5](https://gitlab.mim-libre.fr/alphabet/mezig/commit/57182a502b5e421223e8bc7f916bf8e21228af78))
+
 ## [1.9.0](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.8.0...release/1.9.0) (2023-08-24)
 
 

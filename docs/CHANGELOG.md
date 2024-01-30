@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.0](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.10.0...release/1.11.0) (2024-01-30)
+
+
+### Features
+
+* **meteor:** update meteor and packages to version 2.13.3 ([601201a](https://gitlab.mim-libre.fr/alphabet/mezig/commit/601201afb36a3b20a50b4ce94c7f7ab92a3c078e))
+* **npm:** update outdated libs to wanted version ([4e5b3af](https://gitlab.mim-libre.fr/alphabet/mezig/commit/4e5b3afdbef0518dc47e9d6729a536337373588a))
+
 ## [1.10.0](https://gitlab.mim-libre.fr/alphabet/mezig/compare/release/1.9.0...release/1.10.0) (2023-11-07)
 
 

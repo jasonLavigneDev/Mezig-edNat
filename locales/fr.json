@@ -81,6 +81,7 @@
     "activationNeeded": "Votre compte est en attente de validation",
     "privateLink": "Lien privé",
     "searchFilter": "Filtrer par structure",
+    "about": "À propos",
     "editProfil": {
       "title": "Mon profil",
       "showProfile": "Publier mon profil",
@@ -148,6 +149,31 @@
     },
     "tags": {
       "useNumber": "Nombre d'utilisation"
+    },
+    "AboutPage": {
+      "developped": "Mezig est un service du portail LaBoite sous licence",
+      "socle": "faisant partie du socle",
+      "by": "Réalisation du",
+      "and": "du",
+      "contributions": "en partenariat avec la",
+      "external": "et des contributeurs externes.",
+      "links": "Vous pouvez consulter la",
+      "exchange": "Vous pouvez échanger avec nous sur le",
+      "chat": "chat Mim-libre",
+      "news": "Retrouvez les dernières informations du pôle sur ",
+      "contributing": "Envie de participer à l'amélioration du portail ? Retouvez le projet sur ",
+      "deposit": "forge Mim-libre",
+      "information": "Informations de dépannage",
+      "Modal": {
+        "information": "Vos informations",
+        "navigator": "Navigateur :",
+        "version": "Version :",
+        "os": "Os :",
+        "device": "Appareil :",
+        "close": "Fermer",
+        "copy": "Copier les informations",
+        "success": "Informations copié avec succès"
+      }
     }
   }
 }

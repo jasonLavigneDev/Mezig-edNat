@@ -4,6 +4,7 @@
   import { Meteor } from 'meteor/meteor';
   import { useTracker } from 'meteor/rdb:svelte-meteor-data';
   import { _ } from 'svelte-i18n';
+  import { SvelteToast } from '@zerodevx/svelte-toast';
   import Matomo, { matomo } from '@dexlib/svelte-matomo';
   import Search from './pages/Search.svelte';
   import Profil from './pages/Profil.svelte';
@@ -15,6 +16,7 @@
   import Admin from './pages/Admin.svelte';
   import Maintenance from './pages/Maintenance.svelte';
   import NoAccount from './pages/NoAccount.svelte';
+  import About from './pages/About.svelte';
   import AppSettings from './../api/appsettings/appsettings';
   import { onMount } from 'svelte';
 
@@ -43,12 +45,15 @@
   <Spinner />
 {:else if userRedirect === false}
   <Nav bind:userRedirect bind:profileOk bind:userActive />
+  <SvelteToast />
   <Router {url}>
+    <Route path="/about" component={About} />
     <div class="container">
       {#if $settings.maintenance}
         <Maintenance />
       {:else if profileOk === false && userActive === true}
         <div>
+          userActive
           <Route>
             <EditProfil bind:profileOk />
           </Route>

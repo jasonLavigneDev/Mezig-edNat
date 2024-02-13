@@ -158,8 +158,11 @@
                       </Text>
                     </Item>
                     <Separator />
-                    <Item disabled>
-                      <AppVersion />
+                    <Item on:SMUI:action={() => navigate('/about', { replace: false })}>
+                      <Text class="MenuText">
+                        <PrimaryText>{$_('ui.about')}</PrimaryText>
+                        <SecondaryText />
+                      </Text>
                     </Item>
                   </List>
                 </Menu>
